@@ -122,6 +122,8 @@
 			var groups = {}, g;
 
 			_.each(fields, function(f){
+				if (NodeVariableSettings.isDisabled(f.key))
+					return;
 				if (fieldInfo[f.key]){
 					f.title = fieldInfo[f.key].title;
 					f.help = fieldInfo[f.key].help;
@@ -339,6 +341,10 @@
             this._editable = _.map(this.editable, function(type, regex){
                 return {regexp: new RegExp(regex), type: type};
             });
+            this._ignore = _.map(this.ignore, function(regex){
+                return {regexp: new RegExp(regex)};
+            });
+            
 		},
         _findObject: function(list, variable){
             var v = variable.replace(/\-/g, '.');
@@ -368,6 +374,9 @@
         getEditable: function(variable){
             var s = this._findObject(this._editable, variable);
             return s ? s.type : false;
+        },
+        isDisabled: function(variable){
+            return !!this._findObject(this._ignore, variable);
         }
 	});
 
