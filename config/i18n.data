@@ -1708,7 +1708,7 @@ ca03fc27f29c09fd.sha1       "3ede91b9361c5b2dc8662075d5da9495bf3b7bea"
 ca03fc27f29c09fd.category   "basic"
 ca03fc27f29c09fd.original   "en"
 ca03fc27f29c09fd.multiline  false
-ca03fc27f29c09fd.orphan     false
+ca03fc27f29c09fd.orphan     true
 ca03fc27f29c09fd.ts         1467038430300
 ca03fc27f29c09fd.locale.en  "Cluster Pricing"
 ca03fc27f29c09fd.
@@ -1728,7 +1728,7 @@ c99189a1892ff4de.
 51f1dc5a1834391f.category   "basic"
 51f1dc5a1834391f.original   "en"
 51f1dc5a1834391f.multiline  false
-51f1dc5a1834391f.orphan     false
+51f1dc5a1834391f.orphan     true
 51f1dc5a1834391f.ts         1467038430301
 51f1dc5a1834391f.locale.en  "SC / uBTC"
 51f1dc5a1834391f.
@@ -1738,7 +1738,7 @@ af9c41d8110f598e.sha1       "cf407d9e601090a0fdf75d1d51b17bebd941e7e5"
 af9c41d8110f598e.category   "basic"
 af9c41d8110f598e.original   "en"
 af9c41d8110f598e.multiline  false
-af9c41d8110f598e.orphan     false
+af9c41d8110f598e.orphan     true
 af9c41d8110f598e.ts         1467038430301
 af9c41d8110f598e.locale.en  "SC / USD"
 af9c41d8110f598e.
@@ -2382,3 +2382,23 @@ ac274a8dec4e179b.orphan     false
 ac274a8dec4e179b.ts         1467087736186
 ac274a8dec4e179b.locale.en  "Pricing"
 ac274a8dec4e179b.
+f561e293e164b4e0.
+f561e293e164b4e0.hash       "f561e293e164b4e0"
+f561e293e164b4e0.sha1       "b456f452a1151135c8915df535cde20d445829b7"
+f561e293e164b4e0.category   "basic"
+f561e293e164b4e0.original   "en"
+f561e293e164b4e0.multiline  false
+f561e293e164b4e0.orphan     false
+f561e293e164b4e0.ts         1467156148841
+f561e293e164b4e0.locale.en  "Font Size"
+f561e293e164b4e0.
+ce2e9cb9a27a501f.
+ce2e9cb9a27a501f.hash       "ce2e9cb9a27a501f"
+ce2e9cb9a27a501f.sha1       "ed0652cebdb3fde2d30e1b8b9db72d42403674da"
+ce2e9cb9a27a501f.category   "basic"
+ce2e9cb9a27a501f.original   "en"
+ce2e9cb9a27a501f.multiline  false
+ce2e9cb9a27a501f.orphan     false
+ce2e9cb9a27a501f.ts         1467156148855
+ce2e9cb9a27a501f.locale.en  "Panel minimum width:"
+ce2e9cb9a27a501f.
