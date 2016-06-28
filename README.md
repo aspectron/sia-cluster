@@ -32,13 +32,9 @@ Please refer to [IRIS Project Configuration](https://github.com/aspectron/iris-a
 
 ## Dependencies
 
+**NOTE:** Sia Cluster requires a **local instance of siad** running, so you must deploy the latest siad on the same system you will be running Sia Cluster. (local instance is needed for network statistics).
+
 Sia Cluster runs on top of **NodeJs** and requires a local instance of **MongoDb**.
-
-For linux, we recommend NodeJs installation instructions located here: 
-
-* https://github.com/aspectron/iris-app#setting-up-nodejs-on-your-system
-
-For windows, you can simply download and install latest release of MongoDb from https://www.mongodb.com/download-center?jmp=nav#community
 
 Once NodeJs is installed, you need to install **Bower** npm module. If you do not do this, some Sia Cluster NPM modules will fail to install. You can do this by running:
 
@@ -46,8 +42,44 @@ Once NodeJs is installed, you need to install **Bower** npm module. If you do no
 npm install bower -g
 ```
 
-**NOTE:** Sia Cluster requires a **local instance of siad** running, so you must deploy the latest siad on the same system you will be running Sia Cluster. (local instance is needed for network statistics).
+### Linux
 
+For linux, we recommend NodeJs installation instructions located here: 
+* https://github.com/aspectron/iris-app#setting-up-nodejs-on-your-system
+
+Full installation script:
+```bash
+cd ~
+wget https://nodejs.org/dist/v6.2.2/node-v6.2.2-linux-x64.tar.xz
+tar xf node-v6.2.2-linux-x64.tar.xz
+ln -s node-v6.2.2-linux-x64 node
+echo -e "\n\nPATH=\"\$HOME/node/bin:\$PATH\"\n\n"
+source ~/.profile
+sudo apt-get install git mongodb
+npm install bower -g
+git clone https://github.com/aspectron/sia-cluster
+cd sia-cluster
+npm install
+node sia-cluster
+```
+
+### Windows
+
+For windows, download and install: 
+* NodeJs - https://nodejs.org/en/download/current/
+* MongoDb - https://www.mongodb.com/download-center
+* Git for Windows - https://git-for-windows.github.io/
+
+Run the following from command line:
+```
+npm install bower -g
+mkdir sia
+cd sia
+git clone https://github.com/aspectron/sia-cluster
+cd sia-cluster
+npm install
+node sia-cluster
+```
 
 ## Usage
 
