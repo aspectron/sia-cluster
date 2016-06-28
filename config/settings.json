@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "cluster": {
         "TARGET_USD_TB_MO": 5,
         "fields": {
