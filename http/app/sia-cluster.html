@@ -2,7 +2,8 @@
 	<template>
 		<style include="iron-flex app-style node-setting-style">
 			.panels{@apply(--layout-horizontal); @apply(--layout-wrap)}
-			.panels .panel{min-width: 320px; @apply(--layout-flex); position: relative;}
+			.panels .panel{min-width: 320px; @apply(--layout-flex); position: relative;overflow:hidden;}
+			.panels .panel::shadow>.content{max-width:100%;max-height:100%;}
 			.panels sia-node.panel{min-width: 300px;}
 			.panel::shadow .table{background-color: #FFF;}
 			.panel::shadow .setting-icon{position: absolute; right: 10px; top: 10px;}
@@ -12,6 +13,13 @@
 			.dialog paper-toolbar .title{margin-left: 10px;}
 			.panel::shadow iris-overlap-edit-field paper-button.dropdown-trigger{padding: 5px; min-width: 10px;font-size: 15px;}
 			.panel::shadow iris-overlap-edit-field paper-button.dropdown-trigger iron-icon{width: 15px; height: 15px;}
+			.slider-label{padding-left:16px;}
+			paper-slider.slider{display: block;width: 100%;box-sizing: border-box;padding-right: 32px;margin-bottom:15px;}
+			*::shadow .wrapper.sia-field{font-size:100%}
+			*::shadow .wrapper.sia-field .title{font-size:87%;}
+			*::shadow .wrapper.sia-field .dropdown-trigger iron-icon{height:10px;width:10px;}
+			.panel::shadow paper-tabs{font-size:87%}
+			.panel::shadow iris-d3-series-chart::content #chart{font-size: 63%;}
 			@media (max-width:650px){
 				.panels sia-node.panel,
 				.panels .panel{min-width:300px;box-sizing:border-box;}
@@ -84,8 +92,29 @@
 						</div>
 					</template>
 				</neon-animatable>
-				<neon-animatable class="fit items" page="ui">
-					@surinder - PLEASE PUT FONT &amp; PANEL SIZING HERE (#16)
+				<neon-animatable class="fit items" page="ui" on-mouseup="fadeInSettingDialog">
+					<label class="slider-label"><%=_T("Font Size")%> <span>[[settings.fontSize]]</span>%</label>
+					<paper-slider snaps pin
+						step='1' min="50" max="100"
+						immediate-value="{{settings.fontSize}}"
+						value="[[settings.fontSize]]"
+						class="slider"
+						on-mousedown="fadeOutSettingDialog"
+						on-mouseup="fadeInSettingDialog"
+						max-markers="10"
+					></paper-slider>
+					<label class="slider-label"><%=_T("Panel minimum width:")%> <span>[[settings.panelSize]]</span>px</label>
+					<paper-slider snaps pin
+						step='1' min="300" max="500"
+						immediate-value="{{settings.panelSize}}"
+						value="[[settings.panelSize]]"
+						class="slider"
+						on-mousedown="fadeOutSettingDialog"
+						on-mouseup="fadeInSettingDialog"
+						max-markers="10"
+					></paper-slider>
+					<!--paper-range-slider snaps pin step='1' min='0' max='100' value-diff-min="10" value-diff-max="50" value-min='30' value-max='60' always-show-pin></paper-range-slider>
+					<div>1H | 2H | 4H | 8H | 12H | 24H | 48H | 3D | 7D | 2W | 4W</div-->
 				</neon-animatable>
 			</div>
 		</paper-dialog>
@@ -95,7 +124,8 @@
 		is: "sia-cluster",
 		properties:{
 			settings:{
-				type: Object
+				type: Object,
+				value:{}
 			},
 			storage:{
 				type: Object,
@@ -111,10 +141,19 @@
 			}
 		},
 		behaviors:[SettingDialogBehavior],
+		observers: [
+			"onFontSizeChanged(settings.fontSize)",
+			"onPanelSizeChanged(settings.panelSize)"
+		],
 		ready: function(){
 			var self = this;
-			self.fetchItems();
+			self.$styleEl = $("#customStyle");
+			if (!self.$styleEl.length){
+				self.$styleEl = $("<style id='customStyle'></style>");
+				$(document.body).append(self.$styleEl);
+			}
 
+			self.fetchItems();
 			App.rpc.on("node-connected", function(args){
 				var uuid = args.uuid;
 				var nodeIndex = _.findIndex(self.nodes, function(n){return n.uuid == uuid;});
@@ -150,11 +189,49 @@
 				App.hideLoading();
 				if (err)
 					return App.error(err);
-
+				console.log("result.settings.panelSize", result.settings.panelSize)
+				if (!result.settings.fontSize)
+					result.settings.fontSize = 100;
+				if (!result.settings.panelSize)
+					result.settings.panelSize = 300;
 				self.set("settings", result.settings);
+				self.settingLoaded = true;
 				self.set("storage", result.storage);
 				self.set("nodes", _.sortBy(result.nodes,'ident'));
 			})
+		},
+		fadeOutSettingDialog: function(){
+			this.debounce("fadeOutSettingDialog", function(){
+				this.$.nodeSettingDialog.style.opacity = 0.2;
+			}, 200);
+		},
+		fadeInSettingDialog: function(){
+			this.cancelDebouncer("fadeOutSettingDialog");
+			this.$.nodeSettingDialog.style.opacity = 1;
+		},
+		saveSetting: function(name, value, callback){
+			App.rpc.dispatch({
+				op: "setting",
+				name: "cluster/"+name,
+				value: value
+			}, function(err, r){
+				callback && callback(err, r);
+			});
+		},
+		onFontSizeChanged: function(){
+			this.updateCustomStyle();
+			this.settingLoaded && this.saveSetting("fontSize", this.settings.fontSize);
+		},
+		onPanelSizeChanged: function(){
+			this.updateCustomStyle();
+			this.settingLoaded && this.saveSetting("panelSize", this.settings.panelSize);
+		},
+		updateCustomStyle: function(){
+			if (!this.$styleEl)
+				return;
+			var fontSize = this.settings.fontSize;
+			var panelSize = this.settings.panelSize;
+			this.$styleEl.text("body{font-size:"+fontSize+"%} #siaCluster .panels .panel{min-width:"+panelSize+"px}");
 		}
 	})
 	</script>
