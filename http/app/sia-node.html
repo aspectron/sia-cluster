@@ -137,7 +137,7 @@
 			<paper-dialog-scrollable class="flex">
 				<paper-checkbox checked="{{unlockData.useLocal}}"><%=_T("Use Local Password")%></paper-checkbox>
 				<paper-input
-					id="unlockPassphraseField" value="{{unlockData.passphrase}}" required type="password" on-keyup="onUDialogKeyUp"
+					id="unlockPassphraseField" value="{{unlockData.passphrase}}" name="[[passwordFieldName]]" required type="[[passwordFieldType]]" on-keyup="onUDialogKeyUp"
 					label="[[_ifelse(unlockData.useLocal, '<%=_T("Password")%>', '<%=_T("Passphrase (Wallet key)")%>')]]"
 				></paper-input>
 			</paper-dialog-scrollable>
@@ -197,6 +197,8 @@
 					type: String,
 					value: "config"
 				},
+				passwordFieldType:{type: String, value:"text"},
+				passwordFieldName:{type: String, value:"a"},
 				fields: Array,
 				graphFields: Array
 			},
@@ -327,6 +329,10 @@
 			},
 			ready: function(){
 				var self = this;
+				self.async(function(){
+					self.set("passwordFieldType", "password");
+					self.set("passwordFieldName", "name-"+Date.now());
+				}, 1000);
 				App.rpc.on("node-state", function(args){
 					if (args.uuid != self.uuid)
 						return;
