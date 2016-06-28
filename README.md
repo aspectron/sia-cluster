@@ -85,16 +85,6 @@ node sia-cluster
 
 Sia Cluster is a server application meant to run together with [Sia Node](https://github.com/aspectron/sia-node).
 
-Once MongoDb, NodeJs and Bower are installed on your system, you can deploy Sia Cluster as follows:
-
-```
-npm install bower -g
-git clone http://github.com/aspectron/sia-cluster
-cd sia-cluster
-npm install
-node sia-cluster
-```
-
 Once running, you can access user interface at `http://localhost:6454`
 
 To deploy Sia Cluster as a daemon on ubuntu using Upstart service, you can use following instructions: https://github.com/aspectron/iris-app#deploying-as-ubuntu-upstart-service
