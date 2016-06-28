@@ -76,6 +76,9 @@
 				var self = this;
 				self.fetchChartData(1);
 				self.set("chartInfoFormatter", this._chartInfoFormatter.bind(self));
+				App.rpc.on("price-update", function(args){
+					self.fetchChartData(1000);
+				});
 			},
 			onTabChange: function(newTab, oldTab){
 				if (oldTab && newTab == "graph"){
@@ -151,7 +154,6 @@
 						return -a.total;
 					})
 					self.set("gridData", gridData);
-					self.fetchChartData();
 				})
 			}
 		})

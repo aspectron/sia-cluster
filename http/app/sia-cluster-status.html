@@ -23,32 +23,6 @@
 					line-legend
 					__title="<%=_T("SC/TB/MO")%>"
 				></iris-d3-series-chart>
-				<!-- iris-d3-series-chart
-					class="flex"
-					tilt-x
-					data="[[chart.SC_BTC.data]]"
-					x-scale="time"
-					date-format="[[chart.SC_BTC.dateFormat]]"
-					margin-top="10"
-					margin-bottom="60"
-					margin-right="60"
-					line-interpolate="linear"
-					y-ticks-count="5"
-					___title="<%=_T("SC / uBTC")%>"
-				></iris-d3-series-chart>
-				<iris-d3-series-chart
-					class="flex"
-					tilt-x
-					data="[[chart.SC_USD.data]]"
-					x-scale="time"
-					date-format="[[chart.SC_USD.dateFormat]]"
-					margin-top="10"
-					margin-bottom="60"
-					margin-right="60"
-					line-interpolate="linear"
-					y-ticks-count="5"
-					__title="<%=_T("SC / USD")%>"
-				></iris-d3-series-chart -->
 			</div>
 			<div class="setting-fields">
 				<sia-field title="Track Price" value="[[data.TRACK_STORAGE_PRICE]]" format="bool" bool-text="Yes/No" editable="TRACK_STORAGE_PRICE"></sia-field>
@@ -95,9 +69,7 @@
 				chart:{
 					type: Object,
 					value:{
-						SC_TB_MO:{data: []},
-						//SC_BTC:{data: []},
-						//SC_USD:{data: []}
+						SC_TB_MO:{data: []}
 					}
 				}
 			},
@@ -112,8 +84,7 @@
 				})
 			
 				App.rpc.on("price-update", function(args){
-
-					console.log("PRICE UPDATE",args);
+					self.fetchChartData(1000);
 					self.data = args;//_.extend(self.data,args);
 				});
 
@@ -159,7 +130,6 @@
 					//self.set("chart.SC_BTC.data", result.SC_BTC.data);
 					//self.set("chart.SC_USD.dateFormat", result.SC_USD.dateFormat);
 					//self.set("chart.SC_USD.data", result.SC_USD.data);
-					self.fetchChartData();
 				})
 			},
 			openSettings: function(){

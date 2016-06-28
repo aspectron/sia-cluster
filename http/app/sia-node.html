@@ -23,7 +23,7 @@
 			</h2>
 			<div class="layout vertical flex">
 				<template is="dom-repeat" items="[[graphFields]]">
-					<sia-variable-graph class="flex" node="[[uuid]]" variable="[[item.key]]" title="[[item.title]]" tilt-x-angle="-20" y-ticks-count="3"></sia-variable-graph>
+					<sia-variable-graph class="flex" node="[[uuid]]" variable="[[item.key]]" title="[[item.title]]" tilt-x-angle="-20" y-ticks-count="3" no-refresh refresh-token="[[graphRefreshToken]]" time-interval="1000"></sia-variable-graph>
 				</template>
 			</div>
 
@@ -161,6 +161,10 @@
 						memory: {},
 						load: {}
 					}
+				},
+				graphRefreshToken: {
+					type: String,
+					value: ""
 				},
 				chartInterval: {
 					type: String,
@@ -326,6 +330,8 @@
 				App.rpc.on("node-state", function(args){
 					if (args.uuid != self.uuid)
 						return;
+					
+					self.set("graphRefreshToken", Date.now());
 					self.mergeData(args.data);
 				});
 

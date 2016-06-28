@@ -46,13 +46,19 @@
 					type: String,
 					observer: "onVariableChange"
 				},
+				timeInterval:{type: Number, value: 5000},
 				data:{type: Array, value: []},
 				dateFormat: String,
 				title: String,
+				noRefresh: Boolean,
+				refreshToken: {
+					type: String,
+					observer: "refreshGraph"
+				},
 				active: {
 					type: Boolean,
 					value: true,
-					observer: "fetchData"
+					observer: "refreshGraph"
 				}
 			},
 			ready: function(){
@@ -65,10 +71,14 @@
 				this.$.chart.set("yLegend", this._graphSetting ? this._graphSetting.unit : "");
 				this.fetchData(1);
 			},
+			refreshGraph: function(){
+				this.fetchData();
+			},
 			fetchData: function(delay){
 				if (!this.active || this._isLoading)
 					return
-				this.debounce("fetchData", this._fetchData, delay || 5000);
+				self.noRefresh && console.log("this.timeInterval", this.timeInterval)
+				this.debounce("fetchData", this._fetchData, delay || this.timeInterval, 10);
 			},
 			_fetchData: function (){
 				var self 	= this;
@@ -99,7 +109,7 @@
 						var data = result.data;
 					}
 					self.set("data", data);
-					self.fetchData();
+					!self.noRefresh && self.fetchData();
 				})
 			}
 		})
