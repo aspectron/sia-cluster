@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<title><%= _T("SIA Cluster") %></title>
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<link href='//fonts.googleapis.com/css?family=Exo' rel='stylesheet' type='text/css'>
+		<style>
+			html, body {font-family: "Exo";font-size: 18px;margin: 0px;overflow: hidden;}
+			#content {no-repeat top center scroll;background-size: cover;width: 100vw;height: 100vh;padding: 16px;}
+			#home {width: 32px;height: 32px;margin-bottom: -2px;margin-right: 8px;}
+			a {color: black;text-decoration: none;}
+			.logo-image {width: 200px;}
+		</style>
+	</head>
+	<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+		<div id="content">
+			<center>
+				<a href="/">
+		            <!-- img class='logo-image' src="/images/logo/logo.png" --><br/>		
+					<%= message %>
+				</a>
+			</center>
+			<center>
+				<a href="/"><%= _T("Back to Home Page") %></a>
+			</center>
+		</div>
+	</body>
+</html>

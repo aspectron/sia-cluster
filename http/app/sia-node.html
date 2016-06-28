@@ -1,0 +1,469 @@
+<dom-module id="sia-node">
+	<template>
+		<style include="panel-style node-setting-style">
+			.online-icon{color: #FF0000;}
+			.unlock-icon{cursor:pointer;}
+			[online] .online-icon{color: #108F74;}
+			.help-info{display:block;padding:5px 0px;font-size:10px;}
+			.set-local-pass-btn,.unset-local-pass-btn,
+			.delete-node-btn{
+				margin-top: 10px;display:block;
+			}
+			.delete-node-btn{background-color:#F38686;color:#FFF;}
+			.dialog neon-animatable{overflow-y:auto;overflow-x:hidden;padding:15px 15px 0px;margin-bottom:15px;}
+			paper-dialog.passphrase-dialog{height:70%; max-height:initial;}
+			iron-icon { width : 25px; height: 25px; }
+		</style>
+		<div class="content" online$="[[online]]" unlocked$="[[unlocked]]">
+			<paper-icon-button icon="settings" class="setting-icon" on-click="openSettings"></paper-icon-button>
+			<h2 class="title">
+				<iron-icon class="online-icon" icon="[[_onlineIcon(online)]]" title$="[[_onlineIconTitle(online)]]"></iron-icon>
+				<iron-icon class="unlock-icon" icon="[[_unlockIcon(unlocked)]]" title$="[[_unlockIconTitle(unlocked)]]" on-click="lockUnlock"></iron-icon>
+				<span>[[ident]]</span>
+			</h2>
+			<div class="layout vertical flex">
+				<template is="dom-repeat" items="[[graphFields]]">
+					<sia-variable-graph class="flex" node="[[uuid]]" variable="[[item.key]]" title="[[item.title]]" tilt-x-angle="-20" y-ticks-count="3"></sia-variable-graph>
+				</template>
+			</div>
+
+			<div class="setting-fields" on-sia-field-value-changed="onSiaFieldValueChanged">
+				<template is="dom-repeat" items="[[fields]]">
+        			<sia-field title="[[item.title]]"
+	        			value="[[_settingFieldValue(item.value, item, data)]]"
+	        			format="[[_settingFieldFormat(item)]]"
+	        			type="[[_settingFieldType(item, item.key)]]"
+	        			editable="[[_settingFieldEditable(item)]]"
+	        			suffix="[[_settingFieldSuffix(item)]]"
+	        		></sia-field>
+        		</template>
+			</div>	
+		</div>
+		<paper-dialog id="settingDialog" class="dialog setting-dialog node-setting-dialog layout vertical">
+			<paper-toolbar>
+				<div class="title"><%=_T("Settings:")%> [[ident]]</div>
+				<paper-tabs selected="{{tab}}" attr-for-selected="tab">
+					<paper-tab tab="config"><%- _T("Configuration &amp; Metrics") %></paper-tab>
+					<paper-tab tab="wallet"><%=_T("Wallet")%></paper-tab>
+					<paper-tab tab="advanced"><%=_T("Advanced")%></paper-tab>
+				</paper-tabs>
+				<paper-icon-button icon="close" dialog-dismiss></paper-icon-button>
+			</paper-toolbar>
+			<neon-animated-pages class="flex" selected="{{tab}}" attr-for-selected="page" entry-animation="fade-in-animation" exit-animation="fade-out-animation" on-tap="hideVariableGraph">
+				<neon-animatable class="fit" page="config" on-sia-field-value-changed="onSiaFieldValueChanged" on-tap="onSettingItemsClick">
+					<div class="node-field heading">
+						<div><%-_T("Show<br />Variable")%></div>
+						<div><%-_T("Show<br />Graph")%></div>
+						<div><%-_T("Override<br />Global")%></div>
+						<div class="tiny"></div>
+						<div class="tiny"></div>
+						<div class="flex variable"><%-_T("Variable")%></div>
+					</div>
+					<template is="dom-repeat" items="[[settingFieldGroups]]">
+						<div>
+							<div class="node-field-group-heading" on-tap="toggleNodeSetting">[[item.title]]<iron-icon icon="expand-less"></iron-icon></div>
+							<div class="node-field-group-contents">
+								<template is="dom-repeat" items="[[item.items]]">
+									<div class="node-field" item="{{item}}">
+										<div>
+											<paper-checkbox override checked="{{item.showVar}}"><%-_T("Show Variable")%></paper-checkbox>
+										</div>
+										<div>
+											<paper-checkbox override checked="{{item.showGraph}}" hide$="[[!item.graphCompatible]]"><%-_T("Show Graph")%></paper-checkbox>
+										</div>
+										<div>
+											<paper-checkbox hide$="[[!item.overridable]]" checked="{{item.override}}"><%-_T("Override")%></paper-checkbox>
+										</div>
+										<div class="tiny">
+											<iron-icon icon="timeline" hidden$="[[!item.graphCompatible]]" key="[[item.key]]" on-mouseover="showVariableGraph" on-mouseout="hideVariableGraph"></iron-icon>
+										</div>
+										<div class="tiny">
+											<iron-icon class="help-icon" icon="help" hidden$="[[!item.help]]" key="[[item.key]]" on-mouseover="showVariableInfo" on-mouseout="hideVariableInfo"></iron-icon>
+										</div>
+										<div class="flex variable">
+											<sia-field
+												title="[[item.title]]"
+												value="[[_settingFieldValue(item.value, item, data)]]"
+												format="[[_settingFieldFormat(item)]]"
+	        									type="[[_settingFieldType(item, item.key)]]"
+												editable="[[_settingFieldEditable(item)]]"
+												suffix="[[_settingFieldSuffix(item)]]"
+											></sia-field>
+										</div>
+									</div>
+								</template>
+							</div>
+						</div>
+					</template>
+				</neon-animatable>
+				<neon-animatable class="fit" page="wallet">
+					<paper-button raised class="set-local-pass-btn" on-click="setupLocalPass">
+						<%= _T("Setup Local passphrase") %>
+						<div class="help-info">
+							<%=_T("You can use custom local passphrase to encrypt wallet password.")%>
+						</div>
+					</paper-button>
+				</neon-animatable>
+				<neon-animatable class="fit" page="advanced">
+					<paper-button raised class="delete-node-btn" on-click="deleteNode">
+						<%= _T("Delete node") %>
+					</paper-button>
+				</neon-animatable>
+			</neon-animated-pages>
+		</paper-dialog>
+		<paper-dialog id="passphraseDialog" class="dialog passphrase-dialog layout vertical">
+			<paper-toolbar>
+				<div class="title"><%=_T("Setup Local Passphrase")%></div>
+				<paper-icon-button icon="close" dialog-dismiss></paper-icon-button>
+			</paper-toolbar>
+			<paper-dialog-scrollable class="flex">
+				<paper-input id="passphraseField" value="{{passphraseData.passphrase}}" type="password" required label="<%=_T("Password")%>" on-keyup="onPDialogKeyUp"></paper-input>
+				<paper-input id="passphraseField2" value="{{passphraseData.passphrase2}}" type="password" required label="<%=_T("Confirm Password")%>" error-message="<%=_T("Dose not match with Password")%>" on-keyup="onPDialogKeyUp"></paper-input>
+				<paper-input id="walletkeyField" value="{{passphraseData.walletkey}}" type="password" required label="<%=_T("Wallet Key")%>" on-keyup="onPDialogKeyUp"></paper-input>
+			</paper-dialog-scrollable>
+			<div class="buttons">
+				<div class="flex"></div>
+				<paper-button raised primary icon on-click="_setupLocalPass">
+					<iron-icon icon="done"></iron-icon>
+					<span class="title"><%=_T("Setup")%></span>
+				</paper-button>
+			</div>
+		</paper-dialog>
+		<paper-dialog id="uplockDialog" class="dialog unlock-dialog layout vertical">
+			<paper-toolbar>
+				<div class="title"><%=_T("Unlock Wallet")%></div>
+				<paper-icon-button icon="close" dialog-dismiss></paper-icon-button>
+			</paper-toolbar>
+			<paper-dialog-scrollable class="flex">
+				<paper-checkbox checked="{{unlockData.useLocal}}"><%=_T("Use Local Password")%></paper-checkbox>
+				<paper-input
+					id="unlockPassphraseField" value="{{unlockData.passphrase}}" required type="password" on-keyup="onUDialogKeyUp"
+					label="[[_ifelse(unlockData.useLocal, '<%=_T("Password")%>', '<%=_T("Passphrase (Wallet key)")%>')]]"
+				></paper-input>
+			</paper-dialog-scrollable>
+			<div class="buttons">
+				<div class="flex"></div>
+				<paper-button raised primary icon on-click="unlockWallet">
+					<iron-icon icon="lock-open"></iron-icon>
+					<span class="title"><%=_T("Unlock")%></span>
+				</paper-button>
+			</div>
+		</paper-dialog>
+	</template>
+	<script>
+		Polymer({
+			is: "sia-node",
+			behaviors:[PanelBehavior, SettingDialogBehavior],
+			properties:{
+				chart:{
+					type: Object,
+					value:{
+						memory: {},
+						load: {}
+					}
+				},
+				chartInterval: {
+					type: String,
+					value: "day"
+				},
+				ident: {
+					type: String,
+					value: ""
+				},
+				chartData: Array,
+				online:{
+					type: Boolean,
+					value: false
+				},
+				unlocked:{
+					type: Boolean,
+					value: false
+				},
+				passphraseData:{
+					type: Object,
+					value: {}
+				},
+				unlockData:{
+					type: Object,
+					value: {
+						useLocal: false
+					}
+				},
+				tab:{
+					type: String,
+					value: "config"
+				},
+				fields: Array,
+				graphFields: Array
+			},
+			observers: [
+				'onDataChanged(data.*)',
+				'onFieldSettingChanged(settingFields.*)'
+			],
+			getNodeSettingDialog: function(){
+				return this.$.settingDialog;
+			},
+			setupLocalPass:function(){
+				this.$.settingDialog.close();
+				this.set("passphraseData", {});
+				this.$.passphraseDialog.open();
+			},
+			deleteNode: function(){
+				var self = this;
+				IRIS.Confirm({
+					title: "Delete Node?",
+					text:"Are you sure to delete this node?",
+					okBtnCls:"danger",
+					okBtn:"Delete"
+				}, function(btn){
+					if (btn != 'ok')
+						return
+
+					self.$.settingDialog.close();
+					App.showLoading();
+					App.rpc.dispatch({op:"delete-node", uuid: self.uuid}, function(err, r){
+						App.hideLoading();
+						if (err)
+							return App.error(err);
+
+						self.remove();
+					});
+				})
+			},
+			onPDialogKeyUp: function(e){
+				if(e.which == 13)
+					this._setupLocalPass();
+			},
+			_setupLocalPass: function(){
+				var self = this;
+				var d = self.passphraseData;
+				if (!d.passphrase || !d.walletkey){
+					self.$.passphraseField.validate();
+					self.$.passphraseField2.validate();
+					self.$.walletkeyField.validate();
+					return;
+				}
+				if (d.passphrase2 != d.passphrase){
+					self.$.passphraseField2.invalid = true;
+					return
+				}
+				self.$.settingDialog.close();
+				self.$.passphraseDialog.close();
+
+				App.showLoading();
+				App.rpc.dispatch({
+					op: "init-wallet-passphrase",
+					node: self.uuid,
+					walletkey: d.walletkey,
+					passphrase: d.passphrase
+				}, function(err, result){
+					App.hideLoading();
+					if (err)
+						return App.error(err);
+
+					self.set("passphraseData", {});
+					IRIS.Alert({title:'<%= _T("Success") %>', text: '<%= _T("Local passphrase saved successfully.") %>'})
+					console.log("result", result)
+				});
+			},
+			_onlineIcon: function(online){
+				return online ? "sia:database": "cloud-off";
+			},
+			_onlineIconTitle: function(online){
+				return online ? "Online": "Offline";
+			},
+			_unlockIcon: function(unlocked){
+				return unlocked ? "sia:unlock" : "sia:lock";
+			},
+			_unlockIconTitle: function(unlocked){
+				return unlocked ? "Unlocked": "Locked";
+			},
+			toggleChartInterval: function(){
+				if(this.chartInterval == "day"){
+					this.chartInterval = "month"
+				}else if(this.chartInterval == "month"){
+					this.chartInterval = "year"
+				}else{
+					this.chartInterval = "day"
+				}
+			},
+			onDataChanged: function(){
+				var self 	= this;
+				if (this.data && this.data.wallet && !_.isUndefined(this.data.wallet.unlocked))
+					this.set("unlocked", this.data.wallet.unlocked);
+				
+				if (self.data)
+					self.debounce("updateFieldsValue", self.updateFieldsValue, 100);
+			},
+			updateFieldsValue: function(){
+				var self = this;
+				var keyValueMap = self.flatObject(self.data, true);
+				_.each(keyValueMap, function(value, key){
+					self._updateFieldValue(key, value);
+					self._updateSettingFieldValue(key, value);
+				})
+			},
+			_updateSettingFieldValue: function(key, value){
+				var index = this.getSettingFieldIndex(key);
+				if (index > -1)
+					this.set("settingFields."+index+".value", value);
+
+				index = this.getSettingFieldGroupItemIndex(key);
+				if (index != -1)
+					this.set("settingFieldGroups."+index+".value", value);
+			},
+			_updateFieldValue: function(key, value){
+				var index = this._keyIndexMap[key];
+				if (index < 0)
+					return;
+				var f = this.get("fields."+index);
+				if (f && f.key == key) {
+					this.set("fields."+index+".value", value);
+				};
+			},
+			ready: function(){
+				var self = this;
+				App.rpc.on("node-state", function(args){
+					if (args.uuid != self.uuid)
+						return;
+					self.mergeData(args.data);
+				});
+
+				App.rpc.on("host-state", function(args){
+					if (args.uuid != self.uuid)
+						return;
+					self.mergeData(args.data);
+				});
+
+				App.rpc.on("node-disconnected", function(args){
+					if (args.uuid != self.uuid)
+						return;
+					self.set("online", false);
+				});
+
+				App.rpc.on("node-connected", function(args){
+					if (args.uuid != self.uuid)
+						return;
+					self.set("online", true);
+				});
+			},
+			mergeData: function(data){
+				var self = this;
+				var data = _.extend({}, self.data || {}, data);
+				_.each(data, function(v, k){
+					self.set("data."+k, v);
+				});
+			},
+			onFieldSettingChanged: function(){
+				this.setupFields();
+			},
+			_keyIndexMap:{},
+			setupFields: function(){
+				var self 	= this;
+				var fields 	= _.extend({}, self.settingFields || {});
+				var panelField = [];
+				var graphFields = [];
+				var keyValueMap = self.flatObject(self.data, true), v, title;
+				var fieldInfo = NodeVariableSettings.info;
+				_.each(fields, function(f){
+					v = _.isUndefined(keyValueMap[f.key])? "" : keyValueMap[f.key];
+					f.value = v;
+					title = fieldInfo[f.key] && fieldInfo[f.key].title;
+					if (f.showGraph)
+						graphFields.push({
+							key: f.key,
+							title: title
+						})
+					if (!f.showVar)
+						return
+					self._keyIndexMap[f.key] = panelField.length;
+					panelField.push({
+						key: f.key,
+						title: title,
+						value: v,
+						editable: f.editable? f.key : false,
+						type: f.type || "",
+						suffix: f.suffix || ""
+					});
+				});
+
+				self.set("fields", panelField);
+				self.set("graphFields", graphFields);
+			},
+			openSettings: function(){
+				this.$.settingDialog.open();
+			},
+			lockUnlock: function(){
+				var self = this;
+				if (!self.online) {
+					IRIS.Alert({title: '<%=_T("Error")%>', text: '<%=_T("Node must be online")%>' })
+					return;
+				}
+				if (self.unlocked){
+					self.lockWallet();
+				}else{
+					self.set("unlockData", {useLocal: false});
+					self.$.uplockDialog.open();
+				}
+			},
+			lockWallet: function(){
+				var self = this;
+				App.showLoading();
+				App.rpc.dispatch({op: "lock-wallet", node: self.uuid}, function(err, result){
+					App.hideLoading();
+					if (err)
+						return App.error(err);
+
+					self.set("unlocked", result.unlocked);
+					self.set("data.wallet.unlocked", result.unlocked);
+				});
+			},
+			onUDialogKeyUp: function(e){
+				if(e.which == 13)
+					this.unlockWallet();
+			},
+			unlockWallet: function(){
+				var self = this;
+				var d = self.unlockData;
+				if (!d.passphrase){
+					return self.$.unlockPassphraseField.validate();
+				}
+
+				var passphrase = d.passphrase;
+				d.passphrase = '';
+
+				var type =  "direct";
+				if (d.useLocal) {
+					type = "local";
+
+					passphrase = scrypt.createHash(passphrase, { 
+						keyLength : 512, n : 8192, r : 4, p : 2,
+						salt : 'bb23dc71eaf488000ef3af4503d3190b9f4d26dd77c2294ba53f38923d8d1eaa'
+					})
+
+				}
+				App.showLoading();
+				App.rpc.dispatch({
+					op: "unlock-wallet",
+					passphrase: passphrase,
+					type: type,
+					node: self.uuid
+				}, function(err, result){
+					App.hideLoading();
+					if (err)
+						return App.error(err);
+
+					self.set("unlockData", {useLocal: false});
+					self.set("unlocked", result.unlocked);
+					self.set("data.wallet.unlocked", result.unlocked);
+					self.$.uplockDialog.close();
+				});
+			},
+			onSiaFieldValueChanged: function(e){
+				var d = e.detail;
+				//console.log("onSiaFieldValueChanged", d);
+				this._updateFieldValue(d.editable.replace(this.uuid+"/", ""), d.value);
+			}
+		})
+	</script>
+</dom-module>

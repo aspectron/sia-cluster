@@ -1,0 +1,146 @@
+
+<!DOCTYPE>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Login</title>
+	
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+
+	<script src="/IRIS/scripts/jquery-2.1.3.min.js"></script>
+	<script src="/IRIS/scripts/hmac-sha256.js"></script>
+
+	<script>
+		var salt = "<%= req.session.challenge %>";
+		$(document).ready(function() {
+			$("#login").click(function() {
+				var user = $("#user").val();
+				var pass = $("#pass").val();
+				if(!user || !pass)
+					return $("#status").html("Please supply a valid username and password");
+				var hash = CryptoJS.SHA256(CryptoJS.enc.Utf8.parse(pass)).toString();
+				var sig = CryptoJS.HmacSHA256(CryptoJS.enc.Hex.parse(hash), CryptoJS.enc.Hex.parse(salt)).toString();
+
+	            $.ajax({
+	                url: '/login',
+	                type: 'POST',
+	                dataType: "json",
+	                data: { 
+	                	user : user,
+	                	sig : sig
+	                }
+	            }).done(function (data) {
+	            	console.log("SUCCESS:",arguments);
+	            	if(data.ack == salt)
+	            		window.location.assign('/');
+	            	else
+	            		$("#status").html(data.ack);
+	            }).fail(function (jqXHR) {
+	            	console.log("FAILURE:",arguments);
+	                $("#status").html(jqXHR.statusText);
+	            });
+			})
+			$("#user").keydown(function(e) {
+				if(e.which == 13)
+					$("#login").trigger('click');
+			})
+			$("#pass").keydown(function(e) {
+				if(e.which == 13)
+					$("#login").trigger('click');
+			})
+			$("#user").focus();
+		})
+	</script>
+	<style>
+	html, body {
+		font-family: "Open Sans";
+		font-size: 18px;
+		margin: 0px;
+		overflow: hidden;
+	}
+	#content {
+		background: no-repeat top center scroll;
+		background-size: cover;
+		width: 100vw;
+		height: 100vh;
+		padding: 16px;
+	}
+
+ 	input#user, input#pass {
+		font-family: "Open Sans";
+		font-size: 18px;
+		padding: 4px;
+ 	}
+
+	#status {
+		margin-top: 16px;
+		text-align: center;
+		color: #900;
+	}
+	#login {
+		border: 1px solid #888;
+		background: #eee;
+		padding: 5px 16px;
+		cursor: pointer;
+	}
+svg .fast { stroke-miterlimit: 20px; stroke-dasharray: 1200px; stroke-dashoffset: 1200px; -webkit-animation-name: draw; -o-animation-name: draw; animation-name: draw; -webkit-animation-duration: 2.1s; -o-animation-duration: 2.1s; animation-duration: 2.1s; -webkit-animation-fill-mode: forwards; -o-animation-fill-mode: forwards; animation-fill-mode: forwards; -webkit-animation-iteration-count: 1; -o-animation-iteration-count: 1; animation-iteration-count: 1; -webkit-animation-timing-function: ease-in; -o-animation-timing-function: ease-in; animation-timing-function: ease-in; }
+svg .slow { stroke-miterlimit: 10px; stroke-dasharray: 500px; stroke-dashoffset: 500px; -webkit-animation-name: draw; -o-animation-name: draw; animation-name: draw; -webkit-animation-duration: 3.5s; -o-animation-duration: 3.5s; animation-duration: 3.5s; -webkit-animation-fill-mode: forwards; -o-animation-fill-mode: forwards; animation-fill-mode: forwards; -webkit-animation-iteration-count: 1; -o-animation-iteration-count: 1; animation-iteration-count: 1; -webkit-animation-timing-function: ease-in; -o-animation-timing-function: ease-in; animation-timing-function: ease-in; }
+svg .delay { stroke-miterlimit: 10px; stroke-dasharray: 500px; stroke-dashoffset: 500px; -webkit-animation-name: draw; -o-animation-name: draw; animation-name: draw; -webkit-animation-duration: 6s; -o-animation-duration: 6s; animation-duration: 6s; -webkit-animation-fill-mode: forwards; -o-animation-fill-mode: forwards; animation-fill-mode: forwards; -webkit-animation-iteration-count: 1; -o-animation-iteration-count: 1; animation-iteration-count: 1; -webkit-animation-timing-function: ease-in; -o-animation-timing-function: ease-in; animation-timing-function: ease-in; }
+	@-webkit-keyframes draw { 100% { stroke-dashoffset: 0; } }
+	@-o-keyframes draw { 100% { stroke-dashoffset: 0; } }
+	@keyframes draw { 100% { stroke-dashoffset: 0; } }
+
+	</style>
+	
+</head>
+<body>
+	<div id="content">
+
+			<center>
+		<div style="margin-top:64px;margin-bottom:64px;">
+			<svg viewBox="-1 -1 316 316" width="300px" height="300px" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#00cba0" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+				<g>
+					<g transform="translate(1.000000, 1.000000)">
+						<path class="fast" d="M254,190.96 C254,190.96 312.995,183.361 312.995,123.35 C312.995,85.34 281.655,54.06 242.725,55.486 C227.505,23.306 194.88,0.996 156.995,0.996 C106.455,0.996 65.265,40.556 62.325,90.446 C30.664,83.812 0.995,107.983 0.995,140.338 C0.995,192.12 53.015,191.236 53.015,191.236"></path>
+						<g transform="translate(28.000000, 164.000000)">
+							<path class="fast" d="M257.94,115.18 C257.94,133.863 242.752,149.001 224.008,149.001 L33.988,149.001 C15.244,149.001 0.056,133.861 0.056,115.18 L0.056,81.359 L257.946,81.359 L257.946,115.18"></path>
+							<path class="fast" d="M0.06,81.36 L31.726,12.473 C34.848,5.709 43.494,0.189 50.959,0.189 L196.869,0.189 C204.334,0.189 213.523,5.452 217.283,11.864 L257.948,81.364 L0.058,81.364"></path>
+							<path class="delay" d="M170.01,121.94 L210.595,121.94"></path>
+						</g>
+					</g>
+				</g>
+			</svg>
+			</div>
+
+			<table>
+				<tr>
+					<td>
+						Username:
+					</td>
+					<td>
+						<input id="user" type="text" placeholder="Username" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Password:
+					</td>
+					<td>
+						<input id="pass" type="password" placeholder="Password" />
+					</td>
+				<tr>
+					<td colspan="2" style="text-align:right;">
+						<div id="login" style="float:right;width:80px;text-align:center;">Login</div>				
+					</td>
+				</tr>
+				<tr>
+					<td id="status" colspan="4">
+					</td>
+				</tr>
+			</table>
+			</center>
+
+
+	</div>
+</body>
+</html>

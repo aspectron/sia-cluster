@@ -1,0 +1,13 @@
+# /usr/lib/systemd/siad.service
+
+[Unit]
+Description=Sia Daemon
+
+[Service]
+Type=simple
+PIDFile=/var/run/siad.pid
+WorkingDirectory=/home/userfolder/sia
+ExecStart=/home/userfolder/sia/siad
+
+[Install]
+WantedBy=multi-user.target

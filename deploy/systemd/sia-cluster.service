@@ -1,0 +1,13 @@
+# /usr/lib/systemd/sia-cluster.service
+
+[Unit]
+Description=Sia Cluster
+
+[Service]
+Type=simple
+PIDFile=/var/run/sia-cluster.pid
+WorkingDirectory=/home/userfolder/sia-cluster
+ExecStart=/home/userfolder/node/bin/node run sia-cluster
+
+[Install]
+WantedBy=multi-user.target

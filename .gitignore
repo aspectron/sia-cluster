@@ -1,0 +1,7 @@
+node_modules/
+bower_components/
+config/*.local.conf
+config/*.local.json
+temp/
+uuid
+logs/*

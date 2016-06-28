@@ -1,0 +1,36 @@
+
+<!-- ######################### CONTENT END ######################## -->
+			</div>
+        </main>
+	</div>
+
+	<div class="mdl-card dialog iris-js-dialog alert-dialog mdl-shadow--4dp hide">
+		<div class="mdl-card__title">
+			<h2 class="mdl-card__title-text title-text"></h2>
+		</div>
+		<div class="mdl-card__supporting-text msg-text"></div>
+		<div class="mdl-card__menu">
+			<button class="mdl-button info-btn mdl-button--icon mdl-js-button mdl-js-ripple-effect close-dialog">
+				<i class="material-icons">close</i>
+			</button>
+		</div>
+		<div class="mdl-card__actions mdl-card--border buttons">
+			<div class="mdl-layout-spacer"></div>
+			<button class="mdl-button cancel-btn mdl-js-button mdl-button--raised mdl-js-ripple-effect"></button>
+			<button class="mdl-button ok-btn mdl-button--colored mdl-button--raised mdl-js-button mdl-js-ripple-effect"></button>
+		</div>
+	</div>
+	<div class="showbox">
+		<div class="loader">
+			<svg class="circular" viewBox="25 25 50 50">
+				<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"></circle>
+			</svg>
+		</div>
+	</div>
+	<% if(!req.__scriptAtHeader) { %>
+	<script src="/combine:js:jquery-2.1.3.min;api;<%= req.__script? req.__script+";" : "" %>material-design-lite:material.min?cache=0"></script>
+	<% } %>
+
+	<div class="modal-dialog-back"></div>
+</body>
+</html>

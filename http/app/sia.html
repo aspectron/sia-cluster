@@ -1,0 +1,308 @@
+<link rel="import" href="sia-icons.html" />
+<link rel="import" href="variables.html" />
+<link rel="import" href="component-behaviors.html" />
+<link rel="import" href="node-setting-style.html" />
+<link rel="import" href="panel-style.html" />
+<link rel="import" href="sia-cluster-status.html" />
+<link rel="import" href="sia-cluster-storage.html" />
+<link rel="import" href="sia-cluster.html" />
+<link rel="import" href="sia-field.html" />
+<link rel="import" href="sia-node.html" />
+<link rel="import" href="sia-variable-graph.html" />
+<link rel="import" href="sia-network-peers-panel.html" />
+<link rel="import" href="sia-network-panel.html" />
+
+
+<dom-module id="home-view">
+	<template>
+		<style include="iron-flex iron-flex-reverse">
+			*::shadow .dialog{
+				width: 50%;
+				height: 70%;
+				max-width: 350px;
+				max-height: 350px;
+				box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				margin: 0px;
+				z-index: 105;
+			}
+			*::shadow .dialog.setting-dialog{height:90%;width:80%;max-width:700px;max-height:400px;}
+			*::shadow paper-dialog .scrollPanel .dialog-contents{
+				padding: 0px 20px;
+				box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				-webkit-overflow-scrolling:touch;
+				overflow:visible;
+			}
+			*::shadow paper-dialog .scrollPanel neon-animated-pages.dialog-contents,
+			*::shadow paper-dialog .scrollPanel .dialog-contents.items{
+				padding:0px;
+			}
+			*::shadow paper-dialog>*{margin: 0px;}
+			#domApp .top-toolbar, #domApp .top-toolbar::shadow>#topBar{height: 40px;}
+			#domApp iris-language-selector::shadow .astab #dropdown{margin-top: 40px !important}
+
+			.tabs paper-tab,
+			iris-language-selector::shadow .dropdown-trigger{font-size: 16px; font-family: "Open Sans"}
+			paper-tab span,
+			iris-language-selector::shadow .dropdown-trigger{margin-left: 10px; display: inline-block; font-weight: bold; text-transform: uppercase;}
+			iris-language-selector::shadow .dropdown-trigger{padding-top: 2px;}
+			.mobile ::shadow .dialog{
+				max-width: 100%;
+				top: 0px;
+				bottom: 0px;
+				width: 100%;
+				overflow: auto;
+				max-height: none;
+				height: 100vh;
+				margin: 0px;
+				z-index: 15;
+			}
+			.mobile .top-bar paper-tab span,
+			.mobile .top-bar iris-language-selector ::shadow paper-menu-button .dropdown-trigger span {display:  none;}
+			.mobile .top-bar iris-language-selector ::shadow #dropdown{left: initial !important; top: 8px !important; min-width: 150px;}
+			.lang-holder{min-width:110px; text-align:center}
+
+			.mobile ::content paper-button[icon]{padding: 13px 0px;min-width: 45px;}
+			.mobile ::content paper-button[icon] .title{display: none;}
+			.mobile ::content paper-button[icon] iron-icon,
+			.mobile ::content paper-button[icon][btn-arrow] iron-icon,
+			.mobile ::content paper-button[icon][btn-arrow-left] iron-icon{
+				position:relative;opacity:1;left:initial;right:initial;margin-top: 0px;
+			}
+
+			.text-overflow{overflow: hidden; text-overflow:ellipsis; white-space: nowrap;}
+			#domApp::shadow #drawer {color: #000;}
+			.drawer-content-before .tabs,
+			.drawer-content-before .tabs ::shadow #tabsContent{display: block; height: auto;}
+			.drawer-content-before .tabs paper-tab{display: block;padding: 15px 5px 15px 15px; font-weight: bold; opacity: 0.5}
+			.drawer-content-before .tabs paper-tab.iron-selected{ opacity: 1; }
+			.drawer-content-before .tabs paper-tab ::shadow .tab-content{
+				text-align: left;
+			    display: block;
+			}
+			#domApp::shadow #drawer #drawerLeft{box-shadow: 1px 0 1px rgba(0,0,0,.1);}
+			#domApp::shadow #drawer #dropShadow{display: none}
+			neon-animatable.neon-animating *::shadow #fabmenubtn {bottom: -100px;}
+			iris-dom-app::shadow #drawerLeft{
+				-webkit-user-select: none;  /* Chrome all / Safari all */
+				-moz-user-select: none;     /* Firefox all */
+				-ms-user-select: none;      /* IE 10+ */
+				user-select: none;
+				background-color: #FFF;
+			}
+			#domApp::shadow iris-prompt paper-dialog{min-width: 300px;}
+			#domApp::shadow iris-prompt paper-dialog h2{margin-top: 10px; margin-bottom: 10px;}
+			#domApp::shadow iris-prompt{z-index: 200}
+			#domApp::shadow iris-prompt paper-dialog>div{padding: 10px 24px 15px}
+			#domApp::shadow iris-prompt paper-dialog[notitle]>.text{padding-top:25px;}
+			#domApp::shadow iris-prompt paper-dialog>.buttons{padding: 15px 15px 15px 24px;}
+			#domApp::shadow iris-prompt paper-dialog>h2{margin-top: 20px; margin-bottom: 20px;}
+			#pages .overflow-hidden{overflow: hidden;}
+			#pages>neon-animatable{padding:0px 10px;}
+			.drawer-content-before img{max-width: 100%;}
+			.drawer-content-before .header{padding: 0px 5px; }
+			.drawer-content-before .header .image-holder{width: 100%;}
+			.drawer-content-before .header .image-holder img{max-width: 85%;}
+			.mobile #pages>neon-animatable{padding:0px;}
+			.mobile .lang-holder{min-width:10px; text-align: left;}
+			.mobile iris-language-selector ::shadow .dropdown-trigger iron-icon{ margin-right: 5px; margin-left: 0px;}
+			.top-bar .subtitle{font-size: 13px;position: absolute;padding: 3px 0px;}
+			iris-toast-messages[v-align="bottom"][h-align="right"]::shadow paper-toast{background-color: var(--primary-dark-color, #f00)}
+		</style>
+		<app-location use-hash-as-path route="{{route}}"></app-location>
+		<app-route route="{{route}}" pattern=":tab" data="{{rootData}}" tail="{{rootTail}}"></app-route>
+		<iris-dom-app
+			selected="{{selected}}"
+			selectedpage="{{selectedPage}}"
+			user="[[user]]"
+			msg="[[msg]]"
+			class="flex"
+			id="domApp"
+			rpc-path="/rpc"
+			rpc-holder="App"
+			logintask="{{logintask}}"
+			entryanimation="{{entryanimation}}"
+			exitanimation="{{exitanimation}}"
+			do-restore-last-tab="0"
+			skip-location-hash
+			skip-hash-updation
+			__dont-force-narrow
+			hide-drawer-toolbar
+			edge-swipe-sensitivity= "20"
+			responsive-width="850px"
+			mediaquery="max-width:850px"
+			logintab="{{logintab}}" >
+			<div class="drawer-content-before user-name-area layout vertical non-selectable">
+				<paper-toolbar class="top-toolbar header">
+					<div class="image-holder"><img src="/images/sia-cluster.svg" height="24"></div>
+				</paper-toolbar>
+			</div>
+			<paper-toolbar class="main-item top-bar top-toolbar" on-click="onTopToolbarClick">
+				<paper-icon-button icon="menu" toggle-drawer paper-drawer-toggle></paper-icon-button>
+				<div class="flex title layout horizontal"><div><img src="/images/sia-cluster.svg" style="height:24px;margin-right:16px;" /></div><div>[[title]]</div></div><div class="subtitle">[[subtitle]]</div></div>
+	            <div>
+					<paper-tabs class="tabs" id="tabs" selectable=".tab" no-bar align-bottom selected="{{selectedleftTab}}" role="tablist">
+						<paper-tab hidden class="tab" data-tab-id="dashboard" on-click="doHash">
+							<iron-icon icon="icons:home"></iron-icon><span><%= _T("DASHBOARD") %></span>
+						</paper-tab>
+						<paper-tab on-click="openSettings">
+							<iron-icon icon="icons:settings"></iron-icon><span><%= _T("SETTINGS") %></span>
+						</paper-tab>
+						<div class="lang-holder"><iris-language-selector></iris-language-selector></div>
+						<paper-tab class="tab" data-tab-id="login" on-click="loginLogout">
+							<iron-icon icon="icons:power-settings-new"></iron-icon><span>[[loginBtnText]]</span>
+						</paper-tab>
+					</paper-tabs>
+            	</div>
+	        </paper-toolbar>
+            <neon-animated-pages on-swipe-end="onSwipeEnd" id="pages" class="flex iris-dom-app-content main-item" style="position:relative;" selected="{{selectedPage}}" entry-animation="[[entryanimation]]" exit-animation="[[exitanimation]]" >
+				<neon-animatable class="layout vertical">
+					<sia-cluster id="siaCluster"></sia-cluster>
+				</neon-animatable>
+				<neon-animatable class="layout vertical">
+					<h1>Setting Page</h1>
+				</neon-animatable>
+			</neon-animated-pages>
+		</iris-dom-app>
+	</template>
+	<script>
+		Polymer({
+			is: "home-view",
+			behaviors:[IRIS.TitleBehavior],
+			properties:{
+				route: Object,
+				rootData: Object,
+				selectedleftTab:{
+					type: Number,
+					value: 0
+				},
+				selectedPage: {
+					type: Number,
+					observer:'onSelectedPageChanged'
+				},
+				titles:{
+					type: Object,
+					value: {
+						t0: "Sia Cluster",
+						t1: "Settings"
+					}
+				}
+			},
+			observers:["onRootPathChanged(rootData.*)"],
+			ready: function(){
+				var self = this;
+				self._$ = self.$;
+				self.rpc = self.$.domApp.rpc;
+				self.user = App.user;
+				self.isUser = !!self.user;
+				self.msg  = App.msg;
+				
+				self.footerText = '<%= _T("Copyright (c) 2015-2016 Aspectron Inc. All Rights Reserved.") %>';
+				if (self.user) {
+					//console.log("user:" +JSON.stringify(self.user));
+					self.set('loginBtnText', '<%= _T("SIGN-OUT") %>');
+					self.set('username', self.user.name);
+					self.set('userImg', self.user.img);
+					self.set('hideUserImg', false);
+				}else{
+					self.set('hideUserImg', true);
+					self.set('userImg', '');
+					self.set('loginBtnText', '<%= _T("SIGN-IN") %>');
+					self.set('username', '');
+				}
+			},
+			onTopToolbarClick: function(e){
+				var target = e.target;
+
+				if (target.tagName == 'PAPER-TOOLBAR' || target.classList.contains('title') || target.parentNode.classList.contains('title')){
+					this.showDashboard();
+				}
+			},
+			onRootPathChanged: function(){
+				var self = this;
+				var tab = self.rootData && self.rootData.tab;
+				if (!tab)
+					return
+				self.handleTopSelection(tab);
+			},
+			onSelectedPageChanged: function(){
+				this.selectedleftTab = this.selectedPage;
+				this.updateTitle();
+			},
+			updateTitle: function(){
+				console.log(this.is, this.titles, this.selectedPage)
+				this.setTitle("t"+this.selectedPage);
+			},
+			handleTopSelection: function(tab){
+				var self = this;
+
+				switch(tab){
+					case "dashboard":
+						self.selected = 0;
+					break;
+					default:
+						self.selected = self.getTab(tab).index;
+					break;
+				}
+			},
+			openSettings: function(){
+				this.$.siaCluster.showNodeSettingDialog();
+			},
+			stopPropagation: function(e){
+				e.stopPropagation();
+			},
+			getTab: function(id){
+				var self = this;
+				var tabs = self.$.tabs.querySelectorAll('paper-tab');
+				var tab = {}, actions;
+				_.each(tabs, function(t, index){
+					actions = (t.actions || t.getAttribute('actions') || "").split(",");
+					if (t.dataTabId == id || t.getAttribute('data-tab-id') == id || actions.indexOf(id) > -1){
+						tab.tab = t;
+						tab.index = index;
+					}
+				});
+				return tab;
+			},
+			showDashboard: function(){
+				var self = this;
+				self.selected = 0;
+			},
+			getActiveLeftTabId: function(){
+				var self = this;
+				var seletedTab = self.$.leftTabs && self.$.leftTabs.items[self.get('selectedleftTab')];
+				if (!seletedTab){
+					return false;
+				}
+				return seletedTab.dataTabId || seletedTab.getAttribute('data-tab-id');
+			},
+			doHash: function(e){
+				var self 	= this;
+				var el 		= e.currentTarget;
+				var hash 	= el.dataHash || el.dataTabId || el.getAttribute('data-tab-id') || el.getAttribute('data-hash');
+				if (!hash)
+					return;
+
+				self._doHash(hash);
+			},
+			_doHash: function(hash){
+				window.location.hash = '';
+				window.location.hash = '#'+hash;
+			},
+			loginLogout: function(){
+				if (this.isUser) {
+					this.logout();
+				}else{
+					this.login();
+				}
+			},
+			logout: function(){
+				window.location.href = "/logout";
+			},
+			login: function(){
+				window.location.href = "/login?redirect_uri="+encodeURIComponent(window.location.href);
+			}
+		})
+	</script>
+</dom-module>

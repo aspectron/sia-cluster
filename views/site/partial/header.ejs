@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="minimum-scale=1.0, initial-scale=1.0, maximum-scale=1.0001, user-scalable=no">
+	<title><%=_T("SIA Cluster")%></title>
+	<meta name="description" content="<%= _T("SIA Cluster")%>"/>
+	<meta name="keywords" content="SIA Cluster" />
+	<meta property="og:type" content="website" />
+	<meta property="og:image" content="https://SIACluster.com/images/logo-w300.png" />
+	<meta property="og:url" content="https://SIACluster.com/" />
+	<meta property="og:title" content="<%-_T("SIA Cluster")%>" />
+	<meta property="og:site_name" content="SIA Cluster" />
+	<meta property="og:locale" content="<%-_T.locale%>" />
+	<link rel='canonical' href='https://SIACluster.com/' />
+	<link rel='shortlink' href='https://SIACluster.com/' />
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<link rel="stylesheet" type="text/css" href="/deps/material-design-lite/material.min.css" />
+	<link rel="stylesheet" type="text/css" href="/site/css/style.css" />
+	<% if (req.__css){ %>
+	<link rel="stylesheet" type="text/css" href="/combine:css:<%= req.__css %>?cache=0" />
+	<% } %>
+	<script>delete Element.prototype.animate;</script>
+	<% if(req.__scriptAtHeader ) { %>
+	<script src="/combine:js:jquery-2.1.3.min;api;<%= req.__script? req.__script+";" : "" %>material-design-lite:material.min?cache=0"></script>
+	<% } %>
+	<% if (req.__loadPolymer) { %>
+	<link rel="import" href="/<%-_T.locale%>/combine:html:module?cache=0">
+	<% } %>
+<%
+	var menus = [
+        {n: "SIGN-IN", i : 'fingerprint', href:"/login", page:"login", topItem: true, leftItem: true}
+    ]
+    req.___menus = menus;
+%>
+</head>
+<body class="loading <%= activePage %>-page <% if(req.session.user) {%>is-user<% } %>">
+	<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+		<header class="mdl-layout__header mdl-layout__header--transparent">
+			<div class="mdl-layout__header-row">
+				<span class="mdl-layout-title" id="title"> <div class="app-icon"></div></span>
+				<div class="mdl-layout-spacer"></div>
+				
+				<!-- Add spacer, to align navigation to the right -->
+				<div class="mdl-layout-spacer"></div>
+				<!-- Navigation -->
+				<nav class="mdl-navigation top-navigation-container">
+					<% 
+
+					for(var i=0; i< menus.length; i++){
+						if (!menus[i].topItem)
+							continue;
+						var page = menus[i].page;
+						var href = menus[i].href;
+						var name = menus[i].n;
+						var icon = menus[i].i;
+					%>
+					<a class="mdl-navigation__link <%= page %>-menu <% if(page == activePage){ %>active<% } %>" href="<%= href %>"><i class="material-icons"><%= icon %></i> <%=_T(name)%></a>
+					<% } %>
+				</nav>
+			</div>
+		</header>
+		<div class="app-drawer mdl-layout__drawer">
+			<!--span class="mdl-layout-title">
+				<img class="app-logo-image" src="/images/logo/logo-268px.png">
+			</span-->
+			<nav class="mdl-navigation">
+				<% for(var i=0; i< menus.length; i++){
+					if (!menus[i].leftItem)
+						continue;
+					var page = menus[i].page;
+					var href = menus[i].href;
+					var name = menus[i].n;
+					var icon = menus[i].i;
+				%>
+				<a class="mdl-navigation__link <%= page %>-menu <% if(page == activePage){ %>active<% } %>" href="<%= href %>"><i class="material-icons"><%= icon %></i> <%=_T(name)%></a>
+				<% } %>
+			</nav>
+		</div>
+		<main class="mdl-layout__content">
+			<div class="contents <%= req.__profileName ? "profile-"+req.__profileName : "" %>">
+<!-- ######################### CONTENT START ###################### -->

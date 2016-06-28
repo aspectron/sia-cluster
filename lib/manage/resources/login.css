@@ -1,0 +1,23 @@
+html, body {
+	font-family: "Exo";
+	font-size: 18px;
+	margin: 0px;
+	overflow: hidden;
+}
+
+input#user, input#pass {
+	font-family: "Exo";
+	font-size: 18px;
+	padding: 4px;
+}
+
+#status {
+	margin-top: 16px;
+	text-align: left;
+	color: #900;
+}
+#login {
+	border: 1px solid #888;
+	background: #eee;
+	padding: 5px 16px;
+}

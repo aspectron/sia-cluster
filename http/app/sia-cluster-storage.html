@@ -1,0 +1,159 @@
+<dom-module id="sia-cluster-storage">
+	<template>
+		<style include="panel-style iris-grid-field-style">
+			#chart::content .node-name{font-size:10px;}
+			#chart{@apply(--layout-vertical)}
+			#chart::shadow #legend{width:auto;max-width:100%;@apply(--layout-horizontal);@apply(--layout-wrap);margin-bottom:5px;}
+			#chart::content .legend-box{display:inline-block;min-width:24%;box-sizing:border-box;}
+			#chart::content .legend-box .h-box{padding:4px 2px;white-space:nowrap;}
+			grid-head{padding:12px 5px;}
+			iris-grid::shadow .grid-header{border-bottom:1px solid #EEE;}
+			grid-row{font-size:12px;padding:12px 5px; border-bottom:1px solid #EEE;}
+			grid-cell.padding-left{padding-left:5px;}
+			grid-row .sub-info{font-size: 10px;padding: 2px 0px;opacity: 0.5;}
+			iris-grid{padding-top:5px;}
+			:root{
+				--paper-tabs-selection-bar-color: var(--paper-toolbar-background, #000);
+			}
+		</style>
+		<div class="content">
+			<div class="layout horizontal">
+				<h2 class="title flex"><%=_T("Cluster Storage")%></h2>
+				<paper-tabs selected="{{tab}}" attr-for-selected="tab">
+					<paper-tab tab="graph"><%=_T("Graph")%></paper-tab>
+					<paper-tab tab="nodes"><%=_T("Nodes")%></paper-tab>
+				</paper-tabs>
+			</div>
+			<neon-animated-pages class="flex" selected="{{tab}}" attr-for-selected="page" entry-animation="fade-in-animation" exit-animation="fade-out-animation">
+				<neon-animatable page="graph" class="fit layout vertical">
+					<iris-d3-sunburst-chart
+						id="chart"
+						class="flex"
+						data="[[chartData]]"
+						no-legend
+						margin-top="10"
+						margin-bottom="10"
+						margin-right="10"
+						margin-left="10"
+						info-formatter="[[chartInfoFormatter]]"
+						on-in-active="onChartInactive"
+					></iris-d3-sunburst-chart>
+				</neon-animatable>
+				<neon-animatable page="nodes" class="fit layout vertical">
+					<iris-grid class="flex" items="[[gridData]]" hide-footer>
+						<grid-head class="flex-3" field="name"><%=_T("Peer")%></grid-head>
+						<grid-head class="flex-2" field="free_total"><%=_T("Free / Total")%></grid-head>
+						<template>
+							<grid-row data-index="[[index]]">
+								<grid-cell class="flex-3 center"><div>[[item.name]]</div></grid-cell>
+								<grid-cell class="flex-2 center">
+								<div>
+									<div>[[_nodeSize(item.free, item.total)]]</div>
+									<div class="sub-info">[[_nodeSizeP(item.free, item.total)]]</div>
+								</div>
+								</grid-cell>
+							</grid-row>
+						</template>
+					</iris-grid>
+				</neon-animatable>
+			</neon-animated-pages>
+		</div>
+	</template>
+	<script>
+		Polymer({
+			is: "sia-cluster-storage",
+			properties:{
+				tab: {
+					type: String,
+					value: "graph",
+					observer: "onTabChange"
+				},
+				gridData: Array,
+				chartData: Object
+			},
+			isGridHost: true,
+			ready: function(){
+				var self = this;
+				self.fetchChartData(1);
+				self.set("chartInfoFormatter", this._chartInfoFormatter.bind(self));
+			},
+			onTabChange: function(newTab, oldTab){
+				if (oldTab && newTab == "graph"){
+					this.$.chart.reRender();
+				}
+			},
+			fetchChartData: function(delay){
+				this.debounce("fetchChartData", this._fetchChartData, delay || 10000);
+			},
+			onChartInactive: function(){
+				var chart = this.$.chart;
+				var total = chart._totalSize || 0;
+				d3.select(chart.$.explanation).style("visibility", "").style("margin-top", "-20px");
+				d3.select(chart.$.percentage).html(total.toFileSize(true));
+				d3.select(chart.$.nodename).html("TOTAL")
+			},
+			_nodeSize: function(free, total){
+				return free.toFileSize(true) +" / "+total.toFileSize(true);
+			},
+			_nodeSizeP: function(free, total){
+				return this._percentage(free, total) +" / "+this._percentage(total, this.totalStorage);
+			},
+			_toFileSize: function(v){
+				return v.toFileSize(true);
+			},
+			_percentage: function(value, total){
+				if (!total || !value)
+					return "0%";
+				var percentage = (100 * value / total)
+				if (percentage < 0.1)
+					return "< 0.1%";
+				if (parseInt(percentage) == percentage)
+					return percentage + "%";
+				return percentage.toFixed(2) + "%";
+			},
+			_chartInfoFormatter: function(d, totalSize, chart){
+				if (d.parent.name != "root")
+					totalSize = d.parent.value;
+
+				var percentageString = this._percentage(d.value, totalSize);
+				var nodeName = d.parent.name == "root" ? d.name : d.parent.name;
+
+				d3.select(chart.$.percentage).html("<div class='node-name'>"+ nodeName + "</div>" + d.value.toFileSize(true)+"<br/> ("+percentageString+")");
+				d3.select(chart.$.explanation).style("visibility", "").style("margin-top", "-40px");
+				var text = "USED NODE";
+				if (d.name == "Free")
+					text = "FREE NODE";
+				else if(d.parent.name == "root")
+					text = "TOTAL";
+				d3.select(chart.$.nodename).html(text);
+			},
+			_fetchChartData: function (){
+				var self 	= this;
+				App.rpc.dispatch({op:"get-storage-stats"}, function(err, result){
+					if (err)
+						return self.fetchChartData();
+
+					//console.log(result)
+					self.set("chartData", result.data);
+					var gridData = [];
+					var totalStorage = result.total, nodeSize, freeSize;
+					self.set("totalStorage", totalStorage);
+					_.each(result.data.children, function(d){
+						freeSize = d.children[1].name == "Free" ? d.children[1].size: d.children[0].size;
+						nodeSize = d.children[0].size + d.children[1].size;
+						gridData.push({
+							name: d.name,
+							free: freeSize,
+							total: nodeSize
+						})
+					})
+					gridData = _.sortBy(gridData, function(a, b){
+						return -a.total;
+					})
+					self.set("gridData", gridData);
+					self.fetchChartData();
+				})
+			}
+		})
+	</script>
+</dom-module>

@@ -1,0 +1,90 @@
+<dom-module id="app-style">
+	<template>
+		<style>
+			* { font-family: "Ubuntu" }
+			[hide]{visibility:hidden;}
+			::content iris-date-input{width: 202px;}
+			::content .dialog {min-width: 50%; height: 300px; max-width: 100%;}
+			::content .dialog paper-toolbar{margin: 0px}
+			::content .dialog paper-dialog-scrollable {overflow-y: auto;}
+			::content .dialog paper-dialog-scrollable #scrollable{ padding-bottom: 20px}
+			::content paper-input,
+			::content paper-textarea,
+			::content iris-date-input{background-color: #FFF; transition: background-color 0.2s ease;}
+			/*::content paper-input[focused],
+			::content paper-textarea[focused]{background-color: #fbf9d2;}*/
+			paper-input::shadow .label-is-floating label.paper-input,
+			paper-textarea::shadow .label-is-floating label.paper-textarea,
+			iris-date-input::shadow .label-is-floating label.paper-textarea {
+				-webkit-transform: translateY(-45%) scale(0.75);
+	    		transform: translateY(-45%) scale(0.75);
+			}
+			::content iris-file-field::shadow #container #input{height: 56px}
+			::content paper-input[required]::shadow label:after,
+			::content iris-date-input[required]::shadow label:after,
+			::content paper-textarea[required]::shadow label:after,
+			::content iris-file-field[required]::shadow label:after,
+			::content [required].iris-grid-field::shadow .header .label:after{
+				position: absolute;
+				content: "*";
+				padding: 0px 5px;
+			}
+			::content paper-checkbox[invalid]::shadow #checkbox{
+				border-color: var(--paper-input-container-invalid-color);
+			}
+			::content paper-input::shadow paper-input-error,
+			::content paper-textarea::shadow paper-input-error{top: -18px; left: 10px;}
+
+			::content paper-input::shadow paper-input-container,
+			::content paper-textarea::shadow paper-input-container,
+			::content iris-file-field::shadow paper-input-container,
+			::content iris-date-input::shadow paper-input-container{padding: 0px;}
+			::content paper-input::shadow paper-input-container .input-content #input,
+			::content paper-input::shadow paper-input-container .input-content label,
+			::content paper-textarea::shadow #input,
+			::content iris-file-field::shadow #proxy{padding: 15px; box-sizing: border-box;}
+			::content paper-textarea::shadow #input{padding-bottom: 10px;}
+			::content paper-textarea::shadow .textarea-container{padding:15px 15px 0px;}
+
+			::content paper-input::shadow paper-input-container .input-content label,
+			::content paper-textarea::shadow paper-input-container .input-content label,
+			::content iris-date-input::shadow paper-input-container .input-content label,
+			::content iris-file-field::shadow paper-input-container .input-content label{
+				padding:15px 15px 0px;
+			}
+
+			::content paper-button{background-color: #e7e8ec; color: #65656f; font-weight: 600; }
+			::content paper-button{padding: 13px 25px;border-radius:0px;}
+			::content paper-button[primary],
+			::content paper-fab[primary]{@apply(--primary-button)}
+			::content paper-button[primary][disabled],
+			::content paper-fab[primary][disabled]{@apply(--primary-disabled-button)}
+
+			::content paper-checkbox{padding: 15px 15px 15px 0px;}
+			::content paper-checkbox ::shadow #checkbox{border-radius: 0px; background-color: #FFF;}
+
+			::content [btn-arrow] iron-icon,
+			::content [btn-arrow-left] iron-icon{
+				position: absolute;
+				right: 10px;
+				opacity: 0;
+				top: 50%;
+				margin-top: -12px;
+				transition: all .2s ease-in-out;
+			}
+			::content [btn-arrow-left] iron-icon{right: initial; left: 10px;}
+			::content [btn-arrow]:hover iron-icon{opacity: 1; right: 2px;}
+			::content [btn-arrow-left]:hover iron-icon{opacity: 1;left: 2px;}
+
+			::content .non-selectable{-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}
+			::content paper-checkbox.align-top{@apply(--layout-horizontal);}
+			::content paper-checkbox.align-top::shadow #checkboxContainer{margin-top: 6px;}
+			iron-icon[open]{@apply(--iron-icon--open);}
+			iron-icon[incomplete]{@apply(--iron-icon--closed);}
+			iron-icon[closed]{@apply(--iron-icon--closed);}
+			iron-icon[processing]{@apply(--iron-icon--processing);}
+			iron-icon[sealed]{@apply(--iron-icon--primary);}
+			iron-icon[primary]{@apply(--iron-icon--primary);}
+		</style>
+	</template>
+</dom-module>

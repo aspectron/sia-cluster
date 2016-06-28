@@ -1,0 +1,174 @@
+<dom-module id="sia-cluster-status">
+	<template>
+		<style include="panel-style">
+			.content>.title{margin-top: 5px; margin-bottom: 0px;@apply(--layout-horizontal);}
+		</style>
+		<div class="content">
+			<!-- paper-icon-button icon="settings" class="setting-icon" on-click="openSettings"></paper-icon-button -->
+			<h2 class="title"><div class="flex"><%=_T("Pricing")%></div></h2>
+			<div class="layout vertical flex" on-click="toggleChartInterval">
+				<iris-d3-series-chart
+					id="chart"
+					class="flex"
+					tilt-x
+					data="[[chart.SC_TB_MO.data]]"
+					x-scale="time"
+					date-format="[[chart.SC_TB_MO.dateFormat]]"
+					margin-top="10"
+					margin-bottom="60"
+					margin-right="80"
+					line-interpolate="linear"
+					y-ticks-count="5"
+					tilt-x-angle="-20"
+					line-legend
+					__title="<%=_T("SC/TB/MO")%>"
+				></iris-d3-series-chart>
+				<!-- iris-d3-series-chart
+					class="flex"
+					tilt-x
+					data="[[chart.SC_BTC.data]]"
+					x-scale="time"
+					date-format="[[chart.SC_BTC.dateFormat]]"
+					margin-top="10"
+					margin-bottom="60"
+					margin-right="60"
+					line-interpolate="linear"
+					y-ticks-count="5"
+					___title="<%=_T("SC / uBTC")%>"
+				></iris-d3-series-chart>
+				<iris-d3-series-chart
+					class="flex"
+					tilt-x
+					data="[[chart.SC_USD.data]]"
+					x-scale="time"
+					date-format="[[chart.SC_USD.dateFormat]]"
+					margin-top="10"
+					margin-bottom="60"
+					margin-right="60"
+					line-interpolate="linear"
+					y-ticks-count="5"
+					__title="<%=_T("SC / USD")%>"
+				></iris-d3-series-chart -->
+			</div>
+			<div class="setting-fields">
+				<sia-field title="Track Price" value="[[data.TRACK_STORAGE_PRICE]]" format="bool" bool-text="Yes/No" editable="TRACK_STORAGE_PRICE"></sia-field>
+				<sia-field title="Track Method" value="[[data.MARKET_USD_PEG]]" format="bool" bool-text="USD Peg/Average" editable="MARKET_USD_PEG"></sia-field>
+				<sia-field title="Target USD/TB/MO (Peg)" value="[[data.TARGET_USD_TB_MO]]" type="fiat" editor-h-align="left" editable="TARGET_USD_TB_MO" x-suffix="(Peg)"></sia-field>
+				<sia-field title="Price Factor (Avg.)" value="[[data.AVG_PRICE_FACTOR]]"  editor-h-align="left" editable="AVG_PRICE_FACTOR" x-suffix="(Multiplier)"></sia-field>
+				<sia-field title="Min Price" value="[[data.MIN_PRICE]]"  editor-h-align="left" editable="MIN_PRICE" format="SC"></sia-field>
+				<sia-field title="Max Price" value="[[data.MAX_PRICE]]"  editor-h-align="left" editable="MAX_PRICE" format="SC"></sia-field>
+				<sia-field title="Storage Price Update" value="[[data.PRICE_UPDATE_FREQ]]"  editor-h-align="left" editable="PRICE_UPDATE_FREQ" suffix="Min"></sia-field>
+
+				<sia-field title="BTC/USD" value="[[data.BTC_USD]]" format="fiat"></sia-field>
+				<sia-field title="SC/BTC" value="[[data.SC_BTC]]" precision="8"></sia-field>
+				<sia-field title="SC/USD" value="[[data.SC_USD]]" precision="8"></sia-field>
+				<sia-field title="SC/TB/MO" value="[[data.SC_TB_MO]]" format="SC" precision="3"></sia-field>
+				<sia-field title="Avg. SC/TB/MO" value="[[data.AVG_SC_TB_MO]]" format="SC" precision="3"></sia-field>
+				<sia-field title="Avg. USD/TB/MO" value="[[data.AVG_USD_TB_MO]]" format="fiat" ></sia-field>
+				<sia-field title="Weighted Avg. SC/TB/MO" value="[[data.W_AVG_SC_TB_MO]]" format="SC" precision="3"></sia-field>
+				<sia-field title="Weighted Avg. USD/TB/MO" value="[[data.W_AVG_USD_TB_MO]]" format="fiat" ></sia-field>
+				<sia-field title="Cluster vs Avg. Price" value="[[data.AVG_VS_CLUSTER_PRICE_DIFF]]" suffix="%"></sia-field>
+			</div>
+		</div>
+		<paper-dialog id="settingDialog" class="dialog setting-dialog layout vertical">
+			<paper-toolbar>
+				<div class="title"><%=_T("Settings : Cluster")%></div>
+				<paper-icon-button icon="close" dialog-dismiss></paper-icon-button>
+			</paper-toolbar>
+			<div class="flex">
+				
+			</div>
+			<div class="buttons">
+				<div class="flex"></div>
+				<paper-button raised icon dialog-dismiss>
+					<iron-icon icon="close"></iron-icon>
+					<span class="title"><%=_T("Close")%></span>
+				</paper-button>
+			</div>
+		</paper-dialog>
+	</template>
+	<script>
+		Polymer({
+			is: "sia-cluster-status",
+			behaviors: [PanelBehavior],
+			properties:{
+				chart:{
+					type: Object,
+					value:{
+						SC_TB_MO:{data: []},
+						//SC_BTC:{data: []},
+						//SC_USD:{data: []}
+					}
+				}
+			},
+
+			ready: function(){
+				var self = this;
+
+				App.rpc.dispatch({ op : "get-pricing" }, function(err, pricing) {
+					console.log(self.is, "GOT PRICING",pricing)
+					self.set("data", pricing);
+					//self.set('data', pricing); 
+				})
+			
+				App.rpc.on("price-update", function(args){
+
+					console.log("PRICE UPDATE",args);
+					self.data = args;//_.extend(self.data,args);
+				});
+
+				self.fetchChartData(1);
+			},
+			fetchChartData: function(delay){
+				this.debounce("fetchChartData", this._fetchChartData, delay || 5000);
+			},
+			_fetchChartData: function (){
+				var self 	= this;
+				var c 		= self.$.chart;
+				var width 	= c.getBoundingClientRect().width;
+				width       = width - c.marginLeft - c.marginRight;
+
+				// @surinder
+				// request for ranges and variable names should originate from here
+				// (and then moved into date selector)
+		        var daySeconds  = 24 * 60 * 60 * 1000;
+				var endTS = Date.now();
+				var startTS = endTS - 2 * daySeconds;
+				var names = {
+
+				}
+				// ----------------------
+				
+				App.rpc.dispatch({
+					op:"get-cluster-stats", 
+					interval: self.chartInterval, 
+					points: width,
+					startTS : startTS,
+					endTS : endTS
+				}, function(err, result){
+					if (err){
+						self.fetchChartData();
+						return;
+					}
+					//console.log(result)
+					//console.table(result.memory.data)
+					//console.table(result.SC_BTC.data)
+					self.set("chart.SC_TB_MO.dateFormat", result.SC_TB_MO.dateFormat);
+					self.set("chart.SC_TB_MO.data", result.SC_TB_MO.data);
+					//self.set("chart.SC_BTC.dateFormat", result.SC_BTC.dateFormat);
+					//self.set("chart.SC_BTC.data", result.SC_BTC.data);
+					//self.set("chart.SC_USD.dateFormat", result.SC_USD.dateFormat);
+					//self.set("chart.SC_USD.data", result.SC_USD.data);
+					self.fetchChartData();
+				})
+			},
+			openSettings: function(){
+				this.$.settingDialog.open();
+			},
+			openPanelSettings: function(){
+				this.$.settingDialog.close();
+				this.fire("node-global-settings");
+			}
+		})
+	</script>
+</dom-module>

@@ -1,0 +1,1445 @@
+<!--script type="text/javascript" src="/scripts/dropzone.js"></script-->
+<link rel="import" href="IRIS/icons/win-all.html" />
+<link rel="import" href="IRIS/iris-dom-app.html" />
+<link rel="import" href="IRIS/icons/ios-all.html" />
+<link rel="import" href="IRIS/iris-tags-input.html" />
+<link rel="import" href="IRIS/iris-tags.html" />
+<link rel="import" href="/deps/paper-radio-group/paper-radio-group.html" />
+<link rel="import" href="/deps/paper-radio-button/paper-radio-button.html" />
+<!--style>
+	html /deep/ paper-toolbar {background: #133a66;color: white;}
+	html /deep/ paper-tag::shadow #tag {border-radius: 0px;border: 1px solid #DDD;padding: 0px 0px 0px 3px;margin: 3px 0px 0px 0px;}
+	html /deep/ paper-tabs::shadow #selectionBar {background-color: #109aed;height: 3px;}
+	html /deep/ .browser-items{overflow-y:scroll;overflow-x:hidden;height:100px;}
+	html /deep/ .browser-item{overflow-x:hidden;margin: 0px 0px 1px;background-color:#DDD;padding: 5px;}
+	html /deep/ [block]{display:block;}
+</style-->
+<script>
+	$(document).ready(function() {
+
+		// google.maps.Load();
+	})
+
+	var CMS = {
+
+	}
+
+	CMS = _.extend(CMS, {
+		buildIdMap: function(services){
+			var idMap = {};
+			$.each(services.slice(0), function(index, item){
+				idMap[item.uuid] = _.clone(item);
+			});
+			_.each(idMap, function(item){
+				if (!item.children || !item.children.length)
+					return
+
+				$.each(item.children, function(index, childId){
+					if (!idMap[childId]) {
+						return
+					};
+					idMap[childId].parent = item.uuid;
+				});
+			});
+
+			return idMap;
+		},
+
+		getItemPath: function(data, idMap){
+			var self = this;
+			if (!data.uuid) {
+				return '';
+			};
+			var path = [];
+			d(idMap[data.uuid])
+			function d(item){
+				if (!item) {
+					return;
+				};
+				path.unshift(item.name);
+				if (item.parent) {
+					d(idMap[item.parent]);
+				};
+			}
+
+			return path.join('/');
+		},
+		behaviours:{}
+	});
+
+	CMS.behaviours = _.extend(CMS.behaviours,{
+		browser: {
+			toJSON : function(v) {
+				return JSON.stringify(v);
+			},
+			loadList: function(options, callback){
+				var self = this;
+				CMS.rpc.dispatch(options, function(err, result){
+					if (callback && callback(err, result) === false) {
+						return;
+					};
+					if (err){
+						if (err.logout)
+							window.location.href="/logout";
+						return console.log(self.tagName+':fetch-error', err);
+					}
+
+					self.set('list', result.records);
+					self.set('_itemcount', result.count);
+				});
+			},
+
+			insertListener: function(options, callback){
+				var self = this;
+				CMS.rpc.on(options.key, function(args) {
+					if (callback && callback(args) === false) {
+						return
+					};
+					self.unshift('list', args.data);
+					if (self.editor && (self.editor.data === false || self.editor.data.uuid == args.data.uuid) ) {
+						self.async(function(){
+							self.selectById(args.data.uuid);
+						}, 500);
+					}
+				});
+			},
+
+			deleteListener: function(options, callback){
+				var self = this;
+				CMS.rpc.on(options.key, function(args) {
+					console.log(options.key, args)
+					if (callback && callback(args) === false) {
+						return
+					};
+					var index = self.findListIdIndex(args.uuid);
+					console.log("deleteListener: index", index, args)
+					if(index > -1) {
+						self.splice('list', index, 1);
+					}
+					if (self.editor && self.editor.data && self.editor.data.uuid == args.uuid) {
+						self.editor.clearState && self.editor.clearState();
+						var items = self.getItems();
+						if (items[0]) {
+							self.select(items[0]);
+						}else{
+							self.editor.data = false;
+						}
+					};
+				});
+			},
+
+			findListIdIndex: function(id){
+				return _.findIndex(this.list, function(c){
+					return c.uuid == id;
+				})
+			},
+
+			selectItem: function(e){
+				this.select(e.currentTarget);
+			},
+
+			select: function(e) {
+				var entries = this.getItems();
+				_.each(entries, function(entry) {
+					entry.selected = false;
+				})
+				e.selected = true;
+				this.editor && this.editor.loadData(e.data);
+			},
+
+			selectById: function(id){
+				var entries = this.getItems(), selected = false;
+				_.each(entries, function(entry) {
+					entry.selected = entry.data.uuid == id;
+					if (entry.selected)
+						selected = entry;
+				});
+
+				selected && this.editor && this.editor.loadData(selected.data);
+			},
+
+			getSelected: function(){
+				return this.findBy(function(entry) {
+					return entry.selected;
+				});
+			},
+
+			getById: function(id){
+				return this.findBy(function(entry) {
+					return entry.data.uuid == id;
+				});
+			},
+
+			findBy: function(fn){
+				return _.find(this.getItems(), fn);
+			},
+			getItems: function(){
+				return this.$.items.querySelectorAll(".browser-item");
+			}
+		}
+	})
+</script>
+
+<dom-module id="iris-cms-filter-box">
+	<style>
+		.field{width:1000px;margin-bottom:10px;}
+	</style>
+	<template>
+		<paper-dialog id="filterBox" modal>
+			<h2><%= _T("Advance Filter") %></h2>
+			<div class="dialog-contents">
+				<paper-input class="field" label="Search text" value="{{data.search}}" on-keyup="filterList"></paper-input>
+				<paper-checkbox block checked="{{data.disabled}}"><%= _T("Disabled") %></paper-checkbox>
+				<content></content>
+			</div>
+			<div class="buttons">
+				<paper-button dialog-dismiss raised><%= _T("Close") %></paper-button>
+				<paper-button on-click="reloadItems" dialog-confirm raised><%= _T("Filter") %></paper-button>
+			</div>
+		</paper-dialog>
+	</template>
+	<script>
+		Polymer({
+			is:'iris-cms-filter-box',
+			properties:{
+				data:{
+					type:Object,
+					value: {},
+					notify: true
+				}
+			},
+			filterList: function(e){
+				if (e.which != 13)
+					return;
+				this.reloadItems();
+			},
+			toggle:function(){
+				this.$.filterBox.toggle();
+			},
+			reloadItems: function(){
+				this.fire('filter', this.data)
+			}
+		})
+	</script>
+</dom-module>
+<dom-module id="iris-cms-search-toolbar">
+	<style>
+		:host{display: block;}
+		.field{width:1000px;margin-bottom:10px;}
+		.filter-info{font-size:10px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;visibility:hidden;height:14px;}
+		.filter-info[filtered]{visibility: visible;}
+		paper-input#search::shadow #input {
+			padding:2px 4px 2px 30px;font-family:"Open Sans";
+			background: url(/images/search-32.png) no-repeat scroll 2px center;
+			background-size: 18px 18px;
+		}
+	</style>
+	<template>
+		<paper-toolbar>
+			<div class="flex layout vertical">
+				<paper-input id="search" no-label-float value="{{data.search}}" on-keyup="filterList"></paper-input>
+				<div class="filter-info" filtered$="[[isfiltered]]"><%= _T("Filtering by:") %> <span>{{getFilterBy(isfiltered,searchtext)}}</span></div>
+			</div>
+			<paper-icon-button class="icon-button" icon="close" on-click="clearFilter" disabled$="{{!isfiltered}}" title="Clear Filter"></paper-icon-button>
+			<paper-icon-button class="icon-button" hidden$="[[!filterBox]]" icon="filter-list" on-click="showFilterWindow" title="Advance Filter"></paper-icon-button>
+		</paper-toolbar>
+		<template is="dom-if" if="[[advance]]">
+			<iris-cms-filter-box id="filterBox" data="{{data}}" on-filter="reloadItems"><content></content></iris-cms-filter-box>
+		</template>
+	</template>
+	<script>
+		Polymer({
+			is:'iris-cms-search-toolbar',
+			properties:{
+				advance:Boolean,
+				data:{
+					type:Object,
+					value: {},
+					notify: true
+				},
+				isfiltered:{
+					type: Boolean,
+					value: false
+				},
+				searchtext:{
+					type: String,
+					value: ""
+				},
+			},
+			attached: function(){
+				var self = this;
+				self.filterBox = self.$.filterBox || self.parentNode.parentNode.querySelector('iris-cms-filter-box');
+				if(self.filterBox || !self.advance)
+					return;
+				self.async(function (argument) {
+					self.filterBox = self.querySelector('iris-cms-filter-box');
+				}, 500)
+				
+			},
+			getFilterBy: function(){
+				return (this.isfiltered && this.data.search) ? this.data.search: 'Advance filters.';
+			},
+			filterList: function(e){
+				if (e.which != 13)
+					return;
+				this.reloadItems();
+			},
+			reloadItems: function(){
+				this.fire('filter', this.data)
+			},
+			showFilterWindow:function(){
+				var self = this;
+				self.fire('advance');
+				if (self.filterBox)
+					self.filterBox.toggle();
+			},
+			clearFilter: function(){
+				var self = this;
+				self.set('data.search', '');
+				self.set('data.disabled', false);
+				this.fire('clear');
+			},
+		})
+	</script>
+</dom-module>
+<dom-module id="iris-cms-progress-img">
+	<style>
+		:host{display: block; position: relative; height: 3px;}
+		:host div{height: 3px;position: absolute;top: 0px;width: 10%;}
+		:host([active]) div{background-color: green;-webkit-animation: prog 3s linear infinite;}
+		@-webkit-keyframes prog {
+			0% {left: 0%;}
+			100% {left: 100%;}
+		}
+	</style>
+	<template><div></div></template>
+	<script>
+		Polymer({
+			is:'iris-cms-progress-img'
+		})
+	</script>
+</dom-module>
+<!--<dom-module id="iris-cms-thumb">
+	<style type="text/css">
+		:host{position: relative;overflow: hidden;}
+		.preview-msg{
+			display: none;
+			position: absolute;
+			top: 37%;
+			left: 0px;
+			right: 0px;
+			padding: 2px;
+			background-color: rgba(53, 252, 3, 0.75);
+			-webkit-transform: rotate(-45deg);
+			color: #0F21EB;
+			text-align: center;
+			font-weight: bold;
+		}
+		:host(.offline-preview) .preview-msg{display: block;}
+		.dz-image-preview, #preview{
+			position: absolute;
+			top: 0px;
+			bottom: 0px;
+			background-color: rgba(255,255,255, 0.9);
+			display: none;
+		}
+		:host(.offline-preview) .dz-image-preview, :host(.offline-preview) #preview{
+			display: block;
+		}
+		.dz-remove{display: none;}
+		.capturing{
+			background: url('/images/loading-128.gif') center no-repeat;
+			width: 100%;
+			bottom: 64px;
+			position: absolute;
+			top: 0px;
+		}
+		paper-toolbar{
+			opacity: 0;
+			position: absolute;
+			bottom: 0px;
+			right: 0px;
+			left: 0px;
+		}
+		:host(:hover) paper-toolbar, :host(.offline-preview) paper-toolbar{opacity: 1}
+		#img{background: center top no-repeat;}
+		iron-icon{cursor: pointer;}
+	</style>
+	<template>
+		<div id="img" style$="[[__bgSrc(_src)]]" class="flex"></div>
+		<div id="preview" class$="[[__previewCls(hidePreview, 'flex')]]"></div>
+		<div class="capturing" hidden$="{{!shotting}}"></div>
+		<div class="preview-msg">{{msg}}</div>
+		<paper-toolbar hidden$="[[__isToolbarHidden(recordId, shotting)]]">
+			
+			<iron-icon hidden$="[[!hasOfflinePreview]]" title="[[btnTitle.cancel]]" icon="cancel" on-click="cancelFiles"></iron-icon>
+			<iron-icon id="fileUploadBtn" title="[[btnTitle.change]]" icon="attachment"></iron-icon>
+			<iron-icon hidden$="[[!hasOfflinePreview]]" title="[[btnTitle.upload]]" icon="file-upload" on-click="uploadFile"></iron-icon>
+		</paper-toolbar>
+	</template>
+	<script>
+		Polymer({
+			is: "iris-cms-thumb",
+			properties:{
+				hidePreview:{
+					type: Boolean,
+					value: false
+				},
+				src:{
+					type: String,
+					value: '',
+					observer:'srcChanged'
+				},
+				_src:{
+					type: String,
+					value: ''
+				},
+				hasOfflinePreview:{
+					type: Boolean,
+					value: false
+				},
+				shotting:{
+					type: Boolean,
+					value: false
+				},
+				refreshing:{
+					type: Object,
+					value: {}
+				},
+				recordId:{
+					type: String,
+					value: ''
+				},
+				uploadurl:{
+					type: String,
+					value:''
+				},
+				btnTitle:{
+					type: Object,
+					value:{
+						cancel: "Cancel upload",
+						change: "Change file",
+						upload: "Upload file"
+					}
+				}
+			},
+			ready : function() {
+				var self = this, box = self.$.img.getBoundingClientRect();
+				self.toggleClass('layout', true);
+				self.toggleClass('vertical', true);
+
+				if (self.acceptedFiles) {
+					self.set('btnTitle', {
+						cancel: "Cancel upload",
+						change: "Change file",
+						upload: "Upload file"
+					});
+				};
+
+				self.dropzone = new Dropzone(this.$.fileUploadBtn, {
+					previewsContainer: self.$.preview,
+					// previewTemplate: '<div class="dz-preview dz-file-preview"><img data-dz-thumbnail /></div>',
+					acceptedFiles: self.acceptedFiles, // || "image/png",
+					autoProcessQueue: false,
+					url: self.uploadurl,
+					uploadMultiple: false,
+					maxFilesize : 500,
+					addRemoveLinks: true,
+					thumbnailWidth: box.width || 300,
+					thumbnailHeight: box.height || 220
+				});
+				self.dropzone.on("addedfile", function(file) {
+					if (self._oldFile) {
+						self.dropzone.removeFile(self._oldFile);
+					};
+					self._oldFile = file;
+					self.set('hasOfflinePreview', true);
+					self.classList.toggle('offline-preview', true);
+					self.msg = 'Offline preview';
+				});
+				self.dropzone.on("reset", function(file) {
+					self.classList.toggle('offline-preview', false);
+					self.set('hasOfflinePreview', false);
+					self.srcChanged();
+					self._oldFile = false;
+				});
+
+				self.dropzone.on("sending", function(file, xhr, formData) {
+					_.each(self.extrapostdata || [], function(v, k){
+						formData.append(k, v);
+					})
+				});
+				self.dropzone.on("success", function(file, xhr) {
+					self.cancelFiles();
+					self.fire('upload-success')
+					self.msg = "Online preview";
+				});
+			},
+			__previewCls: function(hidePreview, cls){
+				return (hidePreview? 'hide-preview ': '')+' '+cls;
+			},
+			__isToolbarHidden:function(recordId, shotting){
+				return !recordId || shotting;
+			},
+			__bgSrc: function(url){
+				return url ? "background-image:url("+url+")" : '';
+			},
+			srcChanged: function(){
+				this.set('_src', this.get('src'));
+			},
+
+			refreshImage: function(){
+				var self = this;
+				if (!self.customImage)
+					return reShot(self.recordId);
+
+				if (window.confirm('This is a custom uploaded thumbnail, are you sure you want to refresh from the site and erase it?'))
+					reShot(self.recordId);
+
+				function reShot(id){
+					self.fire('before-refresh', id);
+					B58.rpc.dispatch({
+						op: 're-shot',
+						pid: id
+					}, function(err){
+						if (err) {
+							if (err.inprogress) {
+								return;
+							};
+							self.fire('re-shot-failed', id);
+						};
+					})
+				}
+			},
+
+			uploadFile: function(){
+				this.dropzone.processQueue();
+			},
+
+			cancelFiles: function(){
+				this.dropzone.removeAllFiles(true);
+			}
+		})
+	</script>
+</dom-module>-->
+
+
+<dom-module id="cmsmanager-settings">
+	<style>
+		#content {
+			border-width: 0px 1px 1px 0px;
+		}
+		.form{
+			padding: 20px;
+		}
+		input{
+			width: 600px;
+		}
+		.field-title {
+			text-align: right;
+			padding: 4px;
+			vertical-align: text-top;
+		}
+		#message{
+			min-height: 20px;
+			font-weight: bold;
+			padding: 5px;
+			margin: 15px 0px;
+		}
+		#preview{
+			padding: 5px;
+		}
+		.errorMessage{
+			color: red;
+		}
+		#status{
+			margin: 10px;
+		}
+	</style>
+	<template>
+		<div id="content">
+			<paper-toolbar>
+				<div id="message"><span>[[message]]</span> <span class="errorMessage">[[errorMessage]]</span></div>
+			</paper-toolbar>
+			<div class="form">
+				<div>
+					<paper-button on-click="gitPull" raised disabled$="[[progressMessage]]"><%= _T("GIT PULL") %></paper-button>
+					<paper-button on-click="CFReset" raised disabled$="[[progressMessage]]"><%= _T("Reset CF Cache") %></paper-button>
+					<paper-button on-click="traceHttp" raised disabled$="[[progressMessage]]"><%= _T("Toggle HTTP Tracing") %></paper-button >
+					<!--<paper-button on-click="updateTwitter" raised disabled$="[[progressMessage]]">Update Twitter</paper-button >
+					paper-button on-click="flushCache" raised disabled$="[[progressMessage]]">Flush Cache</paper-button>
+					<paper-button on-click="flushShots" raised disabled$="[[progressMessage]]">Flush Thumbnails To Storage</paper-button>
+					<paper-button on-click="flushCF" raised disabled$="[[progressMessage]]">Flush CloudFlare Cache</paper-button>
+					-->
+				</div>
+				<div id="preview"></div>
+				<div id="status" hidden$="[[!progressMessage]]">
+					<p><span>[[progressMessage]]</span>, please wait...</p>
+					<img src="/images/flushing.gif">
+				</div>
+			</div>
+		</div>
+	</template>
+	<script>
+		Polymer({
+			is: "cmsmanager-settings",
+			properties:{
+				flushing : {
+					type: Boolean,
+					value: false
+				},
+				data:{
+					type: Object,
+					value:{}
+				},
+				message:{
+					type: String,
+					value: '',
+					observer:'_onMessageChanged'
+				},
+				errorMessage:{
+					type: String,
+					value:'',
+					observer:'_onErrorMessageChanged'
+				},
+				progressMessage:{
+					type: String,
+					value: false,
+					observer:'_onProgressMessageChanged'
+				}
+			},
+			
+			ready: function(){
+				var self = this;
+				self.data = { };
+			},
+
+			_onProgressMessageChanged: function(){
+				var self = this;
+				self.$.preview.innerHTML = '';
+				if (self.progressMessage) {
+					self.set('message', '');
+					self.set('errorMessage', '');
+				};
+			},
+
+			_onErrorMessageChanged: function(){
+				var self = this;
+				if (self.errorMessage) {
+					self.set('message', '');
+					self.debounce('errorMessage', function(){
+						self.set('errorMessage', '');
+					}, 10000);
+				};
+			},
+
+			_onMessageChanged: function(){
+				var self = this;
+				if (self.message) {
+					self.debounce('message', function(){
+						self.set('message', '');
+					}, 10000);
+				};
+			},
+			sendRPC : function(options, callback) {
+				var self = this;
+				self.set('progressMessage', options.msg);
+				var args = options.args || {};
+				if (options.op)
+					args.op = options.op;
+				CMS.rpc.dispatch(args, function(err, result){
+					if (callback && callback(err, result) === false) {
+						return;
+					};
+					console.log(arguments)
+					self.set('progressMessage', false);
+					if(err){
+						self.set('errorMessage', err.error);
+						if (err.data){
+							self.$.preview.innerHTML = '<pre>'+err.data+'</pre>';
+						}
+					}else{
+						self.$.preview.innerHTML = '<pre>'+result+'</pre>';
+					}
+				});
+			},
+			gitPull : function() {
+				this.sendRPC({op:'git-pull', msg:'GIT-PULL'});
+			},
+			CFReset : function() {
+				this.sendRPC({op:'cf-reset', msg:'CF-RESET'});
+			},
+			traceHttp : function() {
+				this.sendRPC({op:'trace-http', msg:'TRACE-HTTP'});
+			},
+			updateTwitter : function() {
+				this.sendRPC({op:'update-twitter', msg:'UPDATE-TWITTER'});
+			}
+		})
+	</script>
+</dom-module>
+<dom-module id="cmsmanager-stats-graph">
+	<style include="iron-flex">
+		:host{
+			display: block;
+			text-align: center;
+		}
+		#content {
+			width: 700px;
+			min-height: 100px;
+			border: 1px solid #ccc;
+			position: relative;
+			padding: 8px;
+			display: inline-block;
+			max-width: 100%;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+		}
+		.title {
+			position: absolute;
+			top: 4px;
+			right: 16px;
+			font-size: 12px;
+			font-family: "Open Sans";
+		}
+		.graph-image{max-width: 100%}
+	</style>
+	<template>
+		<div id="content">
+			<div class="graph">
+				<template is="dom-if" if="[[targets]]">
+					<img class="graph-image" src="[[_imgSrc(url, salt, width, height, bgcolor, fgcolor, from, targets)]]" />
+				</template>
+			</div>
+			<div class="title">[[toUpperCase(propertyName)]]</div>
+		</div>
+	</template>
+	<script>
+		Polymer({
+			is:"cmsmanager-stats-graph",
+			properties:{
+				width : {
+					type: Number,
+					value: 700
+				},
+				height : {
+					type: Number,
+					value: 200
+				},
+				bgcolor : {
+					type: String,
+					value: 'ffffff'
+				},
+				fgcolor : {
+					type: String,
+					value: '000000'
+				},
+				from : {
+					type: String,
+					value: '-12hours'
+				},
+				targets : {
+					type: String,
+					computed: 'computeTargets(propertyName, app, uuid)'
+				},
+				propertyName:{
+					type: String,
+					value: ''
+				},
+				app:{
+					type: String,
+					value: ''
+				}
+			},
+			ready: function(){
+				var self = this;
+				self.set('salt', Date.now());
+				setInterval(function() {
+					self.set('salt', Date.now());
+				}, 30 * 1000);
+			},
+			_imgSrc: function(url, salt, width, height, bgcolor, fgcolor, from, targets){
+				return url+'/render/?_salt='+salt+'&width='+width+'&hideLegend=true&height='+height+'&bgcolor='+bgcolor+
+				'&fgcolor='+fgcolor+'&from='+from+targets;
+			},
+			computeTargets : function(propertyName, app, uuid) {
+				var self = this;
+				//console.log("self.propertyName", self.propertyName, self.app, self.uuid)
+				var list 	= self.propertyName.replace(' ','').split('|');
+				var targets = "";
+				_.each(list, function(prop) {
+					targets += "&target=stats.gauges."+self.app.toUpperCase()+"."+self.uuid+"."+prop;
+				})
+				return targets;
+			},
+			toUpperCase : function(v) {
+				return (v||'').toUpperCase();
+			}
+		})
+	</script>
+</dom-module>
+<dom-module id="cmsmanager-stats">
+	<style include="iron-flex">
+		#content {
+			border-width: 0px 1px 1px 0px;
+		}
+		cmsmanager-stats-graph {
+			margin-left: auto;
+			margin-right: auto;
+			margin-top: 32px;
+		}
+		#stats{
+			overflow-y:auto;
+		}
+	</style>
+	<template>
+		<div id="content" class="layout vertical flex-1">
+			<paper-toolbar>
+				<div id="message">Server Stats</div>
+			</paper-toolbar>
+			<div id="stats" class="flex-1">
+				<template is="dom-repeat" items="[[_properties]]">
+					<cmsmanager-stats-graph url="[[url]]" app="[[app]]" uuid="[[uuid]]" property-name="[[item]]" bgcolor="[[bgcolor]]" fgcolor="[[fgcolor]]"></cmsmanager-stats-graph>
+				</template>
+			</div>
+		</div>
+	</template>
+	<script>
+		Polymer({
+			is:'cmsmanager-stats',
+			properties :{
+				_properties:{
+					type: Array,
+					value:[]
+				},
+				uuid:{
+					type: String,
+					value: ''
+				},
+				app:{
+					type: String,
+					value: ''
+				},
+				url:{
+					type: String,
+					value: ''
+				},
+				bgcolor:{
+					type: String,
+					value: 'ffffff'
+				},
+				fgcolor:{
+					type: String,
+					value: '000000'
+				}
+			},
+			ready: function(){
+				var self = this;
+				self.toggleClass('layout', true);
+				self.toggleClass('vertical', true);
+				self.init();
+			},
+			init: function() {
+				var self = this;
+				CMS.rpc.dispatch({ op : 'get-app-data' }, function(err, resp) {
+					console.log(self.is+':get-app-data', arguments);
+					if(err)
+						return self.async(self.init, 1000);
+					else {
+						self.set('uuid', resp.uuid);
+						self.set('app', resp.name);
+						self.set('url', resp.monitor.url);
+						self.set('_properties', resp.monitor.properties);
+					}
+				})
+			}
+		})
+	</script>
+</dom-module>
+
+<dom-module id="cms-user">
+	<style>
+		:host{padding: 5px 5px 0px 5px;display: block;cursor: pointer;}
+		#content{padding: 5px;border-bottom: 1px solid #ddd;}
+		.name{overflow: hidden;}
+		.selected {background-color: #99ccff;}
+		.disabled{color: red;}
+		#content .box{width: 5px;}
+		.box.premium{background-color: #FF0;}
+		.box.ispremium{border-right:5px solid #F00;}
+		.layout.vertical{@apply(--layout-vertical);}
+		.layout.horizontal{@apply(--layout-horizontal)}
+		.fit{@apply(--layout-fit)}
+		.flex, .flex-1{@apply(--layout-flex)}
+	</style>
+	<template>
+		<div id="content">
+			<div class="layout horizontal">
+				<div class="flex name">[[data.name]]</div>
+				<div class$="[[_cls(data.accountType, data.premium)]]"></div>
+			</div>
+		</div>
+	</template>
+	<script>
+		Polymer({
+			is: "cms-user",
+			properties:{
+				data:{
+					type: Object,
+					value:{}
+				},
+				selected:{
+					type: Boolean,
+					observer: 'onSelectedChange'
+				}
+			},
+			observers:[
+				'onEnableChange(data.active)',
+				//'onSentChange(data.sent)'
+			],
+			_cls:function (accountType, premium) {
+				userCls = 'box';
+				if (accountType == 'premium') {
+					userCls += ' premium'
+				}
+				if (premium) {
+					userCls += ' ispremium'
+				};
+				return userCls;
+			},
+			onEnableChange: function(){
+				this.$.content.classList.toggle('disabled', !this.data.active);
+			},
+			onSelectedChange: function(){
+				this.$.content.classList.toggle('selected', this.selected);
+			},
+			ready : function() {
+				var self = this;
+				self.selected = false;
+				CMS.rpc.on('user-updated', function(args) {
+					if (self.data.uuid == args.data.uuid) {
+						self.data = _.extend(self.data, args.data);
+					}
+				});
+			},
+			toJSON : function(v) {
+				return JSON.stringify(v);
+			}
+		})
+	</script>
+</dom-module>
+<dom-module id="cms-user-browser">
+	<style>
+		#content{position: relative;}
+		.layout.vertical{@apply(--layout-vertical);}
+		.layout.horizontal{@apply(--layout-horizontal)}
+		.fit{@apply(--layout-fit)}
+		.flex, .flex-1{@apply(--layout-flex)}
+		.countbox{position: absolute; right: 12px; top: 46px; color: #FFF; font-size: 10px;}
+	</style>
+	<template>
+		<div id="content" class="flex layout vertical">
+			<iris-cms-search-toolbar id="filter" advance on-filter="reloadItems" on-clear="reloadItems" isfiltered="[[isFiltered]]"></iris-cms-search-toolbar>
+			<div class="countbox"> Total: <span>[[_itemcount]]</span></div>
+			<div id="items" class="browser-items flex">
+				<template is="dom-repeat" items="[[list]]">
+					<cms-user class="browser-item" data="{{item}}" list="{{list}}" on-click="selectItem"></cms-user>
+				</template>
+			</div>
+		</div>
+	</template>
+	<script>
+		Polymer({
+			is: "cms-user-browser",
+			behaviors:[CMS.behaviours.browser],
+			properties:{
+				isFiltered:{
+					type: Boolean,
+					value: false
+				},
+				list: {
+					type: Array,
+					value:[]
+				}
+			},
+			ready : function() {
+				var self = this;
+				self.toggleClass('layout', true);
+				self.toggleClass('vertical', true);
+
+				self.reloadItems();
+
+				self.insertListener({
+					key: 'user-inserted'
+				});
+
+				self.deleteListener({
+					key: 'user-removed'
+				});
+
+				CMS.rpc.on('user-updated', function(args) {
+					console.log("user-updated", args)
+					var item = {};
+					var index = _.findIndex(self.list, function (c) {
+						if(c.uuid == args.data.uuid){
+							item = c;
+							return true;
+						}
+						return false;
+					});
+					
+					if (index > -1) {
+						item = _.extend({}, item, args.data);
+						self.set('list.'+index, item);
+					};
+				});
+			},
+			reloadItems: function(){
+				var self = this;
+				self.loadList({
+					op: 'users',
+					filter: self.$.filter.data
+				}, function(err, result){
+					console.log("reloadItems", err, result)
+					if (result) {
+						self.isFiltered = result.isFiltered;
+					};
+				});
+			}
+		})
+	</script>
+</dom-module>
+<dom-module id="cms-user-editor">
+	<style>
+		:host{display: block;}
+		input, textarea, paper-slider{width: 100%;margin:2px 0px;padding: 4px;box-sizing: border-box;font-family: "Open Sans";}
+		textarea {height: 140px;}
+		input.checkbox{width: auto;}
+		paper-checkbox{margin-bottom: 24px;}
+		#enableDisable{margin-bottom: 0px;}
+		.field-title {text-align: right;padding: 0px 4px;vertical-align: text-top;width: 100px;}
+		.field-title.valign-center{vertical-align: middle;}
+		.visibility-hidden{visibility: hidden;}
+		.form{overflow-x: hidden;overflow-y: auto;padding: 0px 10px;}
+		.form table{width: 100%;}
+		paper-toolbar paper-icon-button[disabled]{opacity: 0.2;}
+		.btn{padding: 3px 12px;text-decoration: none;margin: 2px 0px 2px 10px;border: 1px solid #DDD;box-sizing: border-box;}
+		.center-align{text-align: center;}
+		.invalid{color: #900;}
+		#saveBtn{-webkit-animation: saveAni 2s ease-in-out infinite;}
+		#saveBtn[disabled]{color: #ccc;background-color: transparent;-webkit-animation: none;}
+		@-webkit-keyframes saveAni {
+			0% {color: rgba(255,150,150,1);}
+			50% {color: rgba(255,30,30,1);}
+			100% {color: rgba(255,150,150,1);}
+		}
+		td:nth-child(1) {padding-top: 1px;min-width: 120px;}
+		.hidden{display: none;}
+		#content{overflow: auto; margin-left: 10px;}
+		#errorText{color: red}
+	</style>
+	<template>
+		<paper-toolbar>
+			<paper-icon-button icon="cinema:add-ticket" on-click="createEntry" title="Create Entry"></paper-icon-button>
+			<!--template is="dom-if" if="[[data.uuid]]">
+				<paper-icon-button icon="industry:trash2" on-click="deleteEntry" title="Delete Entry"></paper-icon-button>
+			</template-->
+			<paper-icon-button id="saveBtn" icon="user-interface:save-as" on-click="update" disabled$="[[!unsavedChanges]]"></paper-icon-button>
+			<!--template is="dom-if" if="[[data.uuid]]">
+				<a class="link-btn" href="[[_fileUrl(data.name)]]" target="_blank">
+					<paper-icon-button icon="open-in-new" title="Open file"></paper-icon-button>
+				</a>
+			</template-->
+			<span class="flex">[[title]]</span>
+		</paper-toolbar>
+		<iris-cms-progress-img class="progress" active$="[[inprogress]]"></iris-cms-progress-img>
+		<div id="content" class="flex">
+			<template is="dom-if" if="[[data]]">
+				<div class="layout horizontal flex">
+					<div class="form flex">
+						<table>
+							<tr>
+								<td class='field-title'></td>
+								<td class='field-input'>
+									<div class="msg" id="errorText"></div>
+								</td>
+							</tr>
+							<tr>
+								<td class='field-title'>UUID:</td>
+								<td class='field-input'>[[data.uuid]]</td>
+							</tr>
+							<tr>
+								<td class='field-title'>Enable:</td>
+								<td class='field-input'>
+									<paper-checkbox id="enableDisable" checked="{{data.active}}" on-change="update"></paper-checkbox>
+								</td>
+							</tr>
+							<tr>
+								<td class='field-title'>Name:</td>
+								<td class='field-input'><input value="{{data.name::input}}" on-keyup="onKeyUp"></td>
+							</tr>
+							<tr>
+								<td class='field-title'>Display name:</td>
+								<td class='field-input'><input value="{{data.alias::input}}" on-keyup="onKeyUp"></td>
+							</tr>
+							<tr>
+								<td class='field-title'>Email:</td>
+								<td class='field-input'><input value="{{data.email::input}}" on-keyup="onKeyUp"></td>
+							</tr>
+							<tr>
+								<td class='field-title'>Premium user:</td>
+								<td class='field-input'>
+									<paper-checkbox readonly disabled checked="{{isPremium}}"></paper-checkbox>
+								</td>
+							</tr>
+							<tr>
+								<td class='field-title'>Premium Override:</td>
+								<td class='field-input'>
+									<paper-checkbox checked="{{isPremiumOverride}}" on-change="onOnPremiumChanged"></paper-checkbox>
+								</td>
+							</tr>
+							<!--tr hidden$="[[_isNew]]">
+								<td class='field-title'>Email-Sent:</td>
+								<td class='field-input'>
+									<paper-checkbox checked="{{data.sent}}" on-change="update"></paper-checkbox>
+								</td>
+							</tr>
+							<tr hidden$="[[_isNew]]">
+								<td class='field-title'>Answer:</td>
+								<td class='field-input'>
+									<paper-radio-group selected="[[data.answer]]" readonly>
+							            <paper-radio-button name="1" readonly>Yes</paper-radio-button>
+							            <paper-radio-button name="0" readonly>No</paper-radio-button>
+							        </paper-radio-group>
+								</td>
+							</tr-->
+						</table>
+					</div>
+				</div>
+			</template>
+		</div>
+	</template>
+	<script>
+		Polymer({
+			is: "cms-user-editor",
+			properties:{
+				data:{
+					type: Object,
+					value: false,
+					observer: 'onDataChange'
+				},
+				unsavedChanges:{
+					type: Boolean,
+					value: false
+				},
+				err: {
+					type: Object,
+					value: false,
+					observer: 'onErrorChange'
+				},
+				title:{
+					type: String,
+					value: ""
+				},
+				extrapostdata:{
+					type:Object,
+					value:{}
+				},
+				_isNew:{
+					type: Boolean,
+					value: false
+				},
+				isPremium:{
+					type: Boolean,
+					value: false
+				}
+			},
+			observers:[
+				//'_onDataChange(data.name, data)'
+			],
+			parseFloat : function(v) { return parseFloat(v); },
+			buildState: function (data) {
+				return this.toJSON(data || this.data);
+			},
+			clearState: function(){
+				this.___state = false;
+				this.unsavedChanges = false;
+			},
+			isUnsavedChanged: function () {
+				var self = this;
+				if (!self.___state) {
+					return false;
+				};
+				var state = self.buildState();
+				return (state != self.___state);
+			},
+			loadData: function (data) {
+				var self = this;
+				if (self.unsavedChanges) {
+					if(window.confirm('Want to save unsaved changes?')){
+						self.save(function (err, result) {
+							if (result) {
+								setData();
+							}else{
+								alert('Error in saving changes.'); //TODO: how to handle this?
+								setData();
+							}
+						});
+						return;
+					}
+				};
+
+				setData();
+				function setData() {
+					self.data = data;
+					self.___state = self.buildState();
+					self.updateState();
+				}
+			},
+			updateState: function (e) {
+				var self = this;
+				self.unsavedChanges = (self.data && !self.data.uuid) || self.isUnsavedChanged();
+				self.onDataUpdate();
+				var s = self.buildState();
+				if (e && self.unsavedChanges) {
+					if (e == 'delay') {
+						self.debounce('updateState-save', function(){
+							self.save();
+						}, 1000)
+					}else{
+						self.save();
+					}
+				};
+			},
+			onErrorChange: function(){
+				var self = this;
+				self.errorText = self.err? (self.err.error || "Unable to save") : "";
+				console.log("self.err", self.err, self.errorText)
+				if (self.err && self.err.logout)
+					self.errorText += " <a href='/logout'>Login</a>";
+				var $errorText = self.querySelector('#errorText');
+				$errorText && ($errorText.innerHTML = self.errorText)
+			},
+			onDataUpdate: function(){
+				var self = this, d = self.data;
+				var r = !!d.uuid;
+				r = r && !!d.title;
+				self.readytoenable = r;
+				self.title = d.uuid? d.name: 'Please select or create attendee' ;
+			},
+			onDataChange: function () {
+				var self = this;
+				self.extrapostdata = {id: self.data.uuid};
+				self.onDataUpdate();
+				self.err = false;
+				self.set('_isNew', !self.data.uuid);
+				self.set('isPremium', self.data.accountType == 'premium');
+				self.set('isPremiumOverride', !!self.data.premium);
+			},
+			ready: function(){
+				var self = this;
+				self.toggleClass('layout', true);
+				self.toggleClass('vertical', true);
+
+				CMS.rpc.on('file-updated', function(args) {
+					if (self.data && self.data.uuid == args.data.uuid) {
+						self.onDataUpdate();
+						//when there is any update from remote (it may from deleting service)
+						//it make the unsavedChanges == true, so flush changes to server.
+						self.debounce('file-updated', function(){
+							self.unsavedChanges && self.save();
+						}, 500);
+					}
+				});
+
+				window.onbeforeunload = function() {
+					if (self.unsavedChanges) {
+						return "You have unsaved changes!"
+					};
+				}
+			},
+
+			toJSON : function(v) {
+				return JSON.stringify(v);
+			},
+			enableEntry: function(){
+				var self = this;
+				self.data.active = true;
+				self.save();
+			},
+
+			disableEntry: function(){
+				var self = this;
+				self.data.active = false;
+				self.save();
+			},
+
+
+			update : function(e, n, el) {
+				this.save();
+			},
+			onOnPremiumChanged: function(){
+				this.data.premium = this.isPremiumOverride;
+				this.updateState(true);
+			},
+			onKeyUp: function(){
+				this.updateState();
+			},
+
+			save : function(callback) {
+				
+				
+				var self = this;
+				if (!self.data.email) {
+					return
+				};
+
+				if (!self.data.uuid && self.inprogress) {
+					self.debounce('save', function(){
+						self.save(callback);
+					}, 500);
+					return
+				};
+				self.inprogress = true;
+				var d = self.toJSON(self.data);
+				CMS.rpc.dispatch({
+					op : 'save-user',
+					data: self.data
+				}, function(err, result){
+					console.log("save-file: err", err, result)
+					if (err){
+						if (err.code == 11000) {
+							err = {error: "Email already exists."};
+						};
+						self.set('err', err);
+						self.inprogress = false;
+						self.unsavedChanges = true;
+						return;
+					}
+					self.err = false;
+					d = JSON.parse(d);
+					if (result && result.uuid) {
+						//self.data.uuid = result.uuid;
+						self.set('data.uuid', result.uuid)
+						d.uuid = result.uuid;
+					};
+					self.inprogress = false;
+					self.___state = self.buildState(d);
+					self.updateState(true);
+					if (callback) {
+						callback(err, result);
+					}
+				});
+			},
+
+			createEntry: function(){
+				var self = this;
+				self.data = {
+					uuid: '',
+					active: true,
+					accountType: "free",
+					email: ''
+				}
+				self.updateState();
+			},
+
+			deleteEntry : function() {
+				/*if(window.confirm("Are you sure you want to delete this file?")) {
+					CMS.rpc.dispatch({
+						op : 'remove-file',
+						name : this.data.name,
+						uuid: this.data.uuid
+					}, function(){
+						//
+					});
+				}*/
+			}
+		})
+	</script>
+</dom-module>
+
+<dom-module id="cmsmanager-tabs">
+	<style include="iron-flex">
+		.content{border-top: 1px solid #888;}
+		paper-tabs::shadow #selectionBar {background-color: #0000FF;}
+		paper-tabs paper-tab::shadow #ink {color: #0000FF;}
+		::content .app-title{padding: 10px; color: #0000FF; display: block;}
+		iris-dom-app::shadow #pages::shadow .hide-overflow{overflow: hidden;}
+		.auto-overflow{overflow: auto;}
+		.left-section{width: 300px;}
+		#tabs iron-icon { margin-right: 8px;}
+		.layout.vertical{@apply(--layout-vertical);}
+		.layout.horizontal{@apply(--layout-horizontal)}
+		.fit{@apply(--layout-fit)}
+		.flex, .flex-1{@apply(--layout-flex)}
+	</style>
+	<template>
+		<iris-dom-app
+			app-name="Manage"
+			mediaquery="[[mq]]"
+			ismobile="{{ismobile}}"
+			selected="{{selected}}"
+			selectedpage="{{selectedPage}}"
+			user="[[user]]"
+			msg="[[msg]]"
+			class="flex"
+			id="domApp"
+			rpc-path="/manage-rpc"
+			logout-path="/manage/logout"
+			rpc-holder="CMS"
+			logintask="{{logintask}}"
+			entryanimation="{{entryanimation}}"
+			exitanimation="{{exitanimation}}"
+			logintab="{{logintab}}" >
+
+			<div class="drawer-toolbar-item layout horizontal center flex">
+				<div class="flex"><%= _T("Tools") %></div>
+				<paper-button class="toggle-drawer" toggle-drawer><iron-icon icon="close"></iron-icon></paper-button>
+			</div>
+			<div class="layout horizontal main-item">
+				<div class="flex-1"><a class="app-title" href="/"><img height="45" on-click="home" src="/images/logo/logo-268px.png"></a></div>
+                <paper-button class="toggle-drawer" toggle-drawer><iron-icon icon="menu"></iron-icon></paper-button>
+                <paper-tabs id="tabs" selected="{{selected}}" noBar align-bottom role="tablist">
+                	<paper-tab data-tab-id="user"><iron-icon icon="sciences:literature"></iron-icon><%= _T("Users") %></paper-tab>
+                    <paper-tab data-tab-id="settings"><iron-icon icon="very-basic:settings"></iron-icon><%= _T("Settings") %></paper-tab>
+                    <paper-tab data-tab-id="stat"><iron-icon icon="transport:speedometer"></iron-icon><%= _T("Stats") %></paper-tab>
+                    
+                    <!--paper-tab data-tab-id="files"><iron-icon icon="sciences:literature"></iron-icon><%= _T("Files") %></paper-tab>
+                    <paper-tab data-tab-id="files"><iron-icon icon="sciences:literature"></iron-icon><%= _T("Attendees") %></paper-tab-->
+                    <paper-tab data-tab-id="login" data-tab="logout"><iron-icon icon="power-settings-new"></iron-icon><%= _T("Logout") %></paper-tab>
+                </paper-tabs>
+            </div>
+			<neon-animated-pages id="pages" style="position:relative;" selected="[[selectedPage]]" class="main-item flex-1 iris-dom-app-content" entry-animation="[[entryanimation]]" exit-animation="[[exitanimation]]">
+				<neon-animatable class="layout horizontal hide-overflow">
+					<cms-user-browser id="userBrowser" class='left-section' editor="[[_$.userEditor]]"></cms-user-browser>
+					<div class="flex layout vertical">
+						<cms-user-editor class="flex" id="userEditor" browser="[[_$.userBrowser]]"></cms-user-editor>
+					</div>
+				</neon-animatable>
+				<neon-animatable><cmsmanager-settings></cmsmanager-settings></neon-animatable>
+				<neon-animatable><cmsmanager-stats></cmsmanager-stats></neon-animatable>
+				<!--neon-animatable class="layout horizontal hide-overflow">
+					<cms-file-browser id="fileBrowser" class='left-section' editor="[[_$.fileEditor]]"></cms-file-browser>
+					<div class="flex layout vertical">
+						<cms-file-editor class="flex" id="fileEditor" browser="[[_$.fileBrowser]]"></cms-file-editor>
+					</div>
+				</neon-animatable>
+				<neon-animatable class="layout horizontal hide-overflow">
+					<cms-attendee-browser id="attendeeBrowser" class='left-section' editor="[[_$.attendeeEditor]]"></cms-attendee-browser>
+					<div class="flex layout vertical">
+						<cms-attendee-editor class="flex" id="attendeeEditor" browser="[[_$.attendeeBrowser]]"></cms-attendee-editor>
+					</div>
+				</neon-animatable-->
+			</neon-animated-pages>
+		</iris-dom-app>
+	</template>
+	<script>
+		Polymer({
+			is: "cmsmanager-tabs",
+			ready:function(){
+				var self = this;
+				self._$ = self.$;
+			}
+		})
+	</script>
+</dom-module>

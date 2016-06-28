@@ -1,0 +1,107 @@
+<dom-module id="sia-variable-graph">
+	<template>
+		<style>
+			:host{@apply(--layout-vertical);}
+			.chart{@apply(--layout-flex);}
+		</style>
+		<iris-d3-series-chart
+			id="chart"
+			class="chart"
+			tilt-x
+			data="[[data]]"
+			x-scale="time"
+			date-format="[[dateFormat]]"
+			tilt-x-angle="[[tiltXAngle]]"
+			margin-bottom="[[marginBottom]]"
+			margin-right="[[marginRight]]"
+			line-interpolate="linear"
+			y-ticks-count="[[yTicksCount]]"
+			title="[[title]]"
+			debug-size="[[debugSize]]"
+		></iris-d3-series-chart>
+	</template>
+	<script>
+		Polymer({
+			is: "sia-variable-graph",
+			properties:{
+				node: String,
+				debugSize:Boolean,
+				yTicksCount:{
+					type: Number,
+					value: 3
+				},
+				tiltXAngle:{
+					type: Number,
+					value: -20
+				},
+				marginBottom:{
+					type: Number,
+					value: 24
+				},
+				marginRight:{
+					type: Number,
+					value: 60
+				},
+				variable: {
+					type: String,
+					observer: "onVariableChange"
+				},
+				data:{type: Array, value: []},
+				dateFormat: String,
+				title: String,
+				active: {
+					type: Boolean,
+					value: true,
+					observer: "fetchData"
+				}
+			},
+			ready: function(){
+				var self = this;
+				self.fetchData(1);
+			},
+			onVariableChange: function(){
+				this.set("data", []);
+				this._graphSetting = NodeVariableSettings.getGraphSetting(this.variable);
+				this.$.chart.set("yLegend", this._graphSetting ? this._graphSetting.unit : "");
+				this.fetchData(1);
+			},
+			fetchData: function(delay){
+				if (!this.active || this._isLoading)
+					return
+				this.debounce("fetchData", this._fetchData, delay || 5000);
+			},
+			_fetchData: function (){
+				var self 	= this;
+				var c 		= self.$.chart;
+				var width 	= c.getBoundingClientRect().width;
+				width       = width - c.marginLeft - c.marginRight;
+				self._isLoading = true;
+				App.rpc.dispatch({
+					op: "get-variable-graph-data",
+					variable: self.variable,
+					points: width,
+					node: self.node
+				}, function(err, result){
+					self._isLoading = false;
+					if (err)
+						return self.fetchData();
+					var noLegend = _.keys(result.data[0]).length < 3;
+					self.$.chart.set("noLegend", noLegend);
+					self.$.chart.set("marginRight", noLegend ? 10: 60)
+					self.set("dateFormat", result.dateFormat);
+					if (self._graphSetting) {
+						var fn = self._graphSetting.fn;
+						var data = [];
+						_.each(result.data, function(d, index){
+							data.push(fn(d, index, self.variable));
+						})
+					}else{
+						var data = result.data;
+					}
+					self.set("data", data);
+					self.fetchData();
+				})
+			}
+		})
+	</script>
+</dom-module>

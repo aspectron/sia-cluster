@@ -1,0 +1,71 @@
+<dom-module id="sia-colors">
+	<template>
+		<style>
+		.color{display: inline-block; margin: 5px; padding: 10px;}
+		</style>
+		<paper-input label="Alpha" value="{{alpha}}"></paper-input>
+		<paper-textarea row="5" cols="10" value="{{colors}}"></paper-textarea>
+		<template is="dom-repeat" items="[[items]]">
+			<div class="color" style$="[[_s(item.color)]]">[[item.color]]</div>	
+		</template>	
+		<paper-textarea row="5" cols="10" label="Result" value="{{result}}"></paper-textarea>
+	</template>
+	<script>
+	Polymer({
+		is:"sia-colors",
+		properties:{
+			items:{
+				type: Array,
+				value: []
+			},
+			colors:{
+				type: String,
+				value: '"f44336","4CAF50","2196F3","ffeb3b","333333","9e9e9e","4C6A92","92B6D5","838487","B93A32","AF9483","006E51","D8AE47","B76BA3","F7CAC9","F7786B","91A8D0","034F84","98DDDE","B18F6A","79C753","F7CAC9","955251","009B77","D65076","45B8AC","5B5EA6","DFCFBE","55B4B0","E15D44","C3447A"',
+				observer: "onColorsChanged"
+			},
+			alpha: {
+				type: Number,
+				value: 0.5,
+				observer: "onColorsChanged"
+			}
+		},
+
+		_s: function(c){
+			return "background-color:"+c;
+		},
+
+		onColorsChanged: function(){
+			var self = this;
+			var colors = this.colors.split(",");
+			var items = [], res=[];
+			_.each(colors, function(c){
+				var s = self.combineColors(self.hexToR(c), self.hexToG(c), self.hexToB(c),  self.alpha )
+				items.push({
+					//color: "rgba("+ self.hexToR(c)+","+self.hexToG(c)+","+self.hexToB(c)+","+ self.alpha +")"
+					color: s//"#"+self.cutHex(c)
+				}) 
+
+				res.push('"'+s+'"');
+			});
+
+			this.set("items", items);
+			this.set("result", res.join(","));
+		},
+		combineColors: function (r, g, b, a, bg){
+			bg  = bg || { r: 255, g: 255, b: 255};
+		    var c  = [
+		        ((1 - a) * bg.r + a * r).toString(16).split('.')[0].pad(2, "0"),
+		        ((1 - a) * bg.g + a * g).toString(16).split('.')[0],
+		        ((1 - a) * bg.b + a * b).toString(16).split('.')[0]
+		    ];
+
+		    //console.log("c", c);
+		    return "#"+c.join("");
+		},
+		hexToR: function (h) {return parseInt((this.cutHex(h)).substring(0,2),16)},
+		hexToG: function(h) {return parseInt((this.cutHex(h)).substring(2,4),16)},
+		hexToB: function(h) {return parseInt((this.cutHex(h)).substring(4,6),16)},
+		cutHex: function(h) {h = h.replace(/["']/g, ""); return (h.charAt(0)=="#") ? h.substring(1,7):h}
+	})
+	</script>
+</dom-module>

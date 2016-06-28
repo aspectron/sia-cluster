@@ -1,0 +1,84 @@
+<dom-module id="sia-network-panel">
+	<template>
+		<style include="panel-style">
+
+		</style>
+		<div class="content">
+			<h2 class="title"><%=_T("Network")%></h2>
+			<!-- paper-icon-button icon="settings" class="setting-icon" on-click="openSettings"></paper-icon-button -->
+			<div class="layout vertical flex">
+				<template is="dom-repeat" items="[[graphFields]]">
+					<sia-variable-graph margin-bottom="30" y-ticks-count="3" tilt-x-angle="-20" class="flex" node="cluster" variable="[[item.key]]" title="[[item.title]]"></sia-variable-graph>
+				</template>
+			</div>
+			<div class="setting-fields">
+				<sia-field title="SC/BTC" value="[[data.SC_BTC]]" x-format="SC" precision="8"></sia-field>
+				<sia-field title="SC/USD" value="[[data.SC_USD]]" x-format="SC" precision="8"></sia-field>
+				<sia-field title="BTC/USD" value="[[data.BTC_USD]]" format="fiat"></sia-field>
+				<sia-field title="<%= _T('Difficulty') %>" value="[[data.difficulty]]" format="difficulty" unit="T" precision="0" commas></sia-field>
+				<sia-field title="<%= _T('Estimated Hash Rate') %>" value="[[data.estimatedhashrate]]" format="hash-rate" unit="G"  precision="0" commas></sia-field>
+				<sia-field title="<%= _T('Height') %>" value="[[data.height]]" commas></sia-field>
+				<sia-field title="<%= _T('Total Coins') %>" value="[[data.totalcoins]]" format="sc" precision="2"></sia-field>
+				<sia-field title="<%= _T('Active File Contracts') %>" value="[[data.activecontractcount]]" commas></sia-field>
+				<sia-field title="<%= _T('Active Contracts Size') %>" value="[[data.activecontractsize]]" format="file-size"></sia-field>
+				<sia-field title="<%= _T('Total Contract Cost') %>" value="[[data.totalcontractcost]]" format="sc" precision="2"></sia-field>
+				<sia-field title="<%= _T('Total Contract Size') %>" value="[[data.totalcontractsize]]" format="file-size"></sia-field>
+			</div>
+		</div>
+	</template>
+	<script>
+		Polymer({
+			is: "sia-network-panel",
+			properties:{
+				chart: {
+					type: Object,
+					value: {}
+				},
+				data:{
+					type: Object
+				},
+				graphFields:{
+					type: Array,
+					value: [{
+						key: "SC_BTC",
+						title: 'SC / uBTC'
+					},{
+						key: "SC_USD",
+						title: 'SC / Cent'
+					},{
+						key: "BTC_USD",
+						title: 'BTC / USD'
+					}]
+				}
+			},
+			isGridHost: true,
+			ready: function(){
+				var self = this;
+				self.fetchChartData(1);
+				App.rpc.dispatch({op: "get-network-data" }, function(err, data) {
+					self.set("data", data);
+				});
+				App.rpc.on("price-update", function(args){
+					self.set("data", _.extend(self.data || {}, args));
+				});
+				App.rpc.on("net-state", function(args){
+					self.set("data", _.extend(self.data || {}, args));
+				});
+			},
+			fetchChartData: function(delay){
+				this.debounce("fetchChartData", this._fetchChartData, delay || 10000);
+			},
+			_fetchChartData: function (){
+				var self 	= this;
+				App.rpc.dispatch({op:"get-network-stats"}, function(err, result){
+					if (err)
+						return self.fetchChartData();
+
+					//console.log(result)
+					self.set("chartData", result.data);
+					self.fetchChartData();
+				})
+			}
+		})
+	</script>
+</dom-module>

@@ -1,0 +1,53 @@
+{
+  "name": "sia-cluster",
+  "version": "1.0.0",
+  "description": "Sia Cluster - Remote management & monitoring of Sia hosts",
+  "author": {
+    "name": "ASPECTRON Inc.",
+    "email": "info@aspectron.com"
+  },
+  "private": true,
+  "scripts": {
+    "start": "node sia-cluster.js"
+  },
+  "main": "sia-cluster.js",
+  "dependencies": {
+    "basic-auth": "*",
+    "big-integer": "*",
+    "cloudflare": "*",
+    "compression": "*",
+    "ejs": "*",
+    "iris-app": "^0.1.44",
+    "iris-i18n": "*",
+    "iris-mdl": "*",
+    "iris-polymer": "*",
+    "iris-rpc": "^0.2.17",
+    "iris-stats": "*",
+    "iris-underscore": "*",
+    "iris-utils": "*",
+    "mongodb": "^2.1.21",
+    "morgan": "*",
+    "multiparty": "*",
+    "node-uuid": "*",
+    "nodemailer": "*",
+    "request": "*",
+    "sia-api": "*",
+    "underscore": "*",
+    "xml2json": "*",
+    "commander": "*"
+  },
+  "engines": {
+    "node": "*",
+    "npm": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/aspectron/sia-cluster"
+  },
+  "bugs": {
+    "url": "https://github.com/aspectron/sia-cluster/issues"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/aspectron/sia-cluster"
+
+}

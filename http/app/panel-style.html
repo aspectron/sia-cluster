@@ -1,0 +1,22 @@
+<dom-module id="panel-style">
+	<template>
+		<style include="iron-flex app-style">
+			:host{
+				padding: 15px; @apply(--layout-horizontal);
+				margin:25px 10px; box-shadow: 3px 3px 3px #ddd; background-color: #FFF; min-height: 450px;
+			}
+			.h-box{ @apply(--layout-horizontal);}
+			.h-box>div{ @apply(--layout-flex) }
+			.content{@apply(--layout-vertical); @apply(--layout-flex)}
+			.title{margin-top: 5px; margin-bottom: 0px;}
+			.table{border-collapse: collapse; width: 100%}
+			.table td, .table th{ text-align: left; padding: 2px; border: 1px solid #DDD; font-size: 8px;}
+			.table th{font-weight: bold;}
+			.table tr:nth-child(2n-2){background-color: #EEE}
+			.uuid{font-size: 10px;}
+			.block{display:block;}
+			paper-button.block{margin-top:10px;}
+			.setting-fields sia-field{float:left;}
+		</style>
+	</template>
+</dom-module>

@@ -1,0 +1,47 @@
+<dom-module id="node-setting-style">
+	<template>
+		<style type="text/css">
+			#nodeSettingDialog,.node-setting-dialog{min-height:85%;background-color:#EEE;}
+			#nodeSettingDialog .items{overflow:auto;background-color:#EEE;padding:15px 15px 0px;margin-bottom:15px;}
+			.node-field{@apply(--layout-horizontal);@apply(--layout-wrap);@apply(--layout-center);background-color:#FFF;}
+			.node-field:nth-child(2n-1){background-color:rgb(253,253,253)}
+			.node-field:hover{background-color:rgb(240,240,240);}
+			.node-field>div{border-right:1px solid rgb(250,250,250);min-width:48px;box-sizing:border-box;text-align:center;line-height:14px;padding:0px 10px;}
+			.node-field paper-checkbox{padding:0px;}
+			.node-field paper-checkbox::shadow #checkboxLabel{display:none}
+			.node-field.heading{font-size:10px;font-weight:bold;}
+			.node-field.heading:hover{background-color:#FFF;}
+			.node-field.heading>div{min-height:10px;padding:15px 5px;}
+			.node-field>div.tiny{padding-left:1px;padding-right:1px;min-width:35px}
+			.node-field .variable{@apply(--layout-horizontal);@apply(--layout-center);position:relative;}
+			.node-field sia-field{@apply(--layout-flex);}
+			.node-field .variable,
+			.node-field.heading .variable{font-size:14px;white-space:nowrap;text-align:left;min-height:20px;padding-left:5px;}
+			.node-field.heading .variable{padding-left:10px;font-weight:bold;}
+			.node-field>div:last-child{border-right:0px;}
+			.node-field iron-icon{border:1px solid #DDD;height:15px;}
+			.node-field .help-icon{border:0px;}
+			.node-field-group-heading{padding:2px 10px;font-weight:bold;background-color:#FFF;cursor:pointer;border-top:1px solid #DDD}
+			.node-field-group-heading iron-icon{float:right;height:20px;transition:transform 0.2s ease;}
+			.node-field-group-contents {overflow:hidden;}
+			.closed .node-field-group-heading iron-icon{transform:rotate(180deg);}
+			::content .var-floating-window{
+				z-index:10;border:1px solid #DDD;@apply(--shadow-elevation-2dp);
+				position:absolute;padding:0px 0px 0px 10px;background-color:#FFF;box-sizing:border-box;
+			}
+			::content .var-floating-window .help-text{padding:0px 10px 10px;}
+			::content .var-floating-window .help-text .heading{font-weight:bold;padding-top:10px;}
+			::content .var-floating-window>*{height:100%;}
+			@media (max-width:650px){
+				#nodeSettingDialog .items{padding:0px;}
+				.node-field.heading{display:none}
+				.node-field>div{border-right:0px; min-height:10px;}
+				.node-field paper-checkbox::shadow #checkboxLabel{display:inline-block;}
+				.node-field .variable{min-width:90%;}
+				.node-field>div{min-width:48%;padding-top:3px;text-align:left;}
+				.node-field>div.tiny{min-width:35px;padding-left:10px;}
+				.node-field{padding:10px 0px;border-bottom:1px solid #EEE;}
+			}
+		</style>
+	</template>
+</dom-module>

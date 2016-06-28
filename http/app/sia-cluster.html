@@ -1,0 +1,161 @@
+<dom-module id="sia-cluster">
+	<template>
+		<style include="iron-flex app-style node-setting-style">
+			.panels{@apply(--layout-horizontal); @apply(--layout-wrap)}
+			.panels .panel{min-width: 320px; @apply(--layout-flex); position: relative;}
+			.panels sia-node.panel{min-width: 300px;}
+			.panel::shadow .table{background-color: #FFF;}
+			.panel::shadow .setting-icon{position: absolute; right: 10px; top: 10px;}
+			.panel::shadow .dialog paper-toolbar,
+			.dialog paper-toolbar{padding: 0px;}
+			.panel::shadow .dialog paper-toolbar .title,
+			.dialog paper-toolbar .title{margin-left: 10px;}
+			.panel::shadow iris-overlap-edit-field paper-button.dropdown-trigger{padding: 5px; min-width: 10px;font-size: 15px;}
+			.panel::shadow iris-overlap-edit-field paper-button.dropdown-trigger iron-icon{width: 15px; height: 15px;}
+			@media (max-width:650px){
+				.panels sia-node.panel,
+				.panels .panel{min-width:300px;box-sizing:border-box;}
+			}
+		</style>
+		<!--sia-colors class="panel"></sia-colors-->
+		<div class="panels" on-node-global-settings="showNodeSettingDialog">
+			<sia-network-peers-panel class="panel"></sia-network-peers-panel>
+			<sia-network-panel class="panel"></sia-network-panel>
+			<sia-cluster-status class="panel" settings="{{settings}}"></sia-cluster-status>
+			<sia-cluster-storage class="panel" data="[[storage]]"></sia-cluster-storage>
+			<template is="dom-repeat" items="[[nodes]]">
+				<sia-node
+					class="panel"
+					data="[[item.data]]"
+					settings="[[item.settings]]"
+					uuid="[[item.uuid]]"
+					ident="[[item.ident]]"
+					online="[[item.online]]"
+				></sia-node>
+			</template>
+		</div>
+		<paper-dialog id="nodeSettingDialog" class="dialog setting-dialog layout vertical">
+			<paper-toolbar>
+				<div class="title"><%=_T("Settings")%></div>
+				<paper-tabs selected="{{settingDialogTab}}" attr-for-selected="tab">
+					<paper-tab tab="nodes"><%=_T("Global Node Settings")%></paper-tab>
+					<paper-tab tab="ui"><%= _T("User Interface") %></paper-tab>
+				</paper-tabs>
+				<paper-icon-button icon="close" dialog-dismiss></paper-icon-button>
+			</paper-toolbar>
+			<neon-animated-pages class="flex" selected="{{settingDialogTab}}" attr-for-selected="page" entry-animation="fade-in-animation" exit-animation="fade-out-animation" on-tap="hideVariableGraph">
+				<neon-animatable class="fit items" page="nodes" on-tap="onSettingItemsClick">
+					<div class="node-field heading">
+						<div><%-_T("Show<br />Variable")%></div>
+						<div><%-_T("Show<br />Graph")%></div>
+						<div class="tiny"></div>
+						<div class="flex variable"><%-_T("Variable")%></div>
+					</div>
+					<template is="dom-repeat" items="[[settingFieldGroups]]">
+						<div>
+							<div class="node-field-group-heading" on-tap="toggleNodeSetting">[[item.title]]<iron-icon icon="expand-less"></iron-icon></div>
+							<div class="node-field-group-contents">
+							<template is="dom-repeat" items="[[item.items]]">
+								<div class="node-field">
+									<div>
+										<paper-checkbox checked="{{item.showVar}}"><%-_T("Show Variable")%></paper-checkbox>
+									</div>
+									<div>
+										<paper-checkbox checked="{{item.showGraph}}" hide$="[[!item.graphCompatible]]"><%-_T("Show Graph")%></paper-checkbox>
+									</div>
+									<div class="tiny">
+										<iron-icon class="help-icon" icon="help" hidden$="[[!item.help]]" key="[[item.key]]" on-mouseover="showVariableInfo" on-mouseout="hideVariableInfo"></iron-icon>
+									</div>
+									<div class="flex variable">
+										<sia-field
+											title="[[item.title]]"
+											value="[[_settingFieldValue(item.value, item)]]"
+											format="[[_settingFieldFormat(item)]]"
+		        							type="[[_settingFieldType(item, item.key)]]"
+											editable="[[_settingFieldEditable(item)]]"
+											title-suffix="[[_settingFieldTitleSuffix(item)]]"
+											suffix="[[_settingFieldSuffix(item)]]"
+											show-units
+										></sia-field>
+									</div>
+								</div>
+							</template>
+							</div>
+						</div>
+					</template>
+				</neon-animatable>
+				<neon-animatable class="fit items" page="ui">
+					@surinder - PLEASE PUT FONT &amp; PANEL SIZING HERE (#16)
+				</neon-animatable>
+			</div>
+		</paper-dialog>
+	</template>
+	<script>
+	Polymer({
+		is: "sia-cluster",
+		properties:{
+			settings:{
+				type: Object
+			},
+			storage:{
+				type: Object,
+				value: {}
+			},
+			nodes:{
+				type: Array,
+				value: []
+			},
+			settingDialogTab:{
+				type: String,
+				value: "nodes"
+			}
+		},
+		behaviors:[SettingDialogBehavior],
+		ready: function(){
+			var self = this;
+			self.fetchItems();
+
+			App.rpc.on("node-connected", function(args){
+				var uuid = args.uuid;
+				var nodeIndex = _.findIndex(self.nodes, function(n){return n.uuid == uuid;});
+				var d = {
+					ident : args.ident,
+					uuid : args.uuid,
+					settings: args.settings,
+					data: args.data,
+					online: args.online
+				};
+				if (nodeIndex < 0) {
+					self.push("nodes", d);
+				}else{
+					var node = self.get('nodes.'+nodeIndex);
+					var data = _.extend({}, node || {}, d)
+					self.set("nodes."+nodeIndex, d);
+				}
+			});
+
+			App.rpc.on("node-removed", function(args){
+				var uuid = args.uuid;
+				var nodeIndex = _.findIndex(self.nodes, function(n){return n.uuid == uuid;});
+				if (nodeIndex < 0)
+					return;
+				self.splice("nodes", nodeIndex, 1);
+			});
+
+		},
+		fetchItems: function(){
+			var self = this;
+			App.showLoading();
+			App.rpc.dispatch({op: "get-cluster-data"}, function(err, result){
+				App.hideLoading();
+				if (err)
+					return App.error(err);
+
+				self.set("settings", result.settings);
+				self.set("storage", result.storage);
+				self.set("nodes", _.sortBy(result.nodes,'ident'));
+			})
+		}
+	})
+	</script>
+</dom-module>

@@ -1,0 +1,375 @@
+<script>
+	var PanelBehavior = {
+		properties:{
+			uuid: {
+				type: String,
+				value: ""
+			},
+			ident: {
+				type: String,
+				value: ""
+			},
+			data:{
+				type: Object,
+				value: {}
+			},
+			settings: Object
+		},
+		_JSON: function(v){
+			return JSON.stringify(v, null, "   ")
+		},
+		flatObject: function (v, includeObject) {
+			var data = { }
+
+			function _R(v, path, init) {
+
+				_.each(v, function(v,k) {
+					if(init)
+						path = '';
+
+					if(_.isObject(v) || _.isArray(v)) {
+						var p = path+k+'.';
+						if (includeObject) {
+							data[path+k] = v;
+						};
+						_R(v,p);
+					}else {
+						var p = path+k;
+						data[p] = v;
+					}
+				})
+
+			}
+
+			_R(v,'', true);
+			return data;
+		}
+	}
+	var SettingDialogBehavior = {
+		properties:{
+			settingFields: Array,
+			settingFieldGroups: Array
+		},
+		observers:["_onSettingFieldsUpdated(settingFields)"],
+		ready: function(){
+			this.initSettings();
+		},
+		initSettings: function(){
+			var self = this;
+			self.fetchSettingFields();
+			App.rpc.on("setting-fields", function(args){
+				if (self.uuid != args.uuid)
+					return;
+				self.set("settingFields", args.fields);
+			});
+		},
+		_settingFieldFormat: function(field){
+			return NodeVariableSettings.getSiaFieldType(field.key) || "";
+		},
+		_settingFieldType: function(field){
+			return NodeVariableSettings.getEditable(field.key) || "";
+		},
+		_settingFieldEditable:function(field){
+			var editable = NodeVariableSettings.getEditable(field.key);
+			return editable ? (this.uuid || "cluster") +"/"+ field.key : false;
+		},
+		_settingFieldValue:function(value, field, data){
+			var formatter = NodeVariableSettings.getFormatter(field.key);
+			if (formatter)
+				return formatter.fn(value, field, data)
+			return value;
+		},
+		_settingFieldTitleSuffix: function(field){
+			var editable = NodeVariableSettings.getEditable(field.key);
+			if (editable)
+				return ": ";
+			return "";
+		},
+		_settingFieldSuffix: function(field){
+			return NodeVariableSettings.info[field.key] && NodeVariableSettings.info[field.key].suffix;
+		},
+		_load: function(l){
+			if(!l)
+				return 'N/A';
+			return _.map(l,function(ln) {
+				return parseFloat(ln).toFixed(2);
+			}).join('/');
+		},
+		_memory: function(m){
+			return m ? parseInt(m).toFileSize() : ""
+		},
+		_commas: function(f, precision) {
+		    if(f === null || f === undefined)
+		        return '?';
+		    var parts = f.toFixed(precision).toString().split('.');
+		    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		    return parts.join('.');
+		},
+		_coins: function(v){
+			return this._commas(v / 1e24, 4)+' SC';
+		},
+		_netaddr : function(v) {
+			return v ? v : 'N/A';
+		},
+		_ifelse: function(a, b, c){
+			return a ? b : c;
+		},
+		_onSettingFieldsUpdated: function(){
+			var self 	= this;
+			var fields 	= self.get("settingFields");
+			var fieldInfo = NodeVariableSettings.info;
+
+			var groups = {}, g;
+
+			_.each(fields, function(f){
+				if (fieldInfo[f.key]){
+					f.title = fieldInfo[f.key].title;
+					f.help = fieldInfo[f.key].help;
+				}else{
+					f.title = f.key;
+				}
+				g = NodeVariableSettings.getGroup(f.key);
+				if (!groups[g.title]){
+					groups[g.title] = {
+						title: g.title,
+						items: []
+					}
+				}
+				groups[g.title].items.push(f);
+			});
+
+			var groupList = [];
+			_.each(NodeVariableSettings.getGroups(), function(g){
+				if(groups[g.title] && groups[g.title].items.length)
+					groupList.push(groups[g.title]);
+			});
+
+			self.set("settingFieldGroups", groupList);
+		},
+		onSettingItemsClick: function(e){
+			var $checkbox = $(e.target).closest("paper-checkbox");
+			if (!$checkbox.length)
+				return
+			var $nodeField = $checkbox.closest(".node-field");
+			if (!$nodeField.length)
+				return;
+			var nodeField = $nodeField.get(0);
+			if ($checkbox.attr("override") !== undefined && nodeField.item && nodeField.item.overridable){
+				var index 	= this.getSettingFieldIndex(nodeField.item.key);
+				if (index > -1)
+					this.set("settingFields."+index+".override", true);
+			}
+
+			this.saveNodeSettings();
+		},
+		toggleNodeSetting: function(e){
+			var $p = $(e.target).parent();
+			var $c = $p.find(".node-field-group-contents");
+			if($p.hasClass("closed")){
+				$c.animate({height: $c.attr('data-height')}, function(){
+					$c.css("height", "auto");
+				});
+			}else{
+				$c.attr('data-height', $c.outerHeight());
+				$c.animate({height: 0});
+			}
+			$p.toggleClass("closed");
+		},
+		saveNodeSettings: function(){
+			var self = this;
+			//App.showLoading();
+			var settings = {};
+			var isGlobalSettings = self.is == "sia-cluster";
+			_.each(self.settingFields, function(s, index){
+				if (isGlobalSettings) {
+					settings[s.key] = {
+						showGraph: !!s.showGraph,
+						showVar: !!s.showVar
+					}
+					return;
+				};
+				if (!s.override && s.overridable)
+					return;
+				settings[s.key] = {showVar: !!s.showVar};
+				if (s.graphCompatible){
+					settings[s.key].showGraph = !!s.showGraph;
+				}
+
+				//if (s.editable)
+					//settings[s.key].value = s.value;
+			})
+			console.log("settings", settings)
+			App.rpc.dispatch({
+				op: "save-field-settings",
+				settings: settings,
+				node: isGlobalSettings ? "cluster": self.uuid
+			}, function(err){
+				//App.hideLoading();
+				if(err)
+					return App.error(err);
+			});
+		},
+		getNodeSettingDialog: function(){
+			return this.$.nodeSettingDialog;
+		},
+		hideNodeSettingDialog: function(){
+			this.getNodeSettingDialog().close();
+		},
+		showNodeSettingDialog: function(){
+			this.getNodeSettingDialog().open();
+		},
+		fetchSettingFields: function(){
+			var self = this;
+			App.rpc.dispatch({
+				op: "get-setting-fields",
+				node: self.is == "sia-cluster" ? "cluster" : self.uuid
+			}, function(err, result){
+				if (err)
+					return App.error(err);
+
+				//(self.uuid == "7f708030-1ba2-11e6-8313-24a074f0713e") && console.table(result.fields)
+				self.set("settingFields", result.fields);
+			})
+		},
+		showVariableInfo: function(e){
+			var self = this;
+			var $target = $(e.target);
+			var info 	= NodeVariableSettings.info[$target.get(0).key];
+			if (!info || !info.help)
+				return;
+			var title = info.title || "";
+			var $content = $('<div class="help-text"><div class="heading">'+title+'</div>'+info.help+'</div>');
+			self._showVariableFloatingWindow(e, $content, null, 400);
+		},
+		showVariableGraph: function(e){
+			var self = this;
+			var $target = $(e.target);
+			var variable = $target.get(0).key;
+			var info = NodeVariableSettings.info[variable];
+			var title = info? info.title : "";
+			var $content = $('<sia-variable-graph node="'+self.uuid+'" variable="'+variable+'" title="'+title+'"></sia-variable-graph>');
+			self._showVariableFloatingWindow(e, $content, 200, 500);
+		},
+		_showVariableFloatingWindow: function(e, $content, windowHeight, windowWidth){
+			var self = this;
+			var $target = $(e.target);
+			var variable = $target.get(0).key;
+			var top = $target.offset().top;
+			var left = $target.offset().left;
+			//var bottom = $target.position().bottom;
+			
+			var $floatingWindow = $('<div class="var-floating-window"></div>')
+			var $dialog = $(this.getNodeSettingDialog());
+			$dialog.find('.var-floating-window').remove();
+			var dialogWidth = $dialog.width();
+			var dialogHeight = $dialog.height();
+			windowWidth = Math.min(windowWidth, dialogWidth-10)
+			if (left + windowWidth > $(window).width())
+				left = 5;
+			$floatingWindow.css({
+				left: left,
+				width: windowWidth,
+				height: windowHeight || "auto",
+				visibility: "hidden",
+				position: "fixed"
+			});
+			
+			$content.appendTo($floatingWindow);
+			$floatingWindow.appendTo($target.closest(".node-field-group-contents").parent().parent());
+			if (!windowHeight)
+				windowHeight = $floatingWindow.outerHeight();
+
+			if (top+windowHeight > dialogHeight){
+				$floatingWindow.css({top: top - windowHeight-3, visibility: "visible"});
+			}else{
+				$floatingWindow.css({top: top + 20, visibility: "visible"});
+			}
+			return $floatingWindow;
+		},
+		hideVariableGraph: function(){
+			$(this.getNodeSettingDialog()).find('.var-floating-window').remove();
+		},
+		hideVariableInfo: function(){
+			$(this.getNodeSettingDialog()).find('.var-floating-window').remove();
+		},
+		getSettingFieldIndex: function(key){
+			return _.findIndex(this.settingFields, function(f){
+				return f.key == key
+			})
+		},
+		getSettingFieldGroupItemIndex: function(key){
+			var r = {groupIndex: -1, fieldIndex: -1};
+			r.groupIndex = _.findIndex(this.settingFieldGroups, function(g){
+				r.fieldIndex = _.findIndex(g.items, function(f){
+					return f.key == key
+				});
+				return r.fieldIndex > -1;
+			});
+
+			return r.groupIndex > -1 ? r.groupIndex + ".items." + r.fieldIndex: -1;
+		}
+	};
+
+	_.extend(NodeVariableSettings,{
+		init: function(){
+			this._groups = _.map(this.groups, function(g, index){
+                var regexps = [];
+                var regex = g.regex;
+                if (!_.isArray(regex))
+                    regex = [regex];
+
+                _.each(regex, function(e){
+                    if (_.isString(e))
+                        regexps.push(new RegExp(e))
+                    else
+                        regexps.push(e);
+                })
+
+				return {regexps: regexps, title: g.title, items: []};
+			});
+			this._formatters = _.map(this.formatter, function(fn, regex){
+				return {regexp: new RegExp(regex), fn: fn.bind(VariableDataFormatter)};
+			});
+			this._graphSettings = _.map(this.graphSetting, function(s, regex){
+				return {regexp: new RegExp(regex), unit: s.unit, fn: s.fn.bind(VariableGraphFormatter)};
+			});
+			this._fieldTypes = _.map(this.fieldTypes, function(type, regex){
+				return {regexp: new RegExp(regex), type: type};
+			});
+            this._editable = _.map(this.editable, function(type, regex){
+                return {regexp: new RegExp(regex), type: type};
+            });
+		},
+        _findObject: function(list, variable){
+            var v = variable.replace(/\-/g, '.');
+            return _.find(list, function(e){
+                return e.regexp.test(v);
+            });
+        },
+		getGroup: function (variable){
+			var v = variable.replace(/\-/g, '.');
+            return _.find(this._groups, function(g){
+                return _.find(g.regexps, function(e){ return e.test(v); });
+            });
+		},
+		getGroups: function(){
+			return this._groups;
+		},
+		getFormatter: function(variable){
+            return this._findObject(this._formatters, variable);
+		},
+		getGraphSetting: function(variable){
+            return this._findObject(this._graphSettings, variable);
+		},
+		getSiaFieldType: function(variable){
+            var s = this._findObject(this._fieldTypes, variable);
+			return s ? s.type : false;
+		},
+        getEditable: function(variable){
+            var s = this._findObject(this._editable, variable);
+            return s ? s.type : false;
+        }
+	});
+
+	NodeVariableSettings.init();
+</script>

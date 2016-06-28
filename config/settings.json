@@ -1,0 +1,64 @@
+{
+    "cluster": {
+        "TARGET_USD_TB_MO": 5,
+        "fields": {
+            "system.loadavg": {
+                "showVar": true,
+                "showGraph": true
+            },
+            "system.memory": {
+                "showVar": true,
+                "showGraph": true
+            },
+            "system.version": {
+                "showVar": true,
+                "showGraph": false,
+                "graphCompatible": false
+            },
+            "consensus.height": {
+                "showVar": true,
+                "showGraph": false
+            },
+            "wallet.confirmedsiacoinbalance": {
+                "showVar": true,
+                "showGraph": false
+            },
+            "host.externalsettings.netaddress": {
+                "showVar": true,
+                "showGraph": false
+            },
+            "host.externalsettings.collateral": {
+                "showVar": true,
+                "showGraph": false
+            },
+            "host.externalsettings.maxcollateral": {
+                "showVar": true,
+                "showGraph": false
+            },
+            "host.externalsettings.contractprice": {
+                "showVar": true,
+                "showGraph": false
+            },
+            "host.externalsettings.downloadbandwidthprice": {
+                "showVar": true,
+                "showGraph": false
+            },
+            "host.externalsettings.storageprice": {
+                "showVar": true,
+                "showGraph": false
+            },
+            "host.externalsettings.uploadbandwidthprice": {
+                "showVar": true,
+                "showGraph": false
+            },
+            "host.externalsettings.totalstorage": {
+                "showVar": true,
+                "showGraph": false
+            },
+            "host.externalsettings.remainingstorage": {
+                "showVar": true,
+                "showGraph": false
+            }
+        }
+    }
+}

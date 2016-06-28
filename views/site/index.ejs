@@ -1,0 +1,23 @@
+<% req.__scriptAtHeader = false; %>
+<% req.__script = "underscore-min;index" %>
+<% include partial/header %>
+
+<div style="text-align:center;">
+	<img src="/images/sia-cluster.svg" style="width:164px; margin-top:100px;"/>
+</div>
+
+<!--
+<div style="text-align:center; margin: 64px 0px;">
+	<a href="/login" class="mdl-button mdl-button--raised mdl-js-button mdl-button--colored" style="min-width:100px;">
+		<i class="material-icons">fingerprint</i> <%=_T("Login")%>
+	</a>
+</div>
+-->
+
+<script>
+	window.redirect_uri = '<%= (req.query.redirect_uri || "/") %>';
+	var App = {
+		msg: <%- JSON.stringify(req.flash()); %>
+	}
+</script>
+<% include partial/footer %>

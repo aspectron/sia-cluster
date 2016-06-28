@@ -1,0 +1,38 @@
+//
+//  Sia Cluster local config file
+//
+//  WARNING: You must create unique auth string that you use throughout your deployment!
+//  
+//  To create user account - https://github.com/aspectron/sia-cluster#user-access
+//
+
+{
+    rpc : {
+        // server
+        nodes : {
+            port : 58481,
+            auth : "1299ece0263565a53df103a34910884d5016a10d86c06e5f309f17761a965d28" // your auth
+        },
+        // client to remote server        
+//        remote_node_as_server_1 : {
+//            address : '<ip-of-remote-node-server>:17412',
+//            auth : "1299ece0263565a53df103a34910884d5016a10d86c06e5f309f17761a965d28" // your auth
+//        }
+    },
+
+    http : {
+        // 'localhost' to listen on local interface only,
+        // useful if you are proxying via NGINX
+        //
+        // host : "127.0.0.1",
+        //
+        basicAuth : {
+            user : "sia",
+            pass : "q1w2e3r4"
+        }
+    },
+
+    users : {
+        "test": {pass: "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"}
+    }
+}
