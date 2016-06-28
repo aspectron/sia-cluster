@@ -3,6 +3,7 @@
 		<style include="iron-flex app-style node-setting-style">
 			.panels{@apply(--layout-horizontal); @apply(--layout-wrap)}
 			.panels .panel{min-width: 320px; @apply(--layout-flex); position: relative;overflow:hidden;}
+			.panels .panel::shadow h2.title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 			.panels .panel::shadow>.content{max-width:100%;max-height:100%;}
 			.panels sia-node.panel{min-width: 300px;}
 			.panel::shadow .table{background-color: #FFF;}
@@ -16,7 +17,8 @@
 			.slider-label{padding-left:16px;}
 			paper-slider.slider{display: block;width: 100%;box-sizing: border-box;padding-right: 32px;margin-bottom:15px;}
 			*::shadow .wrapper.sia-field{font-size:100%}
-			*::shadow .wrapper.sia-field .title{font-size:87%;}
+			*::shadow .wrapper.sia-field .title,
+			*::shadow .wrapper.sia-field>*{font-size:87%;}
 			*::shadow .wrapper.sia-field .dropdown-trigger iron-icon{height:10px;width:10px;}
 			.panel::shadow paper-tabs{font-size:87%}
 			.panel::shadow iris-d3-series-chart::content #chart{font-size: 63%;}
@@ -95,7 +97,7 @@
 				<neon-animatable class="fit items" page="ui" on-mouseup="fadeInSettingDialog">
 					<label class="slider-label"><%=_T("Font Size")%> <span>[[settings.fontSize]]</span>%</label>
 					<paper-slider snaps pin
-						step='1' min="50" max="100"
+						step='1' min="50" max="150"
 						immediate-value="{{settings.fontSize}}"
 						value="[[settings.fontSize]]"
 						class="slider"
