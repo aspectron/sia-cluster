@@ -227,7 +227,7 @@
 				}
 			},
 			onValueChanged: function(){
-				if (this._isSiaCoinField())
+				if (this._isSiaCoinField() || this._isTimeField())
 					this.set("_value", this._V(this.value));
 				else
 					this.set("_value", this.value);
