@@ -257,6 +257,10 @@
 				var f = (this.format || "").toLowerCase();
 				return f == "htb";
 			},
+			_isTimeField : function() {
+				var f = (this.format || "").toLowerCase();
+				return f == "days" || f == "hrs";
+			},
 			_isEditable: function(editable){
 				return !!editable;
 			},
@@ -328,6 +332,8 @@
 					case 'hbb': return self._HBB(v, self.precision);
 					case 'htb': return self._HTB(v, self.precision);
 					case 'int': return parseInt(v);
+					case 'days': return Math.round(v / 6 / 24);
+					case 'hrs': return Math.round(v / 6);
 					case "large-number":
 						v = parseFloat(v).toHashMetric(self.precision, self.unit, self.commas);
 						_.find(n, function(name, key){
@@ -412,6 +418,17 @@
 						value = bigInt(Math.round(value*1000)).divide(1e15).toString();
 					}
 				}
+				else if(self._isTimeField()) {
+					var f = (this.format || "").toLowerCase();
+
+					if(f == 'days')
+						value = Math.round(value * 24 * 6);
+					else
+					if(f == 'hrs')
+						value = Math.round(value * 6);
+				}
+
+
 				App.rpc.dispatch({
 					op:self.op,
 					name: self.editable,

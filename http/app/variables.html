@@ -55,7 +55,9 @@
             "^storage.*bytes": "file-size-si",
             "^network.*bytes.*" : "file-size-si",
             "^host.*settings\.(maxdownloadbatchsize|maxrevisebatchsize|sectorsize)" : "file-size",
-            "^network.*packets$" : "int"
+            "^network.*packets$" : "int",
+            "^host.*settings\.windowsize" : "hrs",
+            "^host.*settings\.maxduration" : "days"
 		},
         editable : {
             "^host\.internalsettings\.acceptingcontracts" : Boolean,
@@ -122,7 +124,7 @@
             "host.externalsettings.maxduration": {
                 "title": "Max duration",
                 "help": "The maximum duration that a host will allow for a file contract. The host commits to keeping files for the full duration under the threat of facing a large penalty for losing or dropping data before the duration is complete. The storage proof window of an incoming file contract must end before the current height + maxduration.",
-                //"units" : units.BlockHeight
+                "suffix" : "Days"
             },
             "host.externalsettings.netaddress": {
                 "title": "Network Address",
@@ -147,7 +149,7 @@
             "host.externalsettings.windowsize": {
                 "title": "Window size",
                 "help": "The storage proof window is the number of blocks that the host has to get a storage proof onto the blockchain. The window size is the minimum size of window that the host will accept in a file contract.",
-                "suffix" : "Blocks"
+                "suffix" : "Hrs"
             },
             "host.externalsettings.collateral": {
                 "title": "Collateral",
@@ -251,7 +253,7 @@
             "host.internalsettings.maxduration": {
                 "title": "Max Duration",
                 "help": "The maximum duration of a file contract that the host will accept. The storage proof window must end before the current height + maxduration.",
-                "suffix" : "Blocks"
+                "suffix" : "Days"
             },
             "host.internalsettings.maxdownloadbatchsize": {
                 "title": "Max Downlaod Batch Size",
@@ -268,7 +270,7 @@
             "host.internalsettings.windowsize": {
                 "title": "Window Size",
                 "help": "The storage proof window is the number of blocks that the host has to get a storage proof onto the blockchain. The window size is the minimum size of window that the host will accept in a file contract.",
-                "suffix" : "Blocks"
+                "suffix" : "Hrs"
             },
             "host.internalsettings.collateral": {
                 "title": "Collateral",
