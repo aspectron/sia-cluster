@@ -345,8 +345,8 @@
             this._ignore = _.map(this.ignore, function(regex){
                 return {regexp: new RegExp(regex)};
             });
-            this._captions = _.map(this.captions, function(c){
-                return {regexps: buildRegexpList(c.regex), fn: c.fn.bind(NodeVariableSettings)};
+            this._captions = _.map(this.captions, function(fn, regex){
+                return {regexp: new RegExp(regex), fn: fn.bind(NodeVariableSettings)};
             });
             
 		},

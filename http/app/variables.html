@@ -7,34 +7,44 @@
     }
 
 	var NodeVariableSettings = {
-        captions:[{
-            regex: [
-                "host\.internalsettings\..*",
-                "host\.networkmetrics\..*",
-                "host\.financialmetrics\..*"
-            ],
-            fn: function(str){
+        captions:{
+            "host\.internalsettings\..*": function(str){
                 var s = str.split(".");
                 var varName     = s[2];
                 var a = [];
-                /*
-                var groupName   = s[1];
-                var gName = {
-                    internalsettings: "Internal",
-                    networkmetrics: "Network-metric"
-                }
-                a.push(gName[groupName]);
-                */
                 
                 _.each(varName.split(/(download|limit|growth|speed|price|upload|bandwidth|potential|erevenue)/g), function(e){
                     if (!e)
                         return
                     a.push(e[0].toUpperCase()+e.substr(1)); 
                 })
-                //console.log("s", str, s, a)
+                return a.join(" ");
+            },
+            "host\.networkmetrics\..*": function(str){
+                var s = str.split(".");
+                var varName     = s[2];
+                var a = [];
+                
+                _.each(varName.split(/(download|limit|growth|speed|price|upload|bandwidth|potential|erevenue)/g), function(e){
+                    if (!e)
+                        return
+                    a.push(e[0].toUpperCase()+e.substr(1)); 
+                })
+                return a.join(" ");
+            },
+            "host\.financialmetrics\..*": function(str){
+                var s = str.split(".");
+                var varName     = s[2];
+                var a = [];
+                
+                _.each(varName.split(/(download|limit|growth|speed|price|upload|bandwidth|potential|erevenue)/g), function(e){
+                    if (!e)
+                        return
+                    a.push(e[0].toUpperCase()+e.substr(1)); 
+                })
                 return a.join(" ");
             }
-        }],
+        },
         groups: [{
             title : '<%= _T("System") %>',
             regex : [/^system|^version|^consensus/]
