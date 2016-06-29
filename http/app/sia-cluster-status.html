@@ -6,7 +6,7 @@
 		<div class="content">
 			<!-- paper-icon-button icon="settings" class="setting-icon" on-click="openSettings"></paper-icon-button -->
 			<h2 class="title"><div class="flex"><%=_T("Pricing")%></div></h2>
-			<div class="layout vertical flex" on-click="toggleChartInterval">
+			<div class="layout vertical flex">
 				<iris-d3-series-chart
 					id="chart"
 					class="flex"
@@ -89,6 +89,10 @@
 					self.data = args;//_.extend(self.data,args);
 				});
 
+				$(document.body).on("graph-range-changed", function(e, data){
+					self.fetchChartData(1000);
+				});
+
 				self.fetchChartData(1);
 			},
 			fetchChartData: function(delay){
@@ -103,20 +107,17 @@
 				// @surinder
 				// request for ranges and variable names should originate from here
 				// (and then moved into date selector)
-		        var daySeconds  = 24 * 60 * 60 * 1000;
-				var endTS = Date.now();
-				var startTS = endTS - 2 * daySeconds;
+				var graphRange = App.getGraphRange();
 				var names = {
 
 				}
 				// ----------------------
 				
 				App.rpc.dispatch({
-					op:"get-cluster-stats", 
-					interval: self.chartInterval, 
+					op:"get-cluster-stats",
 					points: width,
-					startTS : startTS,
-					endTS : endTS
+					startTS : graphRange.startTS,
+					endTS : graphRange.endTS
 				}, function(err, result){
 					if (err){
 						self.fetchChartData();

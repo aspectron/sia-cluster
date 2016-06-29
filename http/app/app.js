@@ -31,6 +31,18 @@ App = _.extend(window.App || {}, {
 	},
 	hideLoading: function(){
 		$(document.body).removeClass('loading')
+	},
+	_graphRange: 24,
+	setGraphRange: function(hours){
+		if (this._graphRange == hours)
+			return;
+		this._graphRange = hours;
+		$(document.body).trigger("graph-range-changed", {graphRange: this._graphRange});
+	},
+	getGraphRange: function(){
+		var endTS 		= Date.now();
+		var startTS 	= endTS - this._graphRange * 60 * 60 * 1000;
+		return {endTS: endTS, startTS: startTS};
 	}
 })
 

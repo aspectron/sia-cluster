@@ -65,6 +65,9 @@
 			ready: function(){
 				var self = this;
 				self.fetchData(1);
+				$(document.body).on("graph-range-changed", function(e, data){
+					self.fetchData(1000);
+				});
 			},
 			onVariableChange: function(){
 				this.set("data", []);
@@ -77,9 +80,8 @@
 			},
 			fetchData: function(delay){
 				if (!this.active || this._isLoading)
-					return
-				self.noRefresh && console.log("this.timeInterval", this.timeInterval)
-				this.debounce("fetchData", this._fetchData, delay || this.timeInterval, 10);
+					return;
+				this.debounce("fetchData", this._fetchData, delay || this.timeInterval);
 			},
 			_fetchData: function (){
 				var self 	= this;
@@ -87,10 +89,13 @@
 				var width 	= c.getBoundingClientRect().width;
 				width       = width - c.marginLeft - c.marginRight;
 				self._isLoading = true;
+				var graphRange 	= App.getGraphRange();
 				App.rpc.dispatch({
 					op: "get-variable-graph-data",
 					variable: self.variable,
 					points: width,
+					startTS : graphRange.startTS,
+					endTS : graphRange.endTS,
 					node: self.node
 				}, function(err, result){
 					self._isLoading = false;

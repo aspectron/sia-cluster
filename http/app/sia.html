@@ -45,6 +45,8 @@
 			.top-toolbar .app-icon{display:block;height:24px;margin-right:16px;}
 			.top-toolbar .title{font-family:"Ubuntu";}
 			.tabs{outline:none}
+			.tabs paper-menu-button{@apply(--layout-horizontal);@apply(--layout-center);padding:0px;}
+			.tabs paper-menu-button paper-item{min-width:40px;cursor:pointer;}
 			.tabs paper-tab,
 			iris-language-selector::shadow .dropdown-trigger{font-size:16px;font-family:"Ubuntu";-webkit-font-smoothing:antialiased;}
 			paper-tab span,
@@ -149,6 +151,16 @@
 						<paper-tab hidden class="tab" data-tab-id="dashboard" on-click="doHash">
 							<iron-icon icon="icons:home"></iron-icon><span><%= _T("DASHBOARD") %></span>
 						</paper-tab>
+						<paper-menu-button vertical-offset="40" horizontal-offset="4" horizontal-align="right">
+							<paper-tab class="dropdown-trigger">
+								<iron-icon icon="icons:timeline"></iron-icon><span><%= _T("Graph") %></span>
+							</paper-tab>
+							<paper-menu class="dropdown-content" selected="{{selectedGraphRange}}" attr-for-selected="value">
+								<template is="dom-repeat" items="[[graphMenus]]">
+									<paper-item value="[[item.value]]">[[item.text]]</paper-item>
+								</template>
+							</paper-menu>
+						</paper-menu-button>
 						<paper-tab on-click="openSettings">
 							<iron-icon icon="icons:settings"></iron-icon><span><%= _T("SETTINGS") %></span>
 						</paper-tab>
@@ -187,6 +199,27 @@
 						t0: "Sia Cluster",
 						t1: "Settings"
 					}
+				},
+				selectedGraphRange:{
+					type: Number,
+					value: 24,
+					observer: "onGraphRangeChanged"
+				},
+				graphMenus:{
+					type: Array,
+					value: [
+						{value:1, text: "1H"},
+						{value:2, text: "2H"},
+						{value:4, text: "4H"},
+						{value:8, text: "8H"},
+						{value:12, text: "12H"},
+						{value:24, text: "24H"},
+						{value:48, text: "48H"},
+						{value:72, text: "3D"},
+						{value:168, text: "7D"},
+						{value:336, text: "2W"},
+						{value:672, text: "4W"}
+					]
 				}
 			},
 			observers:["onRootPathChanged(rootData.*)"],
@@ -211,6 +244,9 @@
 					self.set('loginBtnText', '<%= _T("SIGN-IN") %>');
 					self.set('username', '');
 				}
+			},
+			onGraphRangeChanged: function(){
+				App.setGraphRange(this.selectedGraphRange);
 			},
 			onTopToolbarClick: function(e){
 				var target = e.target;
