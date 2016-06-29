@@ -54,7 +54,8 @@
 			"(remainingstorage|totalstorage)$": "file-size-si",
             "^storage.*bytes": "file-size-si",
             "^network.*bytes.*" : "file-size-si",
-            "^host.*settings\.(maxdownloadbatchsize|maxrevisebatchsize|sectorsize)" : "file-size"
+            "^host.*settings\.(maxdownloadbatchsize|maxrevisebatchsize|sectorsize)" : "file-size",
+            "^network.*packets$" : "int"
 		},
         editable : {
             "^host\.internalsettings\.acceptingcontracts" : Boolean,
@@ -95,7 +96,14 @@
                 "title": "Version, Platform",
                 "help": "Version and Platform."
             },
-           
+            "version.version": {
+                "title": "Version.",
+                "help" : "Version of the Sia Daemon"
+            },
+            "version.platform": {
+                "title":"Platform",
+                "help":"OS Platform"
+            },           
             "host.externalsettings.acceptingcontracts": {
                 "title": "Accepting contracts",
                 "help": "Whether or not the host is accepting new contracts.",

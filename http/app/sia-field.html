@@ -327,6 +327,7 @@
 					case 'h': return self._SC(v, self.precision);
 					case 'hbb': return self._HBB(v, self.precision);
 					case 'htb': return self._HTB(v, self.precision);
+					case 'int': return parseInt(v);
 					case "large-number":
 						v = parseFloat(v).toHashMetric(self.precision, self.unit, self.commas);
 						_.find(n, function(name, key){

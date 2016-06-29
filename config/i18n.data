@@ -2402,3 +2402,43 @@ ce2e9cb9a27a501f.orphan     false
 ce2e9cb9a27a501f.ts         1467156148855
 ce2e9cb9a27a501f.locale.en  "Panel minimum width:"
 ce2e9cb9a27a501f.
+2ddec89173eada26.
+2ddec89173eada26.hash       "2ddec89173eada26"
+2ddec89173eada26.sha1       "330d8c6b569ec1e3549e1a377aa6286224dc56da"
+2ddec89173eada26.category   "basic"
+2ddec89173eada26.original   "en"
+2ddec89173eada26.multiline  false
+2ddec89173eada26.orphan     false
+2ddec89173eada26.ts         1467179526828
+2ddec89173eada26.locale.en  "Version."
+2ddec89173eada26.
+7ae202383b288916.
+7ae202383b288916.hash       "7ae202383b288916"
+7ae202383b288916.sha1       "5c70ebeecdb681bef3814ad5a227a03d3e38d28c"
+7ae202383b288916.category   "basic"
+7ae202383b288916.original   "en"
+7ae202383b288916.multiline  false
+7ae202383b288916.orphan     false
+7ae202383b288916.ts         1467179526836
+7ae202383b288916.locale.en  "Version of the Sia Daemon"
+7ae202383b288916.
+a995727ae036e11.
+a995727ae036e11.hash       "a995727ae036e11"
+a995727ae036e11.sha1       "123a7f2fcc9ae7cbbbd7c7627a483853a9708dab"
+a995727ae036e11.category   "basic"
+a995727ae036e11.original   "en"
+a995727ae036e11.multiline  false
+a995727ae036e11.orphan     false
+a995727ae036e11.ts         1467179526837
+a995727ae036e11.locale.en  "Platform"
+a995727ae036e11.
+fc3a85e6d5f60ffe.
+fc3a85e6d5f60ffe.hash       "fc3a85e6d5f60ffe"
+fc3a85e6d5f60ffe.sha1       "fba835484092f056f446174cd4713ee547e5d33b"
+fc3a85e6d5f60ffe.category   "basic"
+fc3a85e6d5f60ffe.original   "en"
+fc3a85e6d5f60ffe.multiline  false
+fc3a85e6d5f60ffe.orphan     false
+fc3a85e6d5f60ffe.ts         1467179526838
+fc3a85e6d5f60ffe.locale.en  "OS Platform"
+fc3a85e6d5f60ffe.
