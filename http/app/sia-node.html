@@ -381,6 +381,9 @@
 					v = _.isUndefined(keyValueMap[f.key])? "" : keyValueMap[f.key];
 					f.value = v;
 					title = fieldInfo[f.key] && fieldInfo[f.key].title;
+					if (!title)
+						title = NodeVariableSettings.getCaption(f.key)
+
 					if (f.showGraph)
 						graphFields.push({
 							key: f.key,

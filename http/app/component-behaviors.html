@@ -128,7 +128,7 @@
 					f.title = fieldInfo[f.key].title;
 					f.help = fieldInfo[f.key].help;
 				}else{
-					f.title = f.key;
+					f.title = NodeVariableSettings.getCaption(f.key);
 				}
 				g = NodeVariableSettings.getGroup(f.key);
 				if (!groups[g.title]){
@@ -314,9 +314,8 @@
 
 	_.extend(NodeVariableSettings,{
 		init: function(){
-			this._groups = _.map(this.groups, function(g, index){
-                var regexps = [];
-                var regex = g.regex;
+			function buildRegexpList(regex){
+				var regexps = [];
                 if (!_.isArray(regex))
                     regex = [regex];
 
@@ -325,9 +324,11 @@
                         regexps.push(new RegExp(e))
                     else
                         regexps.push(e);
-                })
-
-				return {regexps: regexps, title: g.title, items: []};
+                });
+                return regexps;
+			}
+			this._groups = _.map(this.groups, function(g, index){
+				return {regexps: buildRegexpList(g.regex), title: g.title, items: []};
 			});
 			this._formatters = _.map(this.formatter, function(fn, regex){
 				return {regexp: new RegExp(regex), fn: fn.bind(VariableDataFormatter)};
@@ -344,12 +345,18 @@
             this._ignore = _.map(this.ignore, function(regex){
                 return {regexp: new RegExp(regex)};
             });
+            this._captions = _.map(this.captions, function(c){
+                return {regexps: buildRegexpList(c.regex), fn: c.fn.bind(NodeVariableSettings)};
+            });
             
 		},
         _findObject: function(list, variable){
             var v = variable.replace(/\-/g, '.');
             return _.find(list, function(e){
-                return e.regexp.test(v);
+            	if (e.regexp)
+                	return e.regexp.test(v);
+                else if(e.regexps)
+                	return _.find(e.regexps, function(e){ return e.test(v); });
             });
         },
 		getGroup: function (variable){
@@ -377,6 +384,10 @@
         },
         isDisabled: function(variable){
             return !!this._findObject(this._ignore, variable);
+        },
+        getCaption: function(variable){
+        	var s = this._findObject(this._captions, variable);
+            return s ? s.fn(variable) : variable;
         }
 	});
 
