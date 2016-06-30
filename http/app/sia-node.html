@@ -113,7 +113,7 @@
 		</paper-dialog>
 		<paper-dialog id="passphraseDialog" class="dialog passphrase-dialog layout vertical">
 			<paper-toolbar>
-				<div class="title"><%=_T("SETUP CUSTOM PASSPHRASE")%></div>
+				<div class="title"><%=_T("SETUP CUSTOM PASSPHRASE:")%> [[ident]]</div>
 				<paper-icon-button icon="close" dialog-dismiss></paper-icon-button>
 			</paper-toolbar>
 			<paper-dialog-scrollable class="flex">
@@ -272,7 +272,7 @@
 						return App.error(err);
 
 					self.set("passphraseData", {});
-					IRIS.Alert({title:'<%= _T("Success") %>', text: '<%= _T("Local passphrase saved successfully.") %>'})
+					IRIS.Alert({title:'<%= _T("Success") %>', text: '<%= _T("Custom passphrase saved successfully.") %>'})
 					console.log("result", result)
 				});
 			},

@@ -15,7 +15,7 @@
 					x-scale="time"
 					date-format="[[chart.SC_TB_MO.dateFormat]]"
 					margin-top="20"
-					margin-bottom="60"
+					margin-bottom="32"
 					margin-right="80"
 					line-interpolate="linear"
 					y-ticks-count="5"
@@ -27,7 +27,7 @@
 			</div>
 			<div class="setting-fields">
 				<sia-field title="Track Price" value="[[data.TRACK_STORAGE_PRICE]]" format="bool" bool-text="Yes/No" editable="TRACK_STORAGE_PRICE"></sia-field>
-				<sia-field title="Track Method" value="[[data.MARKET_USD_PEG]]" format="bool" bool-text="USD Peg/Average" editable="MARKET_USD_PEG"></sia-field>
+				<sia-field title="Track Method" value="[[data.TRACK_MODE]]" format="radio" radio-values="PEG:USD Peg|AVG:Average|WAVG:Weighted" editable="TRACK_MODE"></sia-field>
 				<sia-field title="Target USD/TB/MO (Peg)" value="[[data.TARGET_USD_TB_MO]]" type="fiat" editor-h-align="left" editable="TARGET_USD_TB_MO" x-suffix="(Peg)"></sia-field>
 				<sia-field title="Price Factor (Avg.)" value="[[data.AVG_PRICE_FACTOR]]"  editor-h-align="left" editable="AVG_PRICE_FACTOR" x-suffix="(Multiplier)"></sia-field>
 				<sia-field title="Min Price" value="[[data.MIN_PRICE]]"  editor-h-align="left" editable="MIN_PRICE" format="SC"></sia-field>

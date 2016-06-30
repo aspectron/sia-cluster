@@ -218,9 +218,9 @@ Sia Cluster provides ability to automatically control storage pricing. Pricing c
 Following parameters for price tracking are available in the Sia Cluster panel:
 
 * **Track Price** - Enable / Disable price tracking on nodes
-* **Track Method** - **USD Peg** or **Average**
+* **Track Method** - **USD Peg**, **Average** or **Weighted**
 * **Target USD/TB/MO** - For USD Pegging: Target USD value per TB per Month
-* **Price Factor (Avg.)** - For Average Host Price: Multiplier for average host price to set local cluster price
+* **Price Factor (Avg.)** - For Average or Weighted Host Price: Multiplier for average or weighted host price to set local cluster price (for example: 0.9 will result in 90% of the average or weighted price)
 * **Min Price** - Minimum price (floor - price won't drop below this value)
 * **Max Price** - Maximum price (ceiling - price won't go above this value)
 * **Storage Price Update** - Time interval for price updates in minutes

@@ -58,7 +58,7 @@ be03046672f0d784.sha1       "89dc0f310a5e7ccb32417accfce5cc13438e7a25"
 be03046672f0d784.category   "basic"
 be03046672f0d784.original   "en"
 be03046672f0d784.multiline  false
-be03046672f0d784.orphan     false
+be03046672f0d784.orphan     true
 be03046672f0d784.ts         1467038430031
 be03046672f0d784.locale.en  "Activation completed. Now you can login."
 be03046672f0d784.
@@ -68,7 +68,7 @@ be03046672f0d784.
 4e9819af760ab8a2.category   "basic"
 4e9819af760ab8a2.original   "en"
 4e9819af760ab8a2.multiline  false
-4e9819af760ab8a2.orphan     false
+4e9819af760ab8a2.orphan     true
 4e9819af760ab8a2.ts         1467038430038
 4e9819af760ab8a2.locale.en  "Error in account activation"
 4e9819af760ab8a2.
@@ -78,7 +78,7 @@ be03046672f0d784.
 16106c183c9ef4ef.category   "basic"
 16106c183c9ef4ef.original   "en"
 16106c183c9ef4ef.multiline  false
-16106c183c9ef4ef.orphan     false
+16106c183c9ef4ef.orphan     true
 16106c183c9ef4ef.ts         1467038430041
 16106c183c9ef4ef.locale.en  "Server Error"
 16106c183c9ef4ef.
@@ -88,7 +88,7 @@ d695b0593882ebf.sha1       "025e36f4ede226c479c1395e58d20b32b2cde998"
 d695b0593882ebf.category   "basic"
 d695b0593882ebf.original   "en"
 d695b0593882ebf.multiline  false
-d695b0593882ebf.orphan     false
+d695b0593882ebf.orphan     true
 d695b0593882ebf.ts         1467038430044
 d695b0593882ebf.locale.en  "We have send you activation email. Please check your inbox or spam folder."
 d695b0593882ebf.
@@ -98,7 +98,7 @@ d695b0593882ebf.
 15ec9ee9f045538b.category   "basic"
 15ec9ee9f045538b.original   "en"
 15ec9ee9f045538b.multiline  false
-15ec9ee9f045538b.orphan     false
+15ec9ee9f045538b.orphan     true
 15ec9ee9f045538b.ts         1467038430046
 15ec9ee9f045538b.locale.en  "Acccount Created."
 15ec9ee9f045538b.
@@ -108,7 +108,7 @@ d695b0593882ebf.
 578b7c88a8df1d37.category   "basic"
 578b7c88a8df1d37.original   "en"
 578b7c88a8df1d37.multiline  false
-578b7c88a8df1d37.orphan     false
+578b7c88a8df1d37.orphan     true
 578b7c88a8df1d37.ts         1467038430049
 578b7c88a8df1d37.locale.en  "Your access to the login system remains blocked for ##min## min ##sec## sec"
 578b7c88a8df1d37.
@@ -118,7 +118,7 @@ abcf266c7f4ab16.sha1       "4e5a2893bdcc7d239c1db72e4c4ffbe4bea73174"
 abcf266c7f4ab16.category   "basic"
 abcf266c7f4ab16.original   "en"
 abcf266c7f4ab16.multiline  false
-abcf266c7f4ab16.orphan     false
+abcf266c7f4ab16.orphan     true
 abcf266c7f4ab16.ts         1467038430052
 abcf266c7f4ab16.locale.en  "Login"
 abcf266c7f4ab16.
@@ -128,7 +128,7 @@ abcf266c7f4ab16.
 54a32144717fd125.category   "basic"
 54a32144717fd125.original   "en"
 54a32144717fd125.multiline  false
-54a32144717fd125.orphan     false
+54a32144717fd125.orphan     true
 54a32144717fd125.ts         1467038430055
 54a32144717fd125.locale.en  "E-Mail"
 54a32144717fd125.
@@ -138,7 +138,7 @@ abcf266c7f4ab16.
 1942bada3242391a.category   "basic"
 1942bada3242391a.original   "en"
 1942bada3242391a.multiline  false
-1942bada3242391a.orphan     false
+1942bada3242391a.orphan     true
 1942bada3242391a.ts         1467038430058
 1942bada3242391a.locale.en  "Password"
 1942bada3242391a.
@@ -148,7 +148,7 @@ abcf266c7f4ab16.
 1ee2006b657e82d0.category   "basic"
 1ee2006b657e82d0.original   "en"
 1ee2006b657e82d0.multiline  false
-1ee2006b657e82d0.orphan     false
+1ee2006b657e82d0.orphan     true
 1ee2006b657e82d0.ts         1467038430072
 1ee2006b657e82d0.locale.en  "One time password"
 1ee2006b657e82d0.
@@ -158,7 +158,7 @@ b61bc26a37171ccf.sha1       "c9aa3c36b614df595fe8b4a527d58e05746df557"
 b61bc26a37171ccf.category   "basic"
 b61bc26a37171ccf.original   "en"
 b61bc26a37171ccf.multiline  false
-b61bc26a37171ccf.orphan     false
+b61bc26a37171ccf.orphan     true
 b61bc26a37171ccf.ts         1467038430086
 b61bc26a37171ccf.locale.en  "Remember Me"
 b61bc26a37171ccf.
@@ -168,7 +168,7 @@ b61bc26a37171ccf.
 64544526aa511dca.category   "basic"
 64544526aa511dca.original   "en"
 64544526aa511dca.multiline  false
-64544526aa511dca.orphan     false
+64544526aa511dca.orphan     true
 64544526aa511dca.ts         1467038430096
 64544526aa511dca.locale.en  "Log In"
 64544526aa511dca.
@@ -178,7 +178,7 @@ b61bc26a37171ccf.
 81a42622be5dbbe.category   "basic"
 81a42622be5dbbe.original   "en"
 81a42622be5dbbe.multiline  false
-81a42622be5dbbe.orphan     false
+81a42622be5dbbe.orphan     true
 81a42622be5dbbe.ts         1467038430099
 81a42622be5dbbe.locale.en  "Forgot Password?"
 81a42622be5dbbe.
@@ -188,7 +188,7 @@ b61bc26a37171ccf.
 8607dd2c8d9ad9bf.category   "basic"
 8607dd2c8d9ad9bf.original   "en"
 8607dd2c8d9ad9bf.multiline  false
-8607dd2c8d9ad9bf.orphan     false
+8607dd2c8d9ad9bf.orphan     true
 8607dd2c8d9ad9bf.ts         1467038430117
 8607dd2c8d9ad9bf.locale.en  "Register"
 8607dd2c8d9ad9bf.
@@ -198,7 +198,7 @@ b61bc26a37171ccf.
 557b5663e201f159.category   "basic"
 557b5663e201f159.original   "en"
 557b5663e201f159.multiline  false
-557b5663e201f159.orphan     false
+557b5663e201f159.orphan     true
 557b5663e201f159.ts         1467038430120
 557b5663e201f159.locale.en  "Cancel"
 557b5663e201f159.
@@ -208,7 +208,7 @@ c3df3b43239ecb12.sha1       "4832e45812a2724f16a15f9ae87adfc8ae4168cf"
 c3df3b43239ecb12.category   "basic"
 c3df3b43239ecb12.original   "en"
 c3df3b43239ecb12.multiline  false
-c3df3b43239ecb12.orphan     false
+c3df3b43239ecb12.orphan     true
 c3df3b43239ecb12.ts         1467038430123
 c3df3b43239ecb12.locale.en  "Contact us"
 c3df3b43239ecb12.
@@ -218,7 +218,7 @@ c3df3b43239ecb12.
 5f78edb994d91f2a.category   "basic"
 5f78edb994d91f2a.original   "en"
 5f78edb994d91f2a.multiline  false
-5f78edb994d91f2a.orphan     false
+5f78edb994d91f2a.orphan     true
 5f78edb994d91f2a.ts         1467038430126
 5f78edb994d91f2a.locale.en  "Subject"
 5f78edb994d91f2a.
@@ -228,7 +228,7 @@ eea20f4e3f0b5c5d.sha1       "68f4145fee7dde76afceb910165924ad14cf0d00"
 eea20f4e3f0b5c5d.category   "basic"
 eea20f4e3f0b5c5d.original   "en"
 eea20f4e3f0b5c5d.multiline  false
-eea20f4e3f0b5c5d.orphan     false
+eea20f4e3f0b5c5d.orphan     true
 eea20f4e3f0b5c5d.ts         1467038430128
 eea20f4e3f0b5c5d.locale.en  "Message"
 eea20f4e3f0b5c5d.
@@ -238,7 +238,7 @@ eea20f4e3f0b5c5d.
 686c14b1f98ca1ef.category   "basic"
 686c14b1f98ca1ef.original   "en"
 686c14b1f98ca1ef.multiline  false
-686c14b1f98ca1ef.orphan     false
+686c14b1f98ca1ef.orphan     true
 686c14b1f98ca1ef.ts         1467038430132
 686c14b1f98ca1ef.locale.en  "Submit"
 686c14b1f98ca1ef.
@@ -248,7 +248,7 @@ c400154e4317d6a7.sha1       "bba3a6846c3abf1895d2566722522340a9e7fc94"
 c400154e4317d6a7.category   "basic"
 c400154e4317d6a7.original   "en"
 c400154e4317d6a7.multiline  false
-c400154e4317d6a7.orphan     false
+c400154e4317d6a7.orphan     true
 c400154e4317d6a7.ts         1467038430134
 c400154e4317d6a7.locale.en  "Please provide complete detail."
 c400154e4317d6a7.
@@ -258,7 +258,7 @@ c400154e4317d6a7.
 7d4bbdd5dca56de5.category   "basic"
 7d4bbdd5dca56de5.original   "en"
 7d4bbdd5dca56de5.multiline  false
-7d4bbdd5dca56de5.orphan     false
+7d4bbdd5dca56de5.orphan     true
 7d4bbdd5dca56de5.ts         1467038430136
 7d4bbdd5dca56de5.locale.en  "Unable to submit."
 7d4bbdd5dca56de5.
@@ -268,7 +268,7 @@ ce6233332b7b6bc.sha1       "c1e4d7220a83ab22fdb54299b6d85b9a004ce50f"
 ce6233332b7b6bc.category   "basic"
 ce6233332b7b6bc.original   "en"
 ce6233332b7b6bc.multiline  false
-ce6233332b7b6bc.orphan     false
+ce6233332b7b6bc.orphan     true
 ce6233332b7b6bc.ts         1467038430139
 ce6233332b7b6bc.locale.en  "Thanks for contacting us. we will respond soon."
 ce6233332b7b6bc.
@@ -278,7 +278,7 @@ ce6233332b7b6bc.
 5973e1203c646.category   "basic"
 5973e1203c646.original   "en"
 5973e1203c646.multiline  false
-5973e1203c646.orphan     false
+5973e1203c646.orphan     true
 5973e1203c646.ts         1467038430143
 5973e1203c646.locale.en  "OK"
 5973e1203c646.
@@ -288,7 +288,7 @@ c1325d3ef8e547.sha1       "dbc87420347a2d9903d256035f6466489d185381"
 c1325d3ef8e547.category   "basic"
 c1325d3ef8e547.original   "en"
 c1325d3ef8e547.multiline  false
-c1325d3ef8e547.orphan     false
+c1325d3ef8e547.orphan     true
 c1325d3ef8e547.ts         1467038430146
 c1325d3ef8e547.locale.en  "CLOSE"
 c1325d3ef8e547.
@@ -298,7 +298,7 @@ ab177243c0d34939.sha1       "1507c40f043249fe6b5e25ba0cc97010cefa6d12"
 ab177243c0d34939.category   "basic"
 ab177243c0d34939.original   "en"
 ab177243c0d34939.multiline  false
-ab177243c0d34939.orphan     false
+ab177243c0d34939.orphan     true
 ab177243c0d34939.ts         1467038430149
 ab177243c0d34939.locale.en  "CANCEL"
 ab177243c0d34939.
@@ -308,7 +308,7 @@ ba83025f5428510.sha1       "600584c2d5ccb97c0c0c424d9f32d6b102fcb040"
 ba83025f5428510.category   "basic"
 ba83025f5428510.original   "en"
 ba83025f5428510.multiline  false
-ba83025f5428510.orphan     false
+ba83025f5428510.orphan     true
 ba83025f5428510.ts         1467038430152
 ba83025f5428510.locale.en  "Pages"
 ba83025f5428510.
@@ -318,7 +318,7 @@ ba83025f5428510.
 596e4c203dbcb.category   "basic"
 596e4c203dbcb.original   "en"
 596e4c203dbcb.multiline  false
-596e4c203dbcb.orphan     false
+596e4c203dbcb.orphan     true
 596e4c203dbcb.ts         1467038430156
 596e4c203dbcb.locale.en  "of"
 596e4c203dbcb.
@@ -328,7 +328,7 @@ ba83025f5428510.
 1626c23fc423f9d.category   "basic"
 1626c23fc423f9d.original   "en"
 1626c23fc423f9d.multiline  false
-1626c23fc423f9d.orphan     false
+1626c23fc423f9d.orphan     true
 1626c23fc423f9d.ts         1467038430159
 1626c23fc423f9d.locale.en  "Displaying"
 1626c23fc423f9d.
@@ -338,7 +338,7 @@ b9a525cf41f1309.sha1       "719ea396ad92e01b4757ec2b93bb1e5f270f771d"
 b9a525cf41f1309.category   "basic"
 b9a525cf41f1309.original   "en"
 b9a525cf41f1309.multiline  false
-b9a525cf41f1309.orphan     false
+b9a525cf41f1309.orphan     true
 b9a525cf41f1309.ts         1467038430162
 b9a525cf41f1309.locale.en  "Clear"
 b9a525cf41f1309.
@@ -348,7 +348,7 @@ b871e64655477ca.sha1       "61cc55aa0453184734c3fa0b621eda6fa874bd83"
 b871e64655477ca.category   "basic"
 b871e64655477ca.original   "en"
 b871e64655477ca.multiline  false
-b871e64655477ca.orphan     false
+b871e64655477ca.orphan     true
 b871e64655477ca.ts         1467038430166
 b871e64655477ca.locale.en  "Add"
 b871e64655477ca.
@@ -368,7 +368,7 @@ b871e64655477ca.
 7c6ba6a4b97599d5.category   "basic"
 7c6ba6a4b97599d5.original   "en"
 7c6ba6a4b97599d5.multiline  false
-7c6ba6a4b97599d5.orphan     false
+7c6ba6a4b97599d5.orphan     true
 7c6ba6a4b97599d5.ts         1467038430172
 7c6ba6a4b97599d5.locale.en  "Save"
 7c6ba6a4b97599d5.
@@ -2188,7 +2188,7 @@ a45cbd78dcd49bed.
 4a9fe9a65df48e65.category   "basic"
 4a9fe9a65df48e65.original   "en"
 4a9fe9a65df48e65.multiline  false
-4a9fe9a65df48e65.orphan     false
+4a9fe9a65df48e65.orphan     true
 4a9fe9a65df48e65.ts         1467038430315
 4a9fe9a65df48e65.locale.en  "Local passphrase saved successfully."
 4a9fe9a65df48e65.
@@ -2198,7 +2198,7 @@ a45cbd78dcd49bed.
 220e19f2a642d8c4.category   "basic"
 220e19f2a642d8c4.original   "en"
 220e19f2a642d8c4.multiline  false
-220e19f2a642d8c4.orphan     false
+220e19f2a642d8c4.orphan     true
 220e19f2a642d8c4.ts         1467038430315
 220e19f2a642d8c4.locale.en  "Node must be online"
 220e19f2a642d8c4.
@@ -2208,7 +2208,7 @@ a45cbd78dcd49bed.
 3ae7f36a144cf015.category   "basic"
 3ae7f36a144cf015.original   "en"
 3ae7f36a144cf015.multiline  false
-3ae7f36a144cf015.orphan     false
+3ae7f36a144cf015.orphan     true
 3ae7f36a144cf015.ts         1467038430315
 3ae7f36a144cf015.locale.en  "Network Peers"
 3ae7f36a144cf015.
@@ -2218,7 +2218,7 @@ b9ed594f4859aa9.sha1       "4a94579b037f9ea6ab28613a2b43f4a6dacabb65"
 b9ed594f4859aa9.category   "basic"
 b9ed594f4859aa9.original   "en"
 b9ed594f4859aa9.multiline  false
-b9ed594f4859aa9.orphan     false
+b9ed594f4859aa9.orphan     true
 b9ed594f4859aa9.ts         1467038430316
 b9ed594f4859aa9.locale.en  "Peers"
 b9ed594f4859aa9.
@@ -2228,7 +2228,7 @@ b9ed594f4859aa9.
 9d96a88d15f8b79.category   "basic"
 9d96a88d15f8b79.original   "en"
 9d96a88d15f8b79.multiline  false
-9d96a88d15f8b79.orphan     false
+9d96a88d15f8b79.orphan     true
 9d96a88d15f8b79.ts         1467038430316
 9d96a88d15f8b79.locale.en  "Price"
 9d96a88d15f8b79.
@@ -2238,7 +2238,7 @@ b9ed594f4859aa9.
 50c3a27bf266b93e.category   "basic"
 50c3a27bf266b93e.original   "en"
 50c3a27bf266b93e.multiline  false
-50c3a27bf266b93e.orphan     false
+50c3a27bf266b93e.orphan     true
 50c3a27bf266b93e.ts         1467038430316
 50c3a27bf266b93e.locale.en  "Network"
 50c3a27bf266b93e.
@@ -2248,7 +2248,7 @@ b9ed594f4859aa9.
 3ca397561afd5fa2.category   "basic"
 3ca397561afd5fa2.original   "en"
 3ca397561afd5fa2.multiline  false
-3ca397561afd5fa2.orphan     false
+3ca397561afd5fa2.orphan     true
 3ca397561afd5fa2.ts         1467038430317
 3ca397561afd5fa2.locale.en  "Difficulty"
 3ca397561afd5fa2.
@@ -2258,7 +2258,7 @@ f72808793bd3ef.sha1       "fbec1f435ea969418d27f46d5a80a6b1b2b8c8bc"
 f72808793bd3ef.category   "basic"
 f72808793bd3ef.original   "en"
 f72808793bd3ef.multiline  false
-f72808793bd3ef.orphan     false
+f72808793bd3ef.orphan     true
 f72808793bd3ef.ts         1467038430317
 f72808793bd3ef.locale.en  "Estimated Hash Rate"
 f72808793bd3ef.
@@ -2268,7 +2268,7 @@ f72808793bd3ef.
 685f53bafe9b76df.category   "basic"
 685f53bafe9b76df.original   "en"
 685f53bafe9b76df.multiline  false
-685f53bafe9b76df.orphan     false
+685f53bafe9b76df.orphan     true
 685f53bafe9b76df.ts         1467038430317
 685f53bafe9b76df.locale.en  "Height"
 685f53bafe9b76df.
@@ -2278,7 +2278,7 @@ f72808793bd3ef.
 4712ceff415e5bb5.category   "basic"
 4712ceff415e5bb5.original   "en"
 4712ceff415e5bb5.multiline  false
-4712ceff415e5bb5.orphan     false
+4712ceff415e5bb5.orphan     true
 4712ceff415e5bb5.ts         1467038430318
 4712ceff415e5bb5.locale.en  "Total Coins"
 4712ceff415e5bb5.
@@ -2288,7 +2288,7 @@ f72808793bd3ef.
 54b8fc4e680c6d9.category   "basic"
 54b8fc4e680c6d9.original   "en"
 54b8fc4e680c6d9.multiline  false
-54b8fc4e680c6d9.orphan     false
+54b8fc4e680c6d9.orphan     true
 54b8fc4e680c6d9.ts         1467038430318
 54b8fc4e680c6d9.locale.en  "Active File Contracts"
 54b8fc4e680c6d9.
@@ -2298,7 +2298,7 @@ f72808793bd3ef.
 6a190ccd540dcf4d.category   "basic"
 6a190ccd540dcf4d.original   "en"
 6a190ccd540dcf4d.multiline  false
-6a190ccd540dcf4d.orphan     false
+6a190ccd540dcf4d.orphan     true
 6a190ccd540dcf4d.ts         1467038430319
 6a190ccd540dcf4d.locale.en  "Active Contracts Size"
 6a190ccd540dcf4d.
@@ -2308,7 +2308,7 @@ f72808793bd3ef.
 9257fdbe1381d5fc.category   "basic"
 9257fdbe1381d5fc.original   "en"
 9257fdbe1381d5fc.multiline  false
-9257fdbe1381d5fc.orphan     false
+9257fdbe1381d5fc.orphan     true
 9257fdbe1381d5fc.ts         1467038430319
 9257fdbe1381d5fc.locale.en  "Total Contract Cost"
 9257fdbe1381d5fc.
@@ -2318,7 +2318,7 @@ f72808793bd3ef.
 65d28350d5be99df.category   "basic"
 65d28350d5be99df.original   "en"
 65d28350d5be99df.multiline  false
-65d28350d5be99df.orphan     false
+65d28350d5be99df.orphan     true
 65d28350d5be99df.ts         1467038430319
 65d28350d5be99df.locale.en  "Total Contract Size"
 65d28350d5be99df.
@@ -2328,7 +2328,7 @@ f72808793bd3ef.
 91acbf215520dbf4.category   "basic"
 91acbf215520dbf4.original   "en"
 91acbf215520dbf4.multiline  false
-91acbf215520dbf4.orphan     false
+91acbf215520dbf4.orphan     true
 91acbf215520dbf4.ts         1467038430319
 91acbf215520dbf4.locale.en  "DASHBOARD"
 91acbf215520dbf4.
@@ -2338,7 +2338,7 @@ b422d8001781e55b.sha1       "c4b92432720688af3ec146b44cc2729798bde4fb"
 b422d8001781e55b.category   "basic"
 b422d8001781e55b.original   "en"
 b422d8001781e55b.multiline  false
-b422d8001781e55b.orphan     false
+b422d8001781e55b.orphan     true
 b422d8001781e55b.ts         1467038430320
 b422d8001781e55b.locale.en  "SETTINGS"
 b422d8001781e55b.
@@ -2348,7 +2348,7 @@ b422d8001781e55b.
 9956c0fd30a8cbad.category   "basic"
 9956c0fd30a8cbad.original   "en"
 9956c0fd30a8cbad.multiline  false
-9956c0fd30a8cbad.orphan     false
+9956c0fd30a8cbad.orphan     true
 9956c0fd30a8cbad.ts         1467038430320
 9956c0fd30a8cbad.locale.en  "Copyright (c) 2015-2016 Aspectron Inc. All Rights Reserved."
 9956c0fd30a8cbad.
@@ -2358,7 +2358,7 @@ b422d8001781e55b.
 6da835b58bb0075b.category   "basic"
 6da835b58bb0075b.original   "en"
 6da835b58bb0075b.multiline  false
-6da835b58bb0075b.orphan     false
+6da835b58bb0075b.orphan     true
 6da835b58bb0075b.ts         1467038430320
 6da835b58bb0075b.locale.en  "SIGN-OUT"
 6da835b58bb0075b.
@@ -2368,7 +2368,7 @@ b422d8001781e55b.
 68e85c1cd41e8c4a.category   "basic"
 68e85c1cd41e8c4a.original   "en"
 68e85c1cd41e8c4a.multiline  false
-68e85c1cd41e8c4a.orphan     false
+68e85c1cd41e8c4a.orphan     true
 68e85c1cd41e8c4a.ts         1467038430321
 68e85c1cd41e8c4a.locale.en  "SIGN-IN"
 68e85c1cd41e8c4a.
@@ -2658,7 +2658,27 @@ ca03247a9fb4c602.sha1       "606c11c76bf61635d05e3e0b22caab2127ba6203"
 ca03247a9fb4c602.category   "basic"
 ca03247a9fb4c602.original   "en"
 ca03247a9fb4c602.multiline  false
-ca03247a9fb4c602.orphan     false
+ca03247a9fb4c602.orphan     true
 ca03247a9fb4c602.ts         1467246566975
 ca03247a9fb4c602.locale.en  "GRAPHS"
 ca03247a9fb4c602.
+78a88427215976a3.
+78a88427215976a3.hash       "78a88427215976a3"
+78a88427215976a3.sha1       "2641e111b4996f228cbe5271c4d0f296f0d0d13a"
+78a88427215976a3.category   "basic"
+78a88427215976a3.original   "en"
+78a88427215976a3.multiline  false
+78a88427215976a3.orphan     false
+78a88427215976a3.ts         1467259056239
+78a88427215976a3.locale.en  "SETUP CUSTOM PASSPHRASE:"
+78a88427215976a3.
+a121a4b83d69b038.
+a121a4b83d69b038.hash       "a121a4b83d69b038"
+a121a4b83d69b038.sha1       "0f0962b93dcf0dd86053c58f42b9c7a719c021f7"
+a121a4b83d69b038.category   "basic"
+a121a4b83d69b038.original   "en"
+a121a4b83d69b038.multiline  false
+a121a4b83d69b038.orphan     false
+a121a4b83d69b038.ts         1467261528617
+a121a4b83d69b038.locale.en  "Custom passphrase saved successfully."
+a121a4b83d69b038.
