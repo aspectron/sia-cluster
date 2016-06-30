@@ -12,17 +12,18 @@
 				</template>
 			</div>
 			<div class="setting-fields">
+				<sia-field title="BTC/USD" value="[[data.BTC_USD]]" format="fiat"></sia-field>
 				<sia-field title="SC/BTC" value="[[data.SC_BTC]]" x-format="SC" precision="8"></sia-field>
 				<sia-field title="SC/USD" value="[[data.SC_USD]]" x-format="SC" precision="8"></sia-field>
-				<sia-field title="BTC/USD" value="[[data.BTC_USD]]" format="fiat"></sia-field>
 				<sia-field title="<%= _T('Difficulty') %>" value="[[data.difficulty]]" format="difficulty" unit="T" precision="0" commas></sia-field>
-				<sia-field title="<%= _T('Estimated Hash Rate') %>" value="[[data.estimatedhashrate]]" format="hash-rate" unit="G"  precision="0" commas></sia-field>
+				<sia-field title="<%= _T('Hash Rate') %>" value="[[data.estimatedhashrate]]" format="hash-rate" unit="G"  precision="0" commas></sia-field>
 				<sia-field title="<%= _T('Height') %>" value="[[data.height]]" commas></sia-field>
-				<sia-field title="<%= _T('Total Coins') %>" value="[[data.totalcoins]]" format="sc" precision="2"></sia-field>
+				<sia-field title="<%= _T('Total Coins') %>" value="[[data.totalcoins]]" format="h" precision="2"></sia-field>
 				<sia-field title="<%= _T('Active File Contracts') %>" value="[[data.activecontractcount]]" commas></sia-field>
-				<sia-field title="<%= _T('Active Contracts Size') %>" value="[[data.activecontractsize]]" format="file-size"></sia-field>
-				<sia-field title="<%= _T('Total Contract Cost') %>" value="[[data.totalcontractcost]]" format="sc" precision="2"></sia-field>
-				<sia-field title="<%= _T('Total Contract Size') %>" value="[[data.totalcontractsize]]" format="file-size"></sia-field>
+				<sia-field title="<%= _T('Active Contracts Size') %>" value="[[data.activecontractsize]]" format="file-size-si"></sia-field>
+				<sia-field title="<%= _T('Active Contracts Cost') %>" value="[[data.activecontractcost]]" format="h" precision="2"></sia-field>
+				<sia-field title="<%= _T('Total Contract Cost') %>" value="[[data.totalcontractcost]]" format="h" precision="2"></sia-field>
+				<sia-field title="<%= _T('Total Contract Size') %>" value="[[data.totalcontractsize]]" format="file-size-si"></sia-field>
 			</div>
 		</div>
 	</template>
