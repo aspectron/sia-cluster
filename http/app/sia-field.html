@@ -25,8 +25,8 @@
 				<template is="dom-if" if="[[_isBoolField(format, type)]]">
 					<div class="dropdown-content bg-color no-overflow">
 						<paper-radio-group selected="{{_value}}" attr-for-selected="value">
-							<paper-radio-button name="a" value="1">[[getRadioText(1)]]</paper-radio-button>
-							<paper-radio-button name="b" value="0">[[getRadioText(0)]]</paper-radio-button>
+							<paper-radio-button name="a" value="1">[[getBooleanText(1)]]</paper-radio-button>
+							<paper-radio-button name="b" value="0">[[getBooleanText(0)]]</paper-radio-button>
 						</paper-radio-group>
 						<paper-icon-button icon="close" suffix close on-click="cancelSetting"></paper-icon-button>
 						<paper-icon-button icon="done" suffix on-click="saveSetting"></paper-icon-button>
@@ -326,7 +326,7 @@
 					if (v === "")
 						return "N/A";
 
-					return self.getRadioText(!!v);
+					return self.getBooleanText(!!v);
 				}
 				else
 				if(self._isRadioField()) {
@@ -400,12 +400,11 @@
 				}
 				
 			},
+			getBooleanText: function(v) {
+				var boolText = this.boolText.split("/");
+				return v ? boolText[0] : boolText[1];
+			},
 			getRadioText: function(v){
-				if(this._isBoolField()) {
-					var boolText = this.boolText.split("/");
-					return v ? boolText[0] : boolText[1];
-				}
-				else
 				if(this._isRadioField()) {
 					console.log("GETTING",this._radio);
 					var o = _.find(this._radio, function(item) {
