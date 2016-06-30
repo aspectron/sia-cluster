@@ -56,8 +56,10 @@
 			::content paper-button{background-color: #e7e8ec; color: #65656f; font-weight: 600; }
 			::content paper-button{padding: 13px 25px;border-radius:0px;}
 			::content paper-button[primary],
+			::content paper-button.primary,
 			::content paper-fab[primary]{@apply(--primary-button)}
 			::content paper-button[primary][disabled],
+			::content paper-button.primary[disabled],
 			::content paper-fab[primary][disabled]{@apply(--primary-disabled-button)}
 
 			::content paper-checkbox{padding: 15px 15px 15px 0px;}

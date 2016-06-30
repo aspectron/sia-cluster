@@ -13,11 +13,15 @@
 			.dialog neon-animatable{overflow-y:auto;overflow-x:hidden;padding:15px 15px 0px;margin-bottom:15px;}
 			paper-dialog.passphrase-dialog{height:70%; max-height:initial;}
 			iron-icon { width : 25px; height: 25px; }
+			.online-icon{-webkit-transform-origin: center center;transform-origin: center center;}
+			.online-icon[unlocking]{-webkit-animation: rotate 2s linear infinite;animation: rotate 2s linear infinite;}
+			@-webkit-keyframes rotate {100% {-webkit-transform: rotate(360deg);}}
+			@keyframes rotate {100% {transform: rotate(360deg);}}
 		</style>
 		<div class="content" online$="[[online]]" unlocked$="[[unlocked]]">
 			<paper-icon-button icon="settings" class="setting-icon" on-click="openSettings"></paper-icon-button>
 			<h2 class="title">
-				<iron-icon class="online-icon" icon="[[_onlineIcon(online, accepting)]]" title$="[[_onlineIconTitle(online, accepting)]]"></iron-icon>
+				<iron-icon class="online-icon" unlocking$="[[unlocking]]" icon="[[_onlineIcon(online, accepting, unlocking)]]" title$="[[_onlineIconTitle(online, accepting, unlocking)]]"></iron-icon>
 				<iron-icon class="unlock-icon" icon="[[_unlockIcon(unlocked)]]" title$="[[_unlockIconTitle(unlocked)]]" on-click="lockUnlock"></iron-icon>
 				<span>[[ident]]</span>
 			</h2>
@@ -187,6 +191,10 @@
 					type: Boolean,
 					value: false
 				},
+				unlocking:{
+					type: Boolean,
+					value: false
+				},
 				passphraseData:{
 					type: Object,
 					value: {}
@@ -275,21 +283,23 @@
 					console.log("result", result)
 				});
 			},
-			_onlineIcon: function(online, accepting){
+			_onlineIcon: function(online, accepting, inprocess){
+				if (inprocess)
+					return "refresh";
 				if(!online)
 					return "cloud-off";
 				if(!accepting)
 					return "visibility-off";
 				return "sia:database";
-//				return online ? "sia:database": "cloud-off";
 			},
-			_onlineIconTitle: function(online, accepting){
+			_onlineIconTitle: function(online, accepting, inprocess){
+				if (inprocess)
+					return '<%=_T("Unlocking...")%>';
 				if(!online)
 					return "Offline";
 				if(!accepting)
 					return "Not Accepting Contracts";
 				return "Online and Accepting Contracts";
-//				return online ? "Online": "Offline";
 			},
 			_unlockIcon: function(unlocked){
 				return unlocked ? "sia:unlock" : "sia:lock";
@@ -476,21 +486,31 @@
 					type = "local";
 					passphrase = self.encryptPass(passphrase);
 				}
-				App.showLoading();
+				self.$.uplockDialog.close();
+				self.set("unlocking", true);
 				App.rpc.dispatch({
 					op: "unlock-wallet",
 					passphrase: passphrase,
 					type: type,
 					node: self.uuid
 				}, function(err, result){
-					App.hideLoading();
-					if (err)
-						return App.error(err);
+					self.set("unlocking", false);
+					if (err){
+						IRIS.Confirm({
+							text: err.error,
+							title:'<%=_T("Unable to Unlock : ")%>' + self.ident,
+							okBtn:'<%=_T("Retry")%>',
+							okBtnCls: 'primary',
+							closeBtn:'<%=_T("Close")%>'
+						}, function(btn){
+							btn=="ok" && self.lockUnlock();
+						});
+						return;
+					}
 
 					self.set("unlockData", {useLocal: false});
 					self.set("unlocked", result.unlocked);
 					self.set("data.wallet.unlocked", result.unlocked);
-					self.$.uplockDialog.close();
 				});
 			},
 			onSiaFieldValueChanged: function(e){

@@ -114,6 +114,7 @@
 			.mobile iris-language-selector ::shadow .dropdown-trigger iron-icon{ margin-right: 5px; margin-left: 0px;}
 			.top-bar .subtitle{font-size: 13px;position: absolute;padding: 3px 0px;}
 			iris-toast-messages[v-align="bottom"][h-align="right"]::shadow paper-toast{background-color: var(--primary-dark-color, #f00)}
+			*::shadow paper-button.primary{@apply(--primary-button)}
 		</style>
 		<app-location use-hash-as-path route="{{route}}"></app-location>
 		<app-route route="{{route}}" pattern=":tab" data="{{rootData}}" tail="{{rootTail}}"></app-route>

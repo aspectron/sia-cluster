@@ -7,7 +7,7 @@ App = _.extend(window.App || {}, {
 	        return '?';
 	    return f.toFixed(precision).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	},
-	error : function(err, title) {
+	error : function(err, title, callback) {
 		if (err.logout){
 			IRIS.Alert({title: "Auto Sign-out", text: "Please Sign-in."}, function(btn){
 				window.location.href = '/login?redirect_uri=' + encodeURIComponent(window.location.href);
@@ -16,11 +16,11 @@ App = _.extend(window.App || {}, {
 		}
 		if (err){
 			if (err.error) {
-				IRIS.Alert({title: title || "Error", text:err.error})
+				IRIS.Alert({title: title || "Error", text:err.error}, callback)
 			}else if (err.warning) {
-				IRIS.Alert({title: title || "Warning", text:err.warning})
+				IRIS.Alert({title: title || "Warning", text:err.warning}, callback)
 			}else if (err.info) {
-				IRIS.Alert({title: title || "Info", text:err.info})
+				IRIS.Alert({title: title || "Info", text:err.info}, callback)
 			}
 		};
 		return err;
