@@ -3,10 +3,8 @@
 	var NodeVariableSettings = {
         captions:{
             "^host\.storage\..*" : function(str) {
-                console.log("str",str);
                 var path = str.replace('host.storage.','')
                     .replace(/\.\w+$/,'');
-                console.log("path",path);
 
                 var title = str.split('.').pop();
                 if(NodeVariableSettings.info['host.storage.'+title])
