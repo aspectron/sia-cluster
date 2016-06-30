@@ -97,7 +97,7 @@
 				<neon-animatable class="fit items" page="ui" on-mouseup="fadeInSettingDialog">
 					<label class="slider-label"><%=_T("Font Size")%> <span>[[localSettings.F]]</span>%</label>
 					<paper-slider snaps pin
-						step='1' min="50" max="150"
+						step='1' min="50" max="250"
 						immediate-value="{{localSettings.F}}"
 						value="[[localSettings.F]]"
 						class="slider"
@@ -107,7 +107,7 @@
 					></paper-slider>
 					<label class="slider-label"><%=_T("Panel minimum width:")%> <span>[[localSettings.W]]</span>px</label>
 					<paper-slider snaps pin
-						step='1' min="300" max="500"
+						step='1' min="300" max="2000"
 						immediate-value="{{localSettings.W}}"
 						value="[[localSettings.W]]"
 						class="slider"
@@ -117,7 +117,7 @@
 					></paper-slider>
 					<label class="slider-label"><%=_T("Panel minimum height:")%> <span>[[localSettings.H]]</span>px</label>
 					<paper-slider snaps pin
-						step='1' min="500" max="1000"
+						step='1' min="500" max="2000"
 						immediate-value="{{localSettings.H}}"
 						value="[[localSettings.H]]"
 						class="slider"
@@ -249,7 +249,7 @@
 			this.setSettingHash(s);
 		},
 		setSettingHash: function(keyValueMap){
-			var hash = [];
+			var hash = ["ui"];
 			_.each(keyValueMap, function(v, k){
 				hash.push(k.toLowerCase()+""+App.str2hex(v, true));
 			});
@@ -257,7 +257,7 @@
 		},
 		loadLocalSettings: function(){
 			var self = this;
-			var hash = (window.location.hash || "").replace("#", '').split(":");
+			var hash = (window.location.hash || "").replace("#", '').replace("ui:", '').split(":");
 			if (!hash || !hash[0])
 				return
 			var settings = _.extend({}, this.localSettings);
