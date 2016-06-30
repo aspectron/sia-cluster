@@ -6,9 +6,7 @@
 			[online] .online-icon{color: #108F74;}
 			.help-info{display:block;padding:5px 0px;font-size:10px;}
 			.set-local-pass-btn,.unset-local-pass-btn,
-			.delete-node-btn{
-				margin-top: 10px;display:block;
-			}
+			.block-btn{margin-top: 10px;display:block;}
 			.delete-node-btn{background-color:#F38686;color:#FFF;}
 			.dialog neon-animatable{overflow-y:auto;overflow-x:hidden;padding:15px 15px 0px;margin-bottom:15px;}
 			paper-dialog.passphrase-dialog{height:70%; max-height:initial;}
@@ -17,6 +15,8 @@
 			.online-icon[unlocking]{-webkit-animation: rotate 2s linear infinite;animation: rotate 2s linear infinite;}
 			@-webkit-keyframes rotate {100% {-webkit-transform: rotate(360deg);}}
 			@keyframes rotate {100% {transform: rotate(360deg);}}
+			.logs{padding:20px;line-height:1.6;overflow-x:hidden;overflow-y:auto;}
+			.logs #logs{overflow-x:auto;width:100%;display:block;}
 		</style>
 		<div class="content" online$="[[online]]" unlocked$="[[unlocked]]">
 			<paper-icon-button icon="settings" class="setting-icon" on-click="openSettings"></paper-icon-button>
@@ -109,9 +109,8 @@
 					</paper-button>
 				</neon-animatable>
 				<neon-animatable class="fit" page="advanced">
-					<paper-button raised class="delete-node-btn" on-click="deleteNode">
-						<%= _T("Delete node") %>
-					</paper-button>
+					<paper-button raised class="block-btn open-logs-btn" disabled$="[[!online]]" on-click="openLogs"><%= _T("Open Logs") %></paper-button>
+					<paper-button raised class="block-btn delete-node-btn" on-click="deleteNode"><%= _T("Delete node") %></paper-button>
 				</neon-animatable>
 			</neon-animated-pages>
 		</paper-dialog>
@@ -152,6 +151,13 @@
 					<span class="title"><%=_T("Unlock")%></span>
 				</paper-button>
 			</div>
+		</paper-dialog>
+		<paper-dialog id="logsDialog" class="dialog logs-dialog layout vertical" opened="{{logsDialogOpened}}">
+			<paper-toolbar>
+				<div class="title"><%=_T("Logs")%></div>
+				<paper-icon-button icon="close" dialog-dismiss></paper-icon-button>
+			</paper-toolbar>
+			<div class="flex logs"><pre id="logs"></pre></div>
 		</paper-dialog>
 	</template>
 	<script>
@@ -211,11 +217,13 @@
 				},
 				passwordFieldType:{type: String, value:"text"},
 				fields: Array,
-				graphFields: Array
+				graphFields: Array,
+				logsDialogOpened: Boolean
 			},
 			observers: [
 				'onDataChanged(data.*)',
-				'onFieldSettingChanged(settingFields.*)'
+				'onFieldSettingChanged(settingFields.*)',
+				'onLogsDialogToggle(logsDialogOpened)'
 			],
 			getNodeSettingDialog: function(){
 				return this.$.settingDialog;
@@ -434,6 +442,31 @@
 			},
 			openSettings: function(){
 				this.$.settingDialog.open();
+			},
+			openLogs: function(){
+				this.$.settingDialog.close();
+				this.$.logsDialog.open();
+			},
+			onLogsDialogToggle: function(){
+				var self = this;
+				if (!self.logsDialogOpened){
+					self.$.logs.innerHTML = "";
+					return
+				}
+				App.showLoading();
+				App.rpc.dispatch({op: "fetch-host-logfile", node: self.uuid}, function(err, logs){
+					App.hideLoading();
+					console.log("err", err)
+					if (err){
+						self.$.logsDialog.close();
+						return App.error(err);
+					}
+
+					self.$.logs.innerHTML = self.htmlEntities(logs);
+				});
+			},
+			htmlEntities: function (str) {
+				return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 			},
 			lockUnlock: function(){
 				var self = this;
