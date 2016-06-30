@@ -29,6 +29,7 @@
 	/*font-size: 23px;*/
 }
 
+.iris-overlap-panel-opened iron-overlay-backdrop{background-color:#DDD}
 input {
 	color: black;
 }
