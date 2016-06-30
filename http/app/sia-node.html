@@ -117,9 +117,9 @@
 				<paper-icon-button icon="close" dialog-dismiss></paper-icon-button>
 			</paper-toolbar>
 			<paper-dialog-scrollable class="flex">
-				<paper-input id="passphraseField" value="{{passphraseData.passphrase}}" type="password" required label="<%=_T("Custom Passphrase")%>" on-keyup="onPDialogKeyUp"></paper-input>
-				<paper-input id="passphraseField2" value="{{passphraseData.passphrase2}}" type="password" required label="<%=_T("Confirm Passphrase")%>" error-message="<%=_T("Dose not match with Custom Passphrase")%>" on-keyup="onPDialogKeyUp"></paper-input>
-				<paper-input id="walletkeyField" value="{{passphraseData.walletkey}}" type="password" required label="<%=_T("Wallet Key")%>" on-keyup="onPDialogKeyUp"></paper-input>
+				<paper-input id="passphraseField" value="{{passphraseData.passphrase}}" name="[[_passwordFieldName()]]" type="[[passwordFieldType]]" required label="<%=_T("Custom Passphrase")%>" on-keyup="onPDialogKeyUp"></paper-input>
+				<paper-input id="passphraseField2" value="{{passphraseData.passphrase2}}" name="[[_passwordFieldName()]]" type="[[passwordFieldType]]" required label="<%=_T("Confirm Passphrase")%>" error-message="<%=_T("Dose not match with Custom Passphrase")%>" on-keyup="onPDialogKeyUp"></paper-input>
+				<paper-input id="walletkeyField" value="{{passphraseData.walletkey}}" name="[[_passwordFieldName()]]" type="[[passwordFieldType]]" required label="<%=_T("Wallet Key")%>" on-keyup="onPDialogKeyUp"></paper-input>
 			</paper-dialog-scrollable>
 			<div class="buttons">
 				<div class="flex"></div>
@@ -137,7 +137,7 @@
 			<paper-dialog-scrollable class="flex">
 				<paper-checkbox checked="{{unlockData.useLocal}}"><%=_T("Use Custom Passphrase")%></paper-checkbox>
 				<paper-input
-					id="unlockPassphraseField" value="{{unlockData.passphrase}}" name="[[passwordFieldName]]" required type="[[passwordFieldType]]" on-keyup="onUDialogKeyUp"
+					id="unlockPassphraseField" value="{{unlockData.passphrase}}" name="[[_passwordFieldName()]]" required type="[[passwordFieldType]]" on-keyup="onUDialogKeyUp"
 					label="[[_ifelse(unlockData.useLocal, '<%=_T("Custom Passphrase")%>', '<%=_T("Wallet Key")%>')]]"
 				></paper-input>
 			</paper-dialog-scrollable>
@@ -202,7 +202,6 @@
 					value: "config"
 				},
 				passwordFieldType:{type: String, value:"text"},
-				passwordFieldName:{type: String, value:"a"},
 				fields: Array,
 				graphFields: Array
 			},
@@ -343,11 +342,13 @@
 					this.set("fields."+index+".value", value);
 				};
 			},
+			_passwordFieldName: function(){
+				return "name-"+Date.now();
+			},
 			ready: function(){
 				var self = this;
 				self.async(function(){
 					self.set("passwordFieldType", "password");
-					self.set("passwordFieldName", "name-"+Date.now());
 				}, 1000);
 				App.rpc.on("node-state", function(args){
 					if (args.uuid != self.uuid)
