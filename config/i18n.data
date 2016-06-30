@@ -418,7 +418,7 @@ c989bed6d29e48ce.sha1       "c581b8a4b59a5fc8faf2e69ed38e1d9a6a19cbdf"
 c989bed6d29e48ce.category   "basic"
 c989bed6d29e48ce.original   "en"
 c989bed6d29e48ce.multiline  false
-c989bed6d29e48ce.orphan     false
+c989bed6d29e48ce.orphan     true
 c989bed6d29e48ce.ts         1467038430217
 c989bed6d29e48ce.locale.en  "Storage Utilization"
 c989bed6d29e48ce.
@@ -428,7 +428,7 @@ c989bed6d29e48ce.
 34aaae5418dfd79c.category   "basic"
 34aaae5418dfd79c.original   "en"
 34aaae5418dfd79c.multiline  false
-34aaae5418dfd79c.orphan     false
+34aaae5418dfd79c.orphan     true
 34aaae5418dfd79c.ts         1467038430217
 34aaae5418dfd79c.locale.en  "Network Bandwidth"
 34aaae5418dfd79c.
@@ -1718,7 +1718,7 @@ c99189a1892ff4de.sha1       "90475c50eff6254709114abbb24d7765f7b91c67"
 c99189a1892ff4de.category   "basic"
 c99189a1892ff4de.original   "en"
 c99189a1892ff4de.multiline  false
-c99189a1892ff4de.orphan     false
+c99189a1892ff4de.orphan     true
 c99189a1892ff4de.ts         1467038430300
 c99189a1892ff4de.locale.en  "SC/TB/MO"
 c99189a1892ff4de.
@@ -2058,7 +2058,7 @@ e33266c7eca7a549.
 2c128f43d7500c07.category   "basic"
 2c128f43d7500c07.original   "en"
 2c128f43d7500c07.multiline  false
-2c128f43d7500c07.orphan     false
+2c128f43d7500c07.orphan     true
 2c128f43d7500c07.ts         1467038430311
 2c128f43d7500c07.locale.en  "Setup Local passphrase"
 2c128f43d7500c07.
@@ -2068,7 +2068,7 @@ e33266c7eca7a549.
 8f4a65513b9bc0dd.category   "basic"
 8f4a65513b9bc0dd.original   "en"
 8f4a65513b9bc0dd.multiline  false
-8f4a65513b9bc0dd.orphan     false
+8f4a65513b9bc0dd.orphan     true
 8f4a65513b9bc0dd.ts         1467038430311
 8f4a65513b9bc0dd.locale.en  "You can use custom local passphrase to encrypt wallet password."
 8f4a65513b9bc0dd.
@@ -2088,7 +2088,7 @@ c5cabbdc2e467a2d.
 48e13fe3f6dd7d07.category   "basic"
 48e13fe3f6dd7d07.original   "en"
 48e13fe3f6dd7d07.multiline  false
-48e13fe3f6dd7d07.orphan     false
+48e13fe3f6dd7d07.orphan     true
 48e13fe3f6dd7d07.ts         1467038430312
 48e13fe3f6dd7d07.locale.en  "Setup Local Passphrase"
 48e13fe3f6dd7d07.
@@ -2098,7 +2098,7 @@ c5cabbdc2e467a2d.
 938b6c882a998757.category   "basic"
 938b6c882a998757.original   "en"
 938b6c882a998757.multiline  false
-938b6c882a998757.orphan     false
+938b6c882a998757.orphan     true
 938b6c882a998757.ts         1467038430312
 938b6c882a998757.locale.en  "Confirm Password"
 938b6c882a998757.
@@ -2108,7 +2108,7 @@ c5cabbdc2e467a2d.
 1a49e2e32a82f672.category   "basic"
 1a49e2e32a82f672.original   "en"
 1a49e2e32a82f672.multiline  false
-1a49e2e32a82f672.orphan     false
+1a49e2e32a82f672.orphan     true
 1a49e2e32a82f672.ts         1467038430312
 1a49e2e32a82f672.locale.en  "Dose not match with Password"
 1a49e2e32a82f672.
@@ -2148,7 +2148,7 @@ b2550e2df8b342e.
 87b44cb4689214cd.category   "basic"
 87b44cb4689214cd.original   "en"
 87b44cb4689214cd.multiline  false
-87b44cb4689214cd.orphan     false
+87b44cb4689214cd.orphan     true
 87b44cb4689214cd.ts         1467038430313
 87b44cb4689214cd.locale.en  "Use Local Password"
 87b44cb4689214cd.
@@ -2158,7 +2158,7 @@ a45cbd78dcd49bed.sha1       "a94a794177aecef2ea09aaeda638e32b717d416a"
 a45cbd78dcd49bed.category   "basic"
 a45cbd78dcd49bed.original   "en"
 a45cbd78dcd49bed.multiline  false
-a45cbd78dcd49bed.orphan     false
+a45cbd78dcd49bed.orphan     true
 a45cbd78dcd49bed.ts         1467038430314
 a45cbd78dcd49bed.locale.en  "Passphrase (Wallet key)"
 a45cbd78dcd49bed.
@@ -2442,3 +2442,213 @@ fc3a85e6d5f60ffe.orphan     false
 fc3a85e6d5f60ffe.ts         1467179526838
 fc3a85e6d5f60ffe.locale.en  "OS Platform"
 fc3a85e6d5f60ffe.
+c62111fda01367b8.
+c62111fda01367b8.hash       "c62111fda01367b8"
+c62111fda01367b8.sha1       "1b579914d4009f2c8cd8a55dc40be047ea929948"
+c62111fda01367b8.category   "basic"
+c62111fda01367b8.original   "en"
+c62111fda01367b8.multiline  false
+c62111fda01367b8.orphan     false
+c62111fda01367b8.ts         1467243776413
+c62111fda01367b8.locale.en  "SETUP CUSTOM PASSPHRASE"
+c62111fda01367b8.
+9f2a46746c2a4069.
+9f2a46746c2a4069.hash       "9f2a46746c2a4069"
+9f2a46746c2a4069.sha1       "b16a308bfbb89350c7bdd8e3ad7f5b2dcf7cc837"
+9f2a46746c2a4069.category   "basic"
+9f2a46746c2a4069.original   "en"
+9f2a46746c2a4069.multiline  false
+9f2a46746c2a4069.orphan     false
+9f2a46746c2a4069.ts         1467243776428
+9f2a46746c2a4069.locale.en  "You can use custom passphrase to encrypt wallet key."
+9f2a46746c2a4069.
+8c75df1a7409d94a.
+8c75df1a7409d94a.hash       "8c75df1a7409d94a"
+8c75df1a7409d94a.sha1       "3d6cd25dc7c96fd6ca16bfa3ba207628fc332cbd"
+8c75df1a7409d94a.category   "basic"
+8c75df1a7409d94a.original   "en"
+8c75df1a7409d94a.multiline  false
+8c75df1a7409d94a.orphan     false
+8c75df1a7409d94a.ts         1467243776429
+8c75df1a7409d94a.locale.en  "Custom Passphrase"
+8c75df1a7409d94a.
+387d713b26cb3324.
+387d713b26cb3324.hash       "387d713b26cb3324"
+387d713b26cb3324.sha1       "81f86833f8d970d57f7645c18600e365e9a9d03e"
+387d713b26cb3324.category   "basic"
+387d713b26cb3324.original   "en"
+387d713b26cb3324.multiline  false
+387d713b26cb3324.orphan     false
+387d713b26cb3324.ts         1467243776433
+387d713b26cb3324.locale.en  "Confirm Passphrase"
+387d713b26cb3324.
+e0e19823a3821662.
+e0e19823a3821662.hash       "e0e19823a3821662"
+e0e19823a3821662.sha1       "16978024452318b5b3e7c01c85da7d3d222e4641"
+e0e19823a3821662.category   "basic"
+e0e19823a3821662.original   "en"
+e0e19823a3821662.multiline  false
+e0e19823a3821662.orphan     false
+e0e19823a3821662.ts         1467243776433
+e0e19823a3821662.locale.en  "Dose not match with Custom Passphrase"
+e0e19823a3821662.
+84360719cae41487.
+84360719cae41487.hash       "84360719cae41487"
+84360719cae41487.sha1       "4313d1c77a20ec247cb1436d2839b85fede76a52"
+84360719cae41487.category   "basic"
+84360719cae41487.original   "en"
+84360719cae41487.multiline  false
+84360719cae41487.orphan     false
+84360719cae41487.ts         1467243776434
+84360719cae41487.locale.en  "Use Custom Passphrase"
+84360719cae41487.
+b4e0f64d691ff88b.
+b4e0f64d691ff88b.hash       "b4e0f64d691ff88b"
+b4e0f64d691ff88b.sha1       "7dea15e115301fd2655861266129bc99c1b73a64"
+b4e0f64d691ff88b.category   "basic"
+b4e0f64d691ff88b.original   "en"
+b4e0f64d691ff88b.multiline  false
+b4e0f64d691ff88b.orphan     false
+b4e0f64d691ff88b.ts         1467244575941
+b4e0f64d691ff88b.locale.en  "Capacity Remaining"
+b4e0f64d691ff88b.
+ce8e6731ea435943.
+ce8e6731ea435943.hash       "ce8e6731ea435943"
+ce8e6731ea435943.sha1       "45bd908df490edd79694ba0daff82fc092970b55"
+ce8e6731ea435943.category   "basic"
+ce8e6731ea435943.original   "en"
+ce8e6731ea435943.multiline  false
+ce8e6731ea435943.orphan     false
+ce8e6731ea435943.ts         1467244575954
+ce8e6731ea435943.locale.en  "Capacity"
+ce8e6731ea435943.
+7c719d08b95f19de.
+7c719d08b95f19de.hash       "7c719d08b95f19de"
+7c719d08b95f19de.sha1       "519e39132bb98418cc0483cc446ccf5f3c8dcffe"
+7c719d08b95f19de.category   "basic"
+7c719d08b95f19de.original   "en"
+7c719d08b95f19de.multiline  false
+7c719d08b95f19de.orphan     false
+7c719d08b95f19de.ts         1467244575956
+7c719d08b95f19de.locale.en  "Path"
+7c719d08b95f19de.
+481cd0673f734352.
+481cd0673f734352.hash       "481cd0673f734352"
+481cd0673f734352.sha1       "3fc958406a8be4578023a35a40b1d581b530d1d7"
+481cd0673f734352.category   "basic"
+481cd0673f734352.original   "en"
+481cd0673f734352.multiline  false
+481cd0673f734352.orphan     false
+481cd0673f734352.ts         1467244575957
+481cd0673f734352.locale.en  "Failed Reads"
+481cd0673f734352.
+ff3c1cc8e72b27b4.
+ff3c1cc8e72b27b4.hash       "ff3c1cc8e72b27b4"
+ff3c1cc8e72b27b4.sha1       "c9a6c7a67595a7df6d5610c6d302db5f33f6c24a"
+ff3c1cc8e72b27b4.category   "basic"
+ff3c1cc8e72b27b4.original   "en"
+ff3c1cc8e72b27b4.multiline  false
+ff3c1cc8e72b27b4.orphan     false
+ff3c1cc8e72b27b4.ts         1467244575958
+ff3c1cc8e72b27b4.locale.en  "Failed Writes"
+ff3c1cc8e72b27b4.
+63461078c9a69f08.
+63461078c9a69f08.hash       "63461078c9a69f08"
+63461078c9a69f08.sha1       "b82cb6db8205f550bc96b97796acdb403a435a66"
+63461078c9a69f08.category   "basic"
+63461078c9a69f08.original   "en"
+63461078c9a69f08.multiline  false
+63461078c9a69f08.orphan     false
+63461078c9a69f08.ts         1467244575958
+63461078c9a69f08.locale.en  "Successful Reads"
+63461078c9a69f08.
+d52e14d7ead6b6a.
+d52e14d7ead6b6a.hash       "d52e14d7ead6b6a"
+d52e14d7ead6b6a.sha1       "4ac6556f9050dc96da865638a14d62f485e8e689"
+d52e14d7ead6b6a.category   "basic"
+d52e14d7ead6b6a.original   "en"
+d52e14d7ead6b6a.multiline  false
+d52e14d7ead6b6a.orphan     false
+d52e14d7ead6b6a.ts         1467244575961
+d52e14d7ead6b6a.locale.en  "Successful Writes"
+d52e14d7ead6b6a.
+7b5128e292b94323.
+7b5128e292b94323.hash       "7b5128e292b94323"
+7b5128e292b94323.sha1       "fb2b33de6978151dd645b8678e46d1ae6aab2273"
+7b5128e292b94323.category   "basic"
+7b5128e292b94323.original   "en"
+7b5128e292b94323.multiline  false
+7b5128e292b94323.orphan     false
+7b5128e292b94323.ts         1467244835889
+7b5128e292b94323.locale.en  "Storage (SIAD)"
+7b5128e292b94323.
+cabf61575e26f18a.
+cabf61575e26f18a.hash       "cabf61575e26f18a"
+cabf61575e26f18a.sha1       "82e2da18153bd60cc50d59e7ddbc42e94d091825"
+cabf61575e26f18a.category   "basic"
+cabf61575e26f18a.original   "en"
+cabf61575e26f18a.multiline  false
+cabf61575e26f18a.orphan     false
+cabf61575e26f18a.ts         1467244835902
+cabf61575e26f18a.locale.en  "Storage Devices"
+cabf61575e26f18a.
+14464957f0bfb45.
+14464957f0bfb45.hash       "14464957f0bfb45"
+14464957f0bfb45.sha1       "65a8d56a57d1004d2c6d393cd4e85465db885a51"
+14464957f0bfb45.category   "basic"
+14464957f0bfb45.original   "en"
+14464957f0bfb45.multiline  false
+14464957f0bfb45.orphan     false
+14464957f0bfb45.ts         1467245792658
+14464957f0bfb45.locale.en  "Network Bandwidth [~1 min]"
+14464957f0bfb45.
+7daea7de64dc97ec.
+7daea7de64dc97ec.hash       "7daea7de64dc97ec"
+7daea7de64dc97ec.sha1       "ee362fa5d74516562074f48ec6b58175db6074c6"
+7daea7de64dc97ec.category   "basic"
+7daea7de64dc97ec.original   "en"
+7daea7de64dc97ec.multiline  false
+7daea7de64dc97ec.orphan     false
+7daea7de64dc97ec.ts         1467245792877
+7daea7de64dc97ec.locale.en  "Bytes Total"
+7daea7de64dc97ec.
+35e2f57b41b34af8.
+35e2f57b41b34af8.hash       "35e2f57b41b34af8"
+35e2f57b41b34af8.sha1       "ee3699233d4903c644f8459441d95cedb5bce955"
+35e2f57b41b34af8.category   "basic"
+35e2f57b41b34af8.original   "en"
+35e2f57b41b34af8.multiline  false
+35e2f57b41b34af8.orphan     false
+35e2f57b41b34af8.ts         1467245792884
+35e2f57b41b34af8.locale.en  "Bytes Used"
+35e2f57b41b34af8.
+8c38a5a858f27960.
+8c38a5a858f27960.hash       "8c38a5a858f27960"
+8c38a5a858f27960.sha1       "600cf1b4334ecab5bca7f96298512d56b719fb4c"
+8c38a5a858f27960.category   "basic"
+8c38a5a858f27960.original   "en"
+8c38a5a858f27960.multiline  false
+8c38a5a858f27960.orphan     false
+8c38a5a858f27960.ts         1467245792885
+8c38a5a858f27960.locale.en  "Bytes Free"
+8c38a5a858f27960.
+6d4df1f9604760ec.
+6d4df1f9604760ec.hash       "6d4df1f9604760ec"
+6d4df1f9604760ec.sha1       "d988a17ab6ed3663df54a24680347fc8a1bd6f4e"
+6d4df1f9604760ec.category   "basic"
+6d4df1f9604760ec.original   "en"
+6d4df1f9604760ec.multiline  false
+6d4df1f9604760ec.orphan     false
+6d4df1f9604760ec.ts         1467245792886
+6d4df1f9604760ec.locale.en  "Percent Used"
+6d4df1f9604760ec.
+aec4888c63c4243.
+aec4888c63c4243.hash       "aec4888c63c4243"
+aec4888c63c4243.sha1       "25ee09590909bb8719e0f3a1126e245ba2fa903f"
+aec4888c63c4243.category   "basic"
+aec4888c63c4243.original   "en"
+aec4888c63c4243.multiline  false
+aec4888c63c4243.orphan     false
+aec4888c63c4243.ts         1467245792887
+aec4888c63c4243.locale.en  "Mount"
+aec4888c63c4243.

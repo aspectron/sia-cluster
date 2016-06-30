@@ -1,48 +1,44 @@
 <script>
 
-    var units = {
-        Boolean : "Boolean",
-        BlockHeight : "BlockHeight",
-        Currency : "Currency"
-    }
-
 	var NodeVariableSettings = {
         captions:{
-            "host\.internalsettings\..*": function(str){
-                var s = str.split(".");
-                var varName     = s[2];
-                var a = [];
-                
-                _.each(varName.split(/(download|limit|growth|speed|price|upload|bandwidth|potential|erevenue)/g), function(e){
-                    if (!e)
-                        return
-                    a.push(e[0].toUpperCase()+e.substr(1)); 
-                })
-                return a.join(" ");
+            "^host\.storage\..*" : function(str) {
+                console.log("str",str);
+                var path = str.replace('host.storage.','')
+                    .replace(/\.\w+$/,'');
+                console.log("path",path);
+
+                var title = str.split('.').pop();
+                if(NodeVariableSettings.info['host.storage.'+title])
+                    title = NodeVariableSettings.info['host.storage.'+title].title;
+
+                title = '['+path+'] - '+title;
+                return title;
             },
-            "host\.networkmetrics\..*": function(str){
-                var s = str.split(".");
-                var varName     = s[2];
-                var a = [];
-                
-                _.each(varName.split(/(download|limit|growth|speed|price|upload|bandwidth|potential|erevenue)/g), function(e){
-                    if (!e)
-                        return
-                    a.push(e[0].toUpperCase()+e.substr(1)); 
-                })
-                return a.join(" ");
+            "^network\." : function(str) {
+                var p = str.split('.');
+                p.shift();
+                var adapter = p.shift();
+                var direction = p.shift();
+                var what = p.shift();
+
+                var title = '['+adapter+'] - '
+                        +direction.toUpperCase()+' '
+                        +what.charAt(0).toUpperCase()
+                        +what.substr(1);
+
+                return title;
             },
-            "host\.financialmetrics\..*": function(str){
-                var s = str.split(".");
-                var varName     = s[2];
-                var a = [];
-                
-                _.each(varName.split(/(download|limit|growth|speed|price|upload|bandwidth|potential|erevenue)/g), function(e){
-                    if (!e)
-                        return
-                    a.push(e[0].toUpperCase()+e.substr(1)); 
-                })
-                return a.join(" ");
+            "^storage\." : function(str) {
+                var p = str.split('.');
+                p.shift();
+                var device = p.shift();
+                var title = p.shift();
+
+                if(NodeVariableSettings.info['storage.'+title])
+                    title = NodeVariableSettings.info['storage.'+title].title;
+
+                return title;
             }
         },
         groups: [{
@@ -61,10 +57,13 @@
             title : '<%= _T("Financial") %>',
             regex : [/^host\.financialmetrics/]
         },{
-            title : '<%= _T("Storage Utilization") %>',
+            title : '<%= _T("Storage (SIAD)") %>',
+            regex : [/^host\.storage/]
+        },{
+            title : '<%= _T("Storage Devices") %>',
             regex : [/^storage.*(bytes|percent|mount)/]
         },{
-            title : '<%= _T("Network Bandwidth") %>',
+            title : '<%= _T("Network Bandwidth [~1 min]") %>',
             regex : [/^network.*(bytes|packets|errors)/]
         },{
             title : '<%= _T("Network Metrics (SIAD)") %>',
@@ -91,6 +90,7 @@
             "wallet\..*siacoin" : "h",
 			"(remainingstorage|totalstorage)$": "file-size-si",
             "^storage.*bytes": "file-size-si",
+            "^host\.storage.*capacity.*": "file-size-si",
             "^network.*bytes.*" : "file-size-si",
             "^host.*settings\.(maxdownloadbatchsize|maxrevisebatchsize|sectorsize)" : "file-size",
             "^network.*packets$" : "int",
@@ -451,6 +451,45 @@
             "consensus.currentblock": {
                 "title": "Current Block",
                 "help": "Current block hash."
+            },
+
+            // --------------------------------------------
+            // text for caption transformers
+            "host.storage.capacity": {
+                "title": "Capacity"
+            },
+            "host.storage.capacityremaining": {
+                "title": "Capacity Remaining"
+            },
+            "host.storage.path": {
+                "title": "Path"
+            },
+            "host.storage.failedreads": {
+                "title": "Failed Reads"
+            },
+            "host.storage.failedwrites": {
+                "title": "Failed Writes"
+            },
+            "host.storage.successfulreads": {
+                "title": "Successful Reads"
+            },
+            "host.storage.successfulwrites": {
+                "title": "Successful Writes"
+            },
+            "storage.bytesTotal" : {
+                "title" : "Bytes Total"
+            },
+            "storage.bytesUsed" : {
+                "title" : "Bytes Used"
+            },
+            "storage.bytesFree" : {
+                "title" : "Bytes Free"
+            },
+            "storage.percentUsed" : {
+                "title" : "Percent Used"
+            },
+            "storage.mount" : {
+                "title" : "Mount"
             }
         }
 
