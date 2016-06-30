@@ -496,12 +496,16 @@
 				}, function(err, result){
 					self.set("unlocking", false);
 					if (err){
+						var error = err.error+'';
+						if(error.match(/0606506D/g))
+							error = '<%- _T("Incorrect Custom Passphrase (Wallet key failed decryption)") %>'+': '+error;
+
 						IRIS.Confirm({
-							text: err.error,
+							text: error,
 							title:'<%=_T("Unable to Unlock : ")%>' + self.ident,
-							okBtn:'<%=_T("Retry")%>',
+							okBtn:'<%=_T("Ok")%>',
 							okBtnCls: 'primary',
-							closeBtn:'<%=_T("Close")%>'
+							closeBtn:'<%=_T("Cancel")%>'
 						}, function(btn){
 							btn=="ok" && self.lockUnlock();
 						});
