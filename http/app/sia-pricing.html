@@ -1,4 +1,4 @@
-<dom-module id="sia-cluster-status">
+<dom-module id="sia-pricing">
 	<template>
 		<style include="panel-style">
 			.content>.title{margin-top: 5px; margin-bottom: 0px;@apply(--layout-horizontal);}
@@ -64,7 +64,7 @@
 	</template>
 	<script>
 		Polymer({
-			is: "sia-cluster-status",
+			is: "sia-pricing",
 			behaviors: [PanelBehavior],
 			properties:{
 				chart:{
@@ -79,7 +79,7 @@
 				var self = this;
 
 				App.rpc.dispatch({ op : "get-pricing" }, function(err, pricing) {
-					console.log(self.is, "GOT PRICING",pricing)
+					// console.log(self.is, "GOT PRICING",pricing)
 					self.set("data", pricing);
 					//self.set('data', pricing); 
 				})

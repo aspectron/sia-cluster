@@ -17,7 +17,7 @@
 		<div class="content" online$="[[online]]" unlocked$="[[unlocked]]">
 			<paper-icon-button icon="settings" class="setting-icon" on-click="openSettings"></paper-icon-button>
 			<h2 class="title">
-				<iron-icon class="online-icon" icon="[[_onlineIcon(online)]]" title$="[[_onlineIconTitle(online)]]"></iron-icon>
+				<iron-icon class="online-icon" icon="[[_onlineIcon(online, accepting)]]" title$="[[_onlineIconTitle(online, accepting)]]"></iron-icon>
 				<iron-icon class="unlock-icon" icon="[[_unlockIcon(unlocked)]]" title$="[[_unlockIconTitle(unlocked)]]" on-click="lockUnlock"></iron-icon>
 				<span>[[ident]]</span>
 			</h2>
@@ -183,6 +183,10 @@
 					type: Boolean,
 					value: false
 				},
+				accepting:{
+					type: Boolean,
+					value: false
+				},
 				passphraseData:{
 					type: Object,
 					value: {}
@@ -272,11 +276,21 @@
 					console.log("result", result)
 				});
 			},
-			_onlineIcon: function(online){
-				return online ? "sia:database": "cloud-off";
+			_onlineIcon: function(online, accepting){
+				if(!online)
+					return "cloud-off";
+				if(!accepting)
+					return "visibility-off";
+				return "sia:database";
+//				return online ? "sia:database": "cloud-off";
 			},
-			_onlineIconTitle: function(online){
-				return online ? "Online": "Offline";
+			_onlineIconTitle: function(online, accepting){
+				if(!online)
+					return "Offline";
+				if(!accepting)
+					return "Not Accepting Contracts";
+				return "Online and Accepting Contracts";
+//				return online ? "Online": "Offline";
 			},
 			_unlockIcon: function(unlocked){
 				return unlocked ? "sia:unlock" : "sia:lock";
@@ -297,6 +311,8 @@
 				var self 	= this;
 				if (this.data && this.data.wallet && !_.isUndefined(this.data.wallet.unlocked))
 					this.set("unlocked", this.data.wallet.unlocked);
+				if (this.data && this.data.host && this.data.host.externalsettings && !_.isUndefined(this.data.host.externalsettings.acceptingcontracts))
+					this.set("accepting", this.data.host.externalsettings.acceptingcontracts);
 				
 				if (self.data)
 					self.debounce("updateFieldsValue", self.updateFieldsValue, 100);

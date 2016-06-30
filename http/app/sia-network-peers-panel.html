@@ -140,9 +140,9 @@
 
 				d3.select(chart.$.percentage).html("<div class='node-name'>"+ nodeName + "</div>" + d.value.toFileSize(true)+"<br/> ("+percentageString+")");
 				d3.select(chart.$.explanation).style("visibility", "").style("margin-top", "-40px");
-				var text = "USED NODE";
+				var text = "USED";
 				if (d.name == "Free")
-					text = "FREE NODE";
+					text = "FREE";
 				else if(d.parent.name == "root")
 					text = "TOTAL";
 				d3.select(chart.$.nodename).html(text + "<div>"+price+"</div>");
