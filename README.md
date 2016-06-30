@@ -225,10 +225,13 @@ Following parameters for price tracking are available in the Sia Cluster panel:
 * **Max Price** - Maximum price (ceiling - price won't go above this value)
 * **Storage Price Update** - Time interval for price updates in minutes
 
+### Dashboard
+
+Sia Cluster UI was originally designed to be a dashboard view.  Main Settings menu has a UI tab.  In this dialog, you can adjust sizes of the font and panels.  Sizes of these elements are stored in the URL (hash).  As such, once UI is configured to your liking, you can bookmark the URL and later invoke it to restore your configuration.  This is especially useful if you have extra monitors and have some form of monitoring [OCD](https://en.wikipedia.org/wiki/Obsessive%E2%80%93compulsive_disorder).
 
 ## Data Updates
 
-Sia Node polls siad as well as gathers system stats once a minute and sends the data over to Sia Cluster.  Certain actions on Sia Cluster cause immediate update.  In general, if you are interfacing with siad using *Sia UI* or *siac* console interface, changes to internal settings will reflect in Sia Cluster ui within a minute.
+Sia Node polls siad as well as gathers system stats once a minute and sends the data over to Sia Cluster.  Certain actions on Sia Cluster cause immediate update.  In general, if you are interfacing with siad using the *Sia UI* or *siac* console interface (or any other connecting applications), changes to internal settings will reflect in Sia Cluster UI within a minute.
 
 Network panel contains general information about the Sia network.  This information is being polled from `explore.sia.tech` block explorer.
 
