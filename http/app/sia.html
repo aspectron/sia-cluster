@@ -278,7 +278,10 @@
 						self.selected = 0;
 					break;
 					default:
-						self.selected = self.getTab(tab).index;
+						var index = self.getTab(tab).index;
+						if (index === undefined)
+							index = 0;
+						self.selected = index;
 					break;
 				}
 			},

@@ -95,21 +95,31 @@
 					</template>
 				</neon-animatable>
 				<neon-animatable class="fit items" page="ui" on-mouseup="fadeInSettingDialog">
-					<label class="slider-label"><%=_T("Font Size")%> <span>[[settings.fontSize]]</span>%</label>
+					<label class="slider-label"><%=_T("Font Size")%> <span>[[localSettings.F]]</span>%</label>
 					<paper-slider snaps pin
 						step='1' min="50" max="150"
-						immediate-value="{{settings.fontSize}}"
-						value="[[settings.fontSize]]"
+						immediate-value="{{localSettings.F}}"
+						value="[[localSettings.F]]"
 						class="slider"
 						on-mousedown="fadeOutSettingDialog"
 						on-mouseup="fadeInSettingDialog"
 						max-markers="10"
 					></paper-slider>
-					<label class="slider-label"><%=_T("Panel minimum width:")%> <span>[[settings.panelSize]]</span>px</label>
+					<label class="slider-label"><%=_T("Panel minimum width:")%> <span>[[localSettings.W]]</span>px</label>
 					<paper-slider snaps pin
 						step='1' min="300" max="500"
-						immediate-value="{{settings.panelSize}}"
-						value="[[settings.panelSize]]"
+						immediate-value="{{localSettings.W}}"
+						value="[[localSettings.W]]"
+						class="slider"
+						on-mousedown="fadeOutSettingDialog"
+						on-mouseup="fadeInSettingDialog"
+						max-markers="10"
+					></paper-slider>
+					<label class="slider-label"><%=_T("Panel minimum height:")%> <span>[[localSettings.H]]</span>px</label>
+					<paper-slider snaps pin
+						step='1' min="500" max="1000"
+						immediate-value="{{localSettings.H}}"
+						value="[[localSettings.H]]"
 						class="slider"
 						on-mousedown="fadeOutSettingDialog"
 						on-mouseup="fadeInSettingDialog"
@@ -129,6 +139,14 @@
 				type: Object,
 				value:{}
 			},
+			localSettings:{
+				type: Object,
+				value: {
+					F: 300,
+					W: 300,
+					H: 500
+				}
+			},
 			storage:{
 				type: Object,
 				value: {}
@@ -144,8 +162,7 @@
 		},
 		behaviors:[SettingDialogBehavior],
 		observers: [
-			"onFontSizeChanged(settings.fontSize)",
-			"onPanelSizeChanged(settings.panelSize)"
+			"onLocalSettingChanged(localSettings, localSettings.*)"
 		],
 		ready: function(){
 			var self = this;
@@ -154,6 +171,7 @@
 				self.$styleEl = $("<style id='customStyle'></style>");
 				$(document.body).append(self.$styleEl);
 			}
+			self.loadLocalSettings();
 
 			self.fetchItems();
 			App.rpc.on("node-connected", function(args){
@@ -192,10 +210,6 @@
 				if (err)
 					return App.error(err);
 
-				if (!result.settings.fontSize)
-					result.settings.fontSize = 100;
-				if (!result.settings.panelSize)
-					result.settings.panelSize = 300;
 				self.set("settings", result.settings);
 				self.settingLoaded = true;
 				self.set("storage", result.storage);
@@ -220,20 +234,46 @@
 				callback && callback(err, r);
 			});
 		},
-		onFontSizeChanged: function(){
-			this.updateCustomStyle();
-			this.settingLoaded && this.saveSetting("fontSize", this.settings.fontSize);
-		},
-		onPanelSizeChanged: function(){
-			this.updateCustomStyle();
-			this.settingLoaded && this.saveSetting("panelSize", this.settings.panelSize);
-		},
-		updateCustomStyle: function(){
+		onLocalSettingChanged: function(){
 			if (!this.$styleEl)
 				return;
-			var fontSize = this.settings.fontSize;
-			var panelSize = this.settings.panelSize;
-			this.$styleEl.text("body{font-size:"+fontSize+"%} #siaCluster .panels .panel{min-width:"+panelSize+"px}");
+
+			var s 			= this.localSettings;
+			var fontSize 	= s.F;
+			var panelWidth 	= s.W;
+			var panelHeight = s.H;
+			var panelMaxWidth 	= $(window).width()-20;
+			panelWidth 			= Math.min(panelWidth, panelMaxWidth);
+			panelHeight 		= Math.max(panelHeight, 500);
+			this.$styleEl.text("body{font-size:"+fontSize+"%} #siaCluster .panels .panel{min-width:"+panelWidth+"px;min-height:"+panelHeight+"px}");
+			this.setSettingHash(s);
+		},
+		setSettingHash: function(keyValueMap){
+			var hash = [];
+			_.each(keyValueMap, function(v, k){
+				hash.push(k.toLowerCase()+""+App.str2hex(v, true));
+			});
+			window.location.hash = hash.join(":");
+		},
+		loadLocalSettings: function(){
+			var self = this;
+			var hash = (window.location.hash || "").replace("#", '').split(":");
+			if (!hash || !hash[0])
+				return
+			var settings = _.extend({}, this.localSettings);
+			_.each(settings, function(v, k){
+				var _k = k.toLowerCase();
+				var s = _.find(hash, function(e){
+					return e.indexOf(_k) === 0;
+				});
+				if (!s)
+					return;
+				settings[k] = App.hex2str(s.substr(k.length), true);
+				if (settings[k]+"" == "NaN"){
+					settings[k] = v;
+				}
+			});
+			this.set("localSettings", settings);
 		}
 	})
 	</script>

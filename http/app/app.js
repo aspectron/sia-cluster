@@ -43,7 +43,28 @@ App = _.extend(window.App || {}, {
 		var endTS 		= Date.now();
 		var startTS 	= endTS - this._graphRange * 60 * 60 * 1000;
 		return {endTS: endTS, startTS: startTS};
-	}
+	},
+	str2hex: function (str, isNumber) {
+        if (isNumber)
+        	return parseInt(str).toString(16);
+
+        var tempstr = '';
+        str = str+"";
+        for (a = 0; a < str.length; a++) {
+            tempstr = tempstr + str.charCodeAt(a).toString(16);
+        }
+        return tempstr;
+    },
+    hex2str: function (str, isNumber) {
+    	if (isNumber)
+    		return parseInt(str, 16);
+
+        var tempstr = '';
+        for (b = 0; b < str.length; b = b + 2) {
+            tempstr = tempstr + String.fromCharCode(parseInt(str.substr(b, 2), 16));
+        }
+        return tempstr;
+    }
 })
 
 var VariableDataFormatter = {
