@@ -121,7 +121,7 @@
 				<paper-icon-button icon="close" dialog-dismiss></paper-icon-button>
 			</paper-toolbar>
 			<paper-dialog-scrollable class="flex">
-				<paper-input id="passphraseField" value="{{passphraseData.passphrase}}" name="[[_passwordFieldName()]]" type="[[passwordFieldType]]" required label="<%=_T("Custom Passphrase")%>" on-keyup="onPDialogKeyUp"></paper-input>
+				<paper-input autofocus id="passphraseField" value="{{passphraseData.passphrase}}" name="[[_passwordFieldName()]]" type="[[passwordFieldType]]" required label="<%=_T("Custom Passphrase")%>" on-keyup="onPDialogKeyUp"></paper-input>
 				<paper-input id="passphraseField2" value="{{passphraseData.passphrase2}}" name="[[_passwordFieldName()]]" type="[[passwordFieldType]]" required label="<%=_T("Confirm Passphrase")%>" error-message="<%=_T("Dose not match with Custom Passphrase")%>" on-keyup="onPDialogKeyUp"></paper-input>
 				<paper-input id="walletkeyField" value="{{passphraseData.walletkey}}" name="[[_passwordFieldName()]]" type="[[passwordFieldType]]" required label="<%=_T("Wallet Key")%>" on-keyup="onPDialogKeyUp"></paper-input>
 			</paper-dialog-scrollable>
@@ -140,7 +140,7 @@
 			</paper-toolbar>
 			<paper-dialog-scrollable class="flex">
 				<paper-checkbox checked="{{unlockData.useLocal}}"><%=_T("Use Custom Passphrase")%></paper-checkbox>
-				<paper-input
+				<paper-input autofocus
 					id="unlockPassphraseField" value="{{unlockData.passphrase}}" name="[[_passwordFieldName()]]" required type="[[passwordFieldType]]" on-keyup="onUDialogKeyUp"
 					label="[[_ifelse(unlockData.useLocal, '<%=_T("Custom Passphrase")%>', '<%=_T("Wallet Key")%>')]]"
 				></paper-input>
