@@ -1,4 +1,4 @@
-# Sia Cluster
+# Sia Cluster 0.9.0
 
 http://aspectron.com/#SiaCluster
 
@@ -241,7 +241,7 @@ If you intend on using Sia Cluster over the open Internet, you need to take secu
 * Enable `basicAuth` (example is given in `sia-cluster.local.conf-example` file) to obscure the application.
 * Generate your own SSL certificates and copy them as `certificates/sia-cluster.local.key` and `certificates/sia-cluster.local.crt`
 * If you have a Cloud Flare account, you can place Sia Cluster behind Cloud Flare to use their automatically generated SSL certificates.
-* You can also place the entire setup behind NGINX proxy and use NGINX configuration. This is especially useful if you need to serve Sia Cluster over port 443 while having other services on the same server. NGINX proxy setup instruction are available (here)[https://github.com/aspectron/iris-app#using-nginx-as-a-proxy]
+* You can also place the entire setup behind NGINX proxy and use NGINX configuration. This is especially useful if you need to serve Sia Cluster over port 443 while having other services on the same server. NGINX proxy setup instruction are available [here](https://github.com/aspectron/iris-app#using-nginx-as-a-proxy)
 * When unlocking wallets remotely, it is best if you use "local passphrase" as opposed to entering the encryption key of the wallet itself (which is also your wallet seed).  This prevents transmission of the seed over communication channels. No matter how secure your setup is, if the machine on which Sia Cluster is running is compromised, software can be modified to listen in on all communication exchange and subsequently your seed can be stolen.
 * Always backup all the seeds from all computers!
 
