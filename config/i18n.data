@@ -2778,7 +2778,7 @@ f1ea1a35c89afd4c.
 76de4366cd5f91fb.category   "basic"
 76de4366cd5f91fb.original   "en"
 76de4366cd5f91fb.multiline  false
-76de4366cd5f91fb.orphan     false
+76de4366cd5f91fb.orphan     true
 76de4366cd5f91fb.ts         1467372497214
 76de4366cd5f91fb.locale.en  "Open Logs"
 76de4366cd5f91fb.
@@ -2852,3 +2852,183 @@ bbfeab3dcfff3ce2.
 6b2b7595ef0090ea.ts         1467375511086
 6b2b7595ef0090ea.locale.en  "Wallet Logs"
 6b2b7595ef0090ea.
+7c797f52bed1289b.
+7c797f52bed1289b.hash       "7c797f52bed1289b"
+7c797f52bed1289b.sha1       "474c797713f37901928aafb6adbae0241d1750bd"
+7c797f52bed1289b.category   "basic"
+7c797f52bed1289b.original   "en"
+7c797f52bed1289b.multiline  false
+7c797f52bed1289b.orphan     false
+7c797f52bed1289b.ts         1467384065796
+7c797f52bed1289b.locale.en  "logs"
+7c797f52bed1289b.
+b4284808bcb4c35d.
+b4284808bcb4c35d.hash       "b4284808bcb4c35d"
+b4284808bcb4c35d.sha1       "2e41422193cdb4e459d8a6117f675668259732ae"
+b4284808bcb4c35d.category   "basic"
+b4284808bcb4c35d.original   "en"
+b4284808bcb4c35d.multiline  false
+b4284808bcb4c35d.orphan     false
+b4284808bcb4c35d.ts         1467385440583
+b4284808bcb4c35d.locale.en  "Active Contracts"
+b4284808bcb4c35d.
+7c6bb6a0b97597fd.
+7c6bb6a0b97597fd.hash       "7c6bb6a0b97597fd"
+7c6bb6a0b97597fd.sha1       "b7152342a267362add3c0d7f69f720f7a9c76c9e"
+7c6bb6a0b97597fd.category   "basic"
+7c6bb6a0b97597fd.original   "en"
+7c6bb6a0b97597fd.multiline  false
+7c6bb6a0b97597fd.orphan     false
+7c6bb6a0b97597fd.ts         1467385440592
+7c6bb6a0b97597fd.locale.en  "Size"
+7c6bb6a0b97597fd.
+7c73550eb95b28f6.
+7c73550eb95b28f6.hash       "7c73550eb95b28f6"
+7c73550eb95b28f6.sha1       "64ae43e8fe76204a5a93092218b9a5a0baed8136"
+7c73550eb95b28f6.category   "basic"
+7c73550eb95b28f6.original   "en"
+7c73550eb95b28f6.multiline  false
+7c73550eb95b28f6.orphan     false
+7c73550eb95b28f6.ts         1467385440592
+7c73550eb95b28f6.locale.en  "Cost"
+7c73550eb95b28f6.
+e8464c94a2ff5f48.
+e8464c94a2ff5f48.hash       "e8464c94a2ff5f48"
+e8464c94a2ff5f48.sha1       "84008029fcf545ccc40d2f6e0eaf9cf6c975a0b1"
+e8464c94a2ff5f48.category   "basic"
+e8464c94a2ff5f48.original   "en"
+e8464c94a2ff5f48.multiline  false
+e8464c94a2ff5f48.orphan     false
+e8464c94a2ff5f48.ts         1467385440593
+e8464c94a2ff5f48.locale.en  "Peers Hosting"
+e8464c94a2ff5f48.
+7da7cbf6649c130f.
+7da7cbf6649c130f.hash       "7da7cbf6649c130f"
+7da7cbf6649c130f.sha1       "df058fac046937937628aee245b4ef59ed845e6c"
+7da7cbf6649c130f.category   "basic"
+7da7cbf6649c130f.original   "en"
+7da7cbf6649c130f.multiline  false
+7da7cbf6649c130f.orphan     false
+7da7cbf6649c130f.ts         1467385440593
+7da7cbf6649c130f.locale.en  "Peers Total"
+7da7cbf6649c130f.
+6d2b1b2b12ff331d.
+6d2b1b2b12ff331d.hash       "6d2b1b2b12ff331d"
+6d2b1b2b12ff331d.sha1       "0f86ba8d525adb1c6192faa6027dc7a887dcfa4a"
+6d2b1b2b12ff331d.category   "basic"
+6d2b1b2b12ff331d.original   "en"
+6d2b1b2b12ff331d.multiline  false
+6d2b1b2b12ff331d.orphan     false
+6d2b1b2b12ff331d.ts         1467385609133
+6d2b1b2b12ff331d.locale.en  "Active Contracts (AC)"
+6d2b1b2b12ff331d.
+caf3362140ebe48.
+caf3362140ebe48.hash       "caf3362140ebe48"
+caf3362140ebe48.sha1       "7a4fee04313de7c60c3de2e8890a35201986a10f"
+caf3362140ebe48.category   "basic"
+caf3362140ebe48.original   "en"
+caf3362140ebe48.multiline  false
+caf3362140ebe48.orphan     false
+caf3362140ebe48.ts         1467385609163
+caf3362140ebe48.locale.en  "AC Size"
+caf3362140ebe48.
+3a3772cc967ae003.
+3a3772cc967ae003.hash       "3a3772cc967ae003"
+3a3772cc967ae003.sha1       "2e3eb485c04bcd032fde3f867b37ab60ff0a8804"
+3a3772cc967ae003.category   "basic"
+3a3772cc967ae003.original   "en"
+3a3772cc967ae003.multiline  false
+3a3772cc967ae003.orphan     false
+3a3772cc967ae003.ts         1467385609163
+3a3772cc967ae003.locale.en  "AC Cost"
+3a3772cc967ae003.
+f944c970565108bc.
+f944c970565108bc.hash       "f944c970565108bc"
+f944c970565108bc.sha1       "19462d102ef6abe488ae19cc7b26969381973db3"
+f944c970565108bc.category   "basic"
+f944c970565108bc.original   "en"
+f944c970565108bc.multiline  false
+f944c970565108bc.orphan     false
+f944c970565108bc.ts         1467385609164
+f944c970565108bc.locale.en  "Total Contracts (TC)"
+f944c970565108bc.
+3a3772d9967ae003.
+3a3772d9967ae003.hash       "3a3772d9967ae003"
+3a3772d9967ae003.sha1       "61a14eaf5c90278d10750dc210aec1255da2a616"
+3a3772d9967ae003.category   "basic"
+3a3772d9967ae003.original   "en"
+3a3772d9967ae003.multiline  false
+3a3772d9967ae003.orphan     false
+3a3772d9967ae003.ts         1467385609164
+3a3772d9967ae003.locale.en  "TC Cost"
+3a3772d9967ae003.
+caf3377140ebe48.
+caf3377140ebe48.hash       "caf3377140ebe48"
+caf3377140ebe48.sha1       "ee8df0b883178c834290293aca765c9c1e23ccad"
+caf3377140ebe48.category   "basic"
+caf3377140ebe48.original   "en"
+caf3377140ebe48.multiline  false
+caf3377140ebe48.orphan     false
+caf3377140ebe48.ts         1467385609165
+caf3377140ebe48.locale.en  "TC Size"
+caf3377140ebe48.
+c090740c16fe728e.
+c090740c16fe728e.hash       "c090740c16fe728e"
+c090740c16fe728e.sha1       "fb501f4fb839da3c4a1ee62e10e693967e170f98"
+c090740c16fe728e.category   "basic"
+c090740c16fe728e.original   "en"
+c090740c16fe728e.multiline  false
+c090740c16fe728e.orphan     false
+c090740c16fe728e.ts         1467386340972
+c090740c16fe728e.locale.en  "Active Size"
+c090740c16fe728e.
+4a98f822417aef35.
+4a98f822417aef35.hash       "4a98f822417aef35"
+4a98f822417aef35.sha1       "f1f529830a2e3b47538e7d9b53a5065a5313eae3"
+4a98f822417aef35.category   "basic"
+4a98f822417aef35.original   "en"
+4a98f822417aef35.multiline  false
+4a98f822417aef35.orphan     false
+4a98f822417aef35.ts         1467386340990
+4a98f822417aef35.locale.en  "Active Cost"
+4a98f822417aef35.
+deb70a8643a4c310.
+deb70a8643a4c310.hash       "deb70a8643a4c310"
+deb70a8643a4c310.sha1       "1318e156196942da4d68d7eafa640a01d5ffaa56"
+deb70a8643a4c310.category   "basic"
+deb70a8643a4c310.original   "en"
+deb70a8643a4c310.multiline  false
+deb70a8643a4c310.orphan     false
+deb70a8643a4c310.ts         1467386340999
+deb70a8643a4c310.locale.en  "Total Contracts"
+deb70a8643a4c310.
+5ed26facc4187c52.
+5ed26facc4187c52.hash       "5ed26facc4187c52"
+5ed26facc4187c52.sha1       "b5d8da40f3ed3192dac161132c7837ff1080ab10"
+5ed26facc4187c52.category   "basic"
+5ed26facc4187c52.original   "en"
+5ed26facc4187c52.multiline  false
+5ed26facc4187c52.orphan     false
+5ed26facc4187c52.ts         1467386341001
+5ed26facc4187c52.locale.en  "Total Cost"
+5ed26facc4187c52.
+a10c0702cbfba91d.
+a10c0702cbfba91d.hash       "a10c0702cbfba91d"
+a10c0702cbfba91d.sha1       "f86478ead8b51495e61184b12e91f691e2ed5e32"
+a10c0702cbfba91d.category   "basic"
+a10c0702cbfba91d.original   "en"
+a10c0702cbfba91d.multiline  false
+a10c0702cbfba91d.orphan     false
+a10c0702cbfba91d.ts         1467386341006
+a10c0702cbfba91d.locale.en  "Total Size"
+a10c0702cbfba91d.
+88bccc8b791452f4.
+88bccc8b791452f4.hash       "88bccc8b791452f4"
+88bccc8b791452f4.sha1       "6a63a895ca14a528048ef7e80c09d97d433ab222"
+88bccc8b791452f4.category   "basic"
+88bccc8b791452f4.original   "en"
+88bccc8b791452f4.multiline  false
+88bccc8b791452f4.orphan     false
+88bccc8b791452f4.ts         1467386341008
+88bccc8b791452f4.locale.en  "Peers Connected"
+88bccc8b791452f4.
