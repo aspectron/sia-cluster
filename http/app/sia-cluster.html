@@ -26,8 +26,38 @@
 				.panels sia-node.panel,
 				.panels .panel{min-width:300px;box-sizing:border-box;}
 			}
+			.graph-range-slider{padding:10px 80px;}
+			paper-range-slider::shadow #sliderKnob > #sliderKnobInner::after{
+				transform: translate(0px, 20px) !important;
+				content: attr(v) !important;
+				color:#3367d6 !important;
+				white-space: nowrap;
+				width: auto !important;
+				margin-left:0px !important;
+				left:25px !important;
+			}
+			paper-range-slider::shadow #sliderMin #sliderKnobInner::after{
+				left:initial !important;
+				right:25px;
+			}
+			paper-range-slider::shadow #sliderKnobInner::before{display:none}
 		</style>
 		<!--sia-colors class="panel"></sia-colors-->
+		<div class="graph-range-slider">
+			<paper-range-slider
+				id="graphRangeSlider"
+				max-markers="10"
+				snaps pin
+				step="1"
+				min="[[grsMin]]"
+				max="[[grsMax]]"
+				value-diff-min="[[grsDiffMin]]"
+				value-diff-max="[[grsDiffMax]]"
+				value-min="{{grsValueMin}}"
+				value-max="{{grsValueMax}}"
+				always-show-pin
+			></paper-range-slider>
+		</div>
 		<div class="panels" on-node-global-settings="showNodeSettingDialog">
 			<sia-network-peers-panel class="panel"></sia-network-peers-panel>
 			<sia-network-panel class="panel"></sia-network-panel>
@@ -160,7 +190,7 @@
 				value: "nodes"
 			}
 		},
-		behaviors:[SettingDialogBehavior],
+		behaviors:[SettingDialogBehavior, GraphRangSliderBehavior],
 		observers: [
 			"onLocalSettingChanged(localSettings, localSettings.*)"
 		],
@@ -200,7 +230,6 @@
 					return;
 				self.splice("nodes", nodeIndex, 1);
 			});
-
 		},
 		fetchItems: function(){
 			var self = this;

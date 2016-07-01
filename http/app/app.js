@@ -34,13 +34,20 @@ App = _.extend(window.App || {}, {
 	},
 	_graphRange: 24,
 	setGraphRange: function(hours){
-		if (this._graphRange == hours)
+		if (this._graphRange+"" == hours+"")
 			return;
 		this._graphRange = hours;
 		$(document.body).trigger("graph-range-changed", {graphRange: this._graphRange});
 	},
 	getGraphRange: function(){
-		var endTS 		= Date.now();
+		var now = Date.now();
+		if (_.isArray(this._graphRange)) {
+			var endTS 	= now - this._graphRange[1];
+			var startTS = now - this._graphRange[0];
+			return {endTS: endTS, startTS: startTS};
+		};
+
+		var endTS 		= now;
 		var startTS 	= endTS - this._graphRange * 60 * 60 * 1000;
 		return {endTS: endTS, startTS: startTS};
 	},

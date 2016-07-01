@@ -1,4 +1,81 @@
 <script>
+	var GraphRangSliderBehavior = {
+		properties:{
+			grsMin: {type: Number, value: 0},
+			grsMax: {type: Number, value: 100},
+			grsDiffMin: {type: Number, value: 0},
+			grsDiffMax: {type: Number, value: 100},
+			grsValueMin: {type: Number, value: 0},
+			grsValueMax: {type: Number, value: 100},
+			grsDateFormat: {type: String, value: "%d %B %I %p"}
+		},
+		observers:[
+			"onValueMinChanged(grsValueMin)",
+			"onValueMaxChanged(grsValueMax)"
+		],
+		_JSON: function(v){
+			return JSON.stringify(v, null, "   ")
+		},
+		ready: function(){
+			var self 			= this;
+
+			var hour 			= 1;
+			var day		 		= 24 * hour;
+			var max 			= 45 * day;
+			self.format 		= d3.time.format(self.grsDateFormat);
+			self.set("grsMax", max);
+			self.set("grsMin", 0);
+			self.set("grsDiffMin", hour);
+			self.set("grsDiffMax", day * 30);
+			self.set("grsValueMax", max);
+			self.set("grsValueMin", max - day);
+			self.listen(self.$.graphRangeSlider, "change", "grsUpdateValues");
+			$(document.body).on("graph-range-changed", self._onGraphRangeChanged.bind(self));
+		},
+		_onGraphRangeChanged: function(e, args){
+			if(args && args.graphRange && !_.isArray(args.graphRange)){
+				this._suspendEvent = true;
+				this.set("grsValueMax", this.grsMax);
+				this.set("grsValueMin", this.grsMax - args.graphRange);
+				this.async(function(){
+					this._suspendEvent = false;
+				}, 100)
+			}
+		},
+		grsUpdateValues: function(){
+			console.log("this._suspendEvent", this._suspendEvent)
+			if (this._suspendEvent)
+				return
+			this.debounce("grsUpdateValues", this._grsUpdateValues, 100);
+		},
+		_grsUpdateValues: function(){
+			console.log("grsUpdateValues", this.grsValueMin, this.grsValueMax)
+			App.setGraphRange([
+				this.buildTime(this.grsValueMin),
+				this.buildTime(this.grsValueMax)
+			]);
+		},
+		buildTime: function(v){
+			return (this.grsMax - v) * 60 * 60 * 1000;
+		},
+		buildDate: function(v){
+			var now = new Date();
+			now.setTime(now.getTime() - this.buildTime(v));
+			return now;
+		},
+		setV: function(slider, value){
+			if (!this.format)
+				return
+			var v = this.format(this.buildDate(value))
+			this.$.graphRangeSlider.$["slider"+slider].$.sliderKnobInner.setAttribute("v", v);
+		},
+		onValueMinChanged: function(){
+			this.setV("Min", this.grsValueMin)
+		},
+		onValueMaxChanged: function(){
+			this.setV("Max", this.grsValueMax)
+		}
+	}
 	var PanelBehavior = {
 		properties:{
 			uuid: {
