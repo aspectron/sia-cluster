@@ -2,7 +2,6 @@
 
 http://aspectron.com/#SiaCluster
 
-[![dependencies Status](https://david-dm.org/aspectron/sia-cluster.svg)](https://david-dm.org/aspectron/sia-cluster#info=dependencies)
 [![license:mit](https://img.shields.io/badge/license-mit-blue.svg)](https://opensource.org/licenses/MIT)
 
 Sia Cluster is a solution for monitoring multiple [Sia](http://sia.tech) hosts (siad instances).  It is useful if you are running siad across multiple computers and want to monitor their status from a single location.
