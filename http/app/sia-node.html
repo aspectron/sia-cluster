@@ -16,7 +16,8 @@
 			@-webkit-keyframes rotate {100% {-webkit-transform: rotate(360deg);}}
 			@keyframes rotate {100% {transform: rotate(360deg);}}
 			.logs{padding:20px;line-height:1.6;overflow-x:hidden;overflow-y:auto;}
-			.logs #logs{overflow-x:auto;width:100%;display:block;}
+			.logs #logs{ /*white-space: normal;*/ overflow-x:auto; width:100%; height: 100%; display:block;
+				font-family: "Consolas","Monaco","Lucida Console","Courier New", monospace !important;	}
 		</style>
 		<div class="content" online$="[[online]]" unlocked$="[[unlocked]]">
 			<paper-icon-button icon="settings" class="setting-icon" on-click="openSettings"></paper-icon-button>
@@ -109,7 +110,13 @@
 					</paper-button>
 				</neon-animatable>
 				<neon-animatable class="fit" page="advanced">
-					<paper-button raised class="block-btn open-logs-btn" disabled$="[[!online]]" on-click="openLogs"><%= _T("Open Logs") %></paper-button>
+					<paper-button raised class="block-btn open-logs-btn" disabled$="[[!online]]" on-click="openLogs" log-type="host"><%= _T("Host Logs") %></paper-button>
+					<paper-button raised class="block-btn open-logs-btn" disabled$="[[!online]]" on-click="openLogs" log-type="consensus"><%= _T("Consensus Logs") %></paper-button>
+					<paper-button raised class="block-btn open-logs-btn" disabled$="[[!online]]" on-click="openLogs" log-type="gateway"><%= _T("Gateway Logs") %></paper-button>
+					<paper-button raised class="block-btn open-logs-btn" disabled$="[[!online]]" on-click="openLogs" log-type="miner"><%= _T("Miner Logs") %></paper-button>
+					<paper-button raised class="block-btn open-logs-btn" disabled$="[[!online]]" on-click="openLogs" log-type="renter"><%= _T("Renter Logs") %></paper-button>
+					<paper-button raised class="block-btn open-logs-btn" disabled$="[[!online]]" on-click="openLogs" log-type="wallet"><%= _T("Wallet Logs") %></paper-button>
+					<hr/>
 					<paper-button raised class="block-btn delete-node-btn" on-click="deleteNode"><%= _T("Delete node") %></paper-button>
 				</neon-animatable>
 			</neon-animated-pages>
@@ -157,7 +164,7 @@
 				<div class="title"><%=_T("Logs")%></div>
 				<paper-icon-button icon="close" dialog-dismiss></paper-icon-button>
 			</paper-toolbar>
-			<div class="flex logs"><pre id="logs"></pre></div>
+			<div class="flex logs"><div id="logs" style=""></div></div>
 		</paper-dialog>
 	</template>
 	<script>
@@ -444,6 +451,7 @@
 				this.$.settingDialog.open();
 			},
 			openLogs: function(){
+				console.log("LOGS DIALOG",arguments);
 				this.$.settingDialog.close();
 				this.$.logsDialog.open();
 			},
@@ -454,7 +462,7 @@
 					return
 				}
 				App.showLoading();
-				App.rpc.dispatch({op: "fetch-host-logfile", node: self.uuid}, function(err, logs){
+				App.rpc.dispatch({op: "fetch-logfile", node: self.uuid, type: 'xxxx'}, function(err, logs){
 					App.hideLoading();
 					console.log("err", err)
 					if (err){
@@ -462,7 +470,9 @@
 						return App.error(err);
 					}
 
-					self.$.logs.innerHTML = self.htmlEntities(logs);
+					self.$.logs.innerHTML =
+						self.htmlEntities(logs).replace(/^(\S+ \S+)/img,"<b>$1</b>").replace(/$/gm,'<br/>');
+
 				});
 			},
 			htmlEntities: function (str) {
