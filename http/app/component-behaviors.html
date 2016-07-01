@@ -7,7 +7,29 @@
 			grsDiffMax: {type: Number, value: 100},
 			grsValueMin: {type: Number, value: 0},
 			grsValueMax: {type: Number, value: 100},
-			grsDateFormat: {type: String, value: "%d %B %I %p"}
+			grsDateFormat: {type: String, value: "%d %B %I %p"},
+			selectedGraphRange:{
+				type: Number,
+				value: 24,
+				observer: "onGraphRangeChanged"
+			},
+			graphMenus:{
+				type: Array,
+				value: [
+					{value:0, text: "CUSTOM"},
+					{value:1, text: "1H"},
+					{value:2, text: "2H"},
+					{value:4, text: "4H"},
+					{value:8, text: "8H"},
+					{value:12, text: "12H"},
+					{value:24, text: "24H"},
+					{value:48, text: "48H"},
+					{value:72, text: "3D"},
+					{value:168, text: "7D"},
+					{value:336, text: "2W"},
+					{value:672, text: "4W"}
+				]
+			}
 		},
 		observers:[
 			"onValueMinChanged(grsValueMin)",
@@ -32,6 +54,11 @@
 			self.listen(self.$.graphRangeSlider, "change", "grsUpdateValues");
 			$(document.body).on("graph-range-changed", self._onGraphRangeChanged.bind(self));
 		},
+		onGraphRangeChanged: function(){
+			if (!this.selectedGraphRange)
+				return;
+			App.setGraphRange(this.selectedGraphRange);
+		},
 		_onGraphRangeChanged: function(e, args){
 			if(args && args.graphRange && !_.isArray(args.graphRange)){
 				this._suspendEvent = true;
@@ -40,6 +67,8 @@
 				this.async(function(){
 					this._suspendEvent = false;
 				}, 100)
+			}else{
+				this.selectedGraphRange = 0;
 			}
 		},
 		grsUpdateValues: function(){

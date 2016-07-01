@@ -26,10 +26,11 @@
 				.panels sia-node.panel,
 				.panels .panel{min-width:300px;box-sizing:border-box;}
 			}
-			.graph-range-slider{padding:0px 80px;height:50px;overflow:hidden;margin-top:15px;}
-			.graph-range::shadow .dropdown-content{max-width:none !important}
-			.graph-range::shadow #dropdown{display:block;width:90%;max-width:1500px;}
-			.graph-range{position:fixed;right:20px;top:65px;z-index:100}
+			.graph-range paper-range-slider{padding:0px 80px;height:50px;overflow:hidden;margin-bottom:15px;}
+			.graph-range .range-options{margin-right:40px;font-size:10px;white-space:nowrap;}
+			.graph-range .range-options span{cursor:pointer;display:inline-block;padding:2px 3px;}
+			.graph-range .range-options span:last-child{border-right:0px;}
+			.graph-range .range-options span.iron-selected{background-color:var(--paper-toolbar-background, #000);color:var(--paper-toolbar-color, #FFF);}
 			/*.grs-toggle-btn iron-icon{cursor:pointer;}
 			.grs-toggle-btn iron-icon,
 			.graph-range-slider{transition:all 0.2s ease;}
@@ -52,9 +53,8 @@
 			paper-range-slider::shadow #sliderKnobInner::before{display:none}
 		</style>
 		<!--sia-colors class="panel"></sia-colors-->
-		<paper-menu-button vertical-align="top" horizontal-align="right" vertical-offset="70" horizontal-offset="10" class="graph-range">
-            <paper-fab class="dropdown-trigger" primary icon="timeline" alt="graph-range"></paper-fab>
-            <div class="graph-range-slider dropdown-content" active>
+        <div id="graphRangeOptions" class="graph-range layout horizontal wrap center">
+        	<div class="flex">
 				<paper-range-slider
 					id="graphRangeSlider"
 					max-markers="10"
@@ -69,8 +69,14 @@
 					always-show-pin
 				></paper-range-slider>
 			</div>
-          </paper-menu-button>
-		<!--div class="grs-toggle-btn" on-tap="toggleGraphSlider" active$="[[graphSliderActive]]"><iron-icon icon="expand-more"></iron-icon></div-->
+			<div class="range-options">
+				<iron-selector selected="{{selectedGraphRange}}" attr-for-selected="value">
+					<template is="dom-repeat" items="[[graphMenus]]">
+						<span value="[[item.value]]" hidden$="[[!item.value]]">[[item.text]]</span>
+					</template>
+				</iron-selector>
+			</div>
+		</div>
 		
 		<div class="panels" on-node-global-settings="showNodeSettingDialog">
 			<sia-network-peers-panel class="panel"></sia-network-peers-panel>
@@ -202,10 +208,6 @@
 			settingDialogTab:{
 				type: String,
 				value: "nodes"
-			},
-			graphSliderActive: {
-				type: Boolean,
-				value: false
 			}
 		},
 		behaviors:[SettingDialogBehavior, GraphRangSliderBehavior],
@@ -321,9 +323,6 @@
 				}
 			});
 			this.set("localSettings", settings);
-		},
-		toggleGraphSlider: function(){
-			this.graphSliderActive = !this.graphSliderActive;
 		}
 	})
 	</script>

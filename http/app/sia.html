@@ -115,6 +115,8 @@
 			.top-bar .subtitle{font-size: 13px;position: absolute;padding: 3px 0px;}
 			iris-toast-messages[v-align="bottom"][h-align="right"]::shadow paper-toast{background-color: var(--primary-dark-color, #f00)}
 			*::shadow paper-button.primary{@apply(--primary-button)}
+			::shadow #graphRangeOptions{height:0px;padding-top:0px;overflow:hidden;transition:all 0.2s ease;}
+			:host(.graph-range-selector) ::shadow #graphRangeOptions{height:40px;padding-top:12px;}
 		</style>
 		<app-location use-hash-as-path route="{{route}}"></app-location>
 		<app-route route="{{route}}" pattern=":tab" data="{{rootData}}" tail="{{rootTail}}"></app-route>
@@ -153,16 +155,9 @@
 						<paper-tab hidden class="tab" data-tab-id="dashboard" on-click="doHash">
 							<iron-icon icon="icons:home"></iron-icon><span><%= _T("DASHBOARD") %></span>
 						</paper-tab>
-						<paper-menu-button vertical-offset="40" horizontal-offset="4" horizontal-align="right">
-							<paper-tab class="dropdown-trigger">
-								<iron-icon icon="icons:timeline"></iron-icon><span><%= _T("GRAPHS") %></span>
-							</paper-tab>
-							<paper-menu class="dropdown-content" selected="{{selectedGraphRange}}" attr-for-selected="value">
-								<template is="dom-repeat" items="[[graphMenus]]">
-									<paper-item value="[[item.value]]" hidden$="[[!item.value]]">[[item.text]]</paper-item>
-								</template>
-							</paper-menu>
-						</paper-menu-button>
+						<paper-tab on-tap="toggleGraphRangeSelector">
+							<iron-icon icon="icons:timeline"></iron-icon><span><%= _T("GRAPHS") %></span>
+						</paper-tab>
 						<paper-tab on-click="openSettings">
 							<iron-icon icon="icons:settings"></iron-icon><span><%= _T("SETTINGS") %></span>
 						</paper-tab>
@@ -201,28 +196,6 @@
 						t0: "Sia Cluster",
 						t1: "Settings"
 					}
-				},
-				selectedGraphRange:{
-					type: Number,
-					value: 24,
-					observer: "onGraphRangeChanged"
-				},
-				graphMenus:{
-					type: Array,
-					value: [
-						{value:0, text: "CUSTOM"},
-						{value:1, text: "1H"},
-						{value:2, text: "2H"},
-						{value:4, text: "4H"},
-						{value:8, text: "8H"},
-						{value:12, text: "12H"},
-						{value:24, text: "24H"},
-						{value:48, text: "48H"},
-						{value:72, text: "3D"},
-						{value:168, text: "7D"},
-						{value:336, text: "2W"},
-						{value:672, text: "4W"}
-					]
 				}
 			},
 			observers:["onRootPathChanged(rootData.*)"],
@@ -247,17 +220,10 @@
 					self.set('loginBtnText', '<%= _T("SIGN-IN") %>');
 					self.set('username', '');
 				}
-				$(document.body).on("graph-range-changed", self._onGraphRangeChanged.bind(self));
 			},
-			_onGraphRangeChanged: function(e, args){
-				if(args && args.graphRange && _.isArray(args.graphRange)){
-					this.selectedGraphRange = 0;
-				}
-			},
-			onGraphRangeChanged: function(){
-				if (!this.selectedGraphRange)
-					return;
-				App.setGraphRange(this.selectedGraphRange);
+			toggleGraphRangeSelector: function(){
+				this._graphRangeSelector = !this._graphRangeSelector;
+				this.toggleClass("graph-range-selector", this._graphRangeSelector);
 			},
 			onTopToolbarClick: function(e){
 				var target = e.target;
