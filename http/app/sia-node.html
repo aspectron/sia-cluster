@@ -33,7 +33,10 @@
 				-webkit-animation: blink 2s ease-in-out infinite;
 				-moz-animation: blink 2s ease-in-out infinite;
 				animation: blink 2s ease-in-out infinite;
-			} 				
+			}
+			.dialog neon-animatable.advanced-items{background-color:#FFF;margin-bottom:0px;} 
+			.advanced-items paper-button{margin-bottom: 10px;}	
+			.advanced-items h2{margin:10px;}			
 		</style>
 		<div class="content" online$="[[online]]" unlocked$="[[unlocked]]" accepting$=[[accepting]]>
 			<paper-icon-button icon="settings" class="setting-icon" on-click="openSettings"></paper-icon-button>
@@ -125,15 +128,17 @@
 						</div>
 					</paper-button>
 				</neon-animatable>
-				<neon-animatable class="fit" page="advanced">
-					<paper-button raised class="block-btn open-logs-btn" disabled$="[[!online]]" on-click="openLogs" data-args="host"><%= _T("Host Logs") %></paper-button>
-					<paper-button raised class="block-btn open-logs-btn" disabled$="[[!online]]" on-click="openLogs" data-args="consensus"><%= _T("Consensus Logs") %></paper-button>
-					<paper-button raised class="block-btn open-logs-btn" disabled$="[[!online]]" on-click="openLogs" data-args="gateway"><%= _T("Gateway Logs") %></paper-button>
-					<paper-button raised class="block-btn open-logs-btn" disabled$="[[!online]]" on-click="openLogs" data-args="miner"><%= _T("Miner Logs") %></paper-button>
-					<paper-button raised class="block-btn open-logs-btn" disabled$="[[!online]]" on-click="openLogs" data-args="renter"><%= _T("Renter Logs") %></paper-button>
-					<paper-button raised class="block-btn open-logs-btn" disabled$="[[!online]]" on-click="openLogs" data-args="wallet"><%= _T("Wallet Logs") %></paper-button>
-					<hr/>
-					<paper-button raised class="block-btn delete-node-btn" on-click="deleteNode"><%= _T("Delete node") %></paper-button>
+				<neon-animatable class="fit advanced-items" page="advanced">
+					<h2><%=_T("Logs")%></h2>
+					<paper-button raised class="open-logs-btn" disabled$="[[!online]]" on-click="openLogs" data-args="host"><%= _T("Host Logs") %></paper-button>
+					<paper-button raised class="open-logs-btn" disabled$="[[!online]]" on-click="openLogs" data-args="consensus"><%= _T("Consensus Logs") %></paper-button>
+					<paper-button raised class="open-logs-btn" disabled$="[[!online]]" on-click="openLogs" data-args="gateway"><%= _T("Gateway Logs") %></paper-button>
+					<paper-button raised class="open-logs-btn" disabled$="[[!online]]" on-click="openLogs" data-args="miner"><%= _T("Miner Logs") %></paper-button>
+					<paper-button raised class="open-logs-btn" disabled$="[[!online]]" on-click="openLogs" data-args="renter"><%= _T("Renter Logs") %></paper-button>
+					<paper-button raised class="open-logs-btn" disabled$="[[!online]]" on-click="openLogs" data-args="wallet"><%= _T("Wallet Logs") %></paper-button>
+
+					<h2><%=_T("Manage")%></h2>
+					<paper-button raised class="delete-node-btn" on-click="deleteNode"><%= _T("Delete node") %></paper-button>
 				</neon-animatable>
 			</neon-animated-pages>
 		</paper-dialog>
