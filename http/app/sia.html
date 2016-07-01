@@ -159,7 +159,7 @@
 							</paper-tab>
 							<paper-menu class="dropdown-content" selected="{{selectedGraphRange}}" attr-for-selected="value">
 								<template is="dom-repeat" items="[[graphMenus]]">
-									<paper-item value="[[item.value]]">[[item.text]]</paper-item>
+									<paper-item value="[[item.value]]" hidden$="[[!item.value]]">[[item.text]]</paper-item>
 								</template>
 							</paper-menu>
 						</paper-menu-button>
@@ -210,6 +210,7 @@
 				graphMenus:{
 					type: Array,
 					value: [
+						{value:0, text: "CUSTOM"},
 						{value:1, text: "1H"},
 						{value:2, text: "2H"},
 						{value:4, text: "4H"},
@@ -246,8 +247,16 @@
 					self.set('loginBtnText', '<%= _T("SIGN-IN") %>');
 					self.set('username', '');
 				}
+				$(document.body).on("graph-range-changed", self._onGraphRangeChanged.bind(self));
+			},
+			_onGraphRangeChanged: function(e, args){
+				if(args && args.graphRange && _.isArray(args.graphRange)){
+					this.selectedGraphRange = 0;
+				}
 			},
 			onGraphRangeChanged: function(){
+				if (!this.selectedGraphRange)
+					return;
 				App.setGraphRange(this.selectedGraphRange);
 			},
 			onTopToolbarClick: function(e){
