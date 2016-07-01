@@ -1988,7 +1988,7 @@ d7d255572c117dfd.sha1       "0870d570c352fd1d6df791681f73dee5af800a8f"
 d7d255572c117dfd.category   "basic"
 d7d255572c117dfd.original   "en"
 d7d255572c117dfd.multiline  false
-d7d255572c117dfd.orphan     false
+d7d255572c117dfd.orphan     true
 d7d255572c117dfd.ts         1467038430309
 d7d255572c117dfd.locale.en  "Invalid Siacoins"
 d7d255572c117dfd.
@@ -2772,3 +2772,83 @@ f1ea1a35c89afd4c.orphan     false
 f1ea1a35c89afd4c.ts         1467313074767
 f1ea1a35c89afd4c.locale.en  "Connecting..."
 f1ea1a35c89afd4c.
+76de4366cd5f91fb.
+76de4366cd5f91fb.hash       "76de4366cd5f91fb"
+76de4366cd5f91fb.sha1       "1cc298fdba1b0163c880ce65503b6bb2d9cd00dc"
+76de4366cd5f91fb.category   "basic"
+76de4366cd5f91fb.original   "en"
+76de4366cd5f91fb.multiline  false
+76de4366cd5f91fb.orphan     false
+76de4366cd5f91fb.ts         1467372497214
+76de4366cd5f91fb.locale.en  "Open Logs"
+76de4366cd5f91fb.
+7c797f72bed1289b.
+7c797f72bed1289b.hash       "7c797f72bed1289b"
+7c797f72bed1289b.sha1       "126dd3b70a5ca7818e0e26ad1e008d23b0f14a53"
+7c797f72bed1289b.category   "basic"
+7c797f72bed1289b.original   "en"
+7c797f72bed1289b.multiline  false
+7c797f72bed1289b.orphan     false
+7c797f72bed1289b.ts         1467372497224
+7c797f72bed1289b.locale.en  "Logs"
+7c797f72bed1289b.
+76d07252ca9f99a2.
+76d07252ca9f99a2.hash       "76d07252ca9f99a2"
+76d07252ca9f99a2.sha1       "94057676439df5990ec40258bc04400e6669fa30"
+76d07252ca9f99a2.category   "basic"
+76d07252ca9f99a2.original   "en"
+76d07252ca9f99a2.multiline  false
+76d07252ca9f99a2.orphan     false
+76d07252ca9f99a2.ts         1467375510935
+76d07252ca9f99a2.locale.en  "Host Logs"
+76d07252ca9f99a2.
+bbfeab3dcfff3ce2.
+bbfeab3dcfff3ce2.hash       "bbfeab3dcfff3ce2"
+bbfeab3dcfff3ce2.sha1       "5b3ccd84a1fcf52951ee61ea2a87a99b7386a075"
+bbfeab3dcfff3ce2.category   "basic"
+bbfeab3dcfff3ce2.original   "en"
+bbfeab3dcfff3ce2.multiline  false
+bbfeab3dcfff3ce2.orphan     false
+bbfeab3dcfff3ce2.ts         1467375511084
+bbfeab3dcfff3ce2.locale.en  "Consensus Logs"
+bbfeab3dcfff3ce2.
+1f97e06ad46c622.
+1f97e06ad46c622.hash       "1f97e06ad46c622"
+1f97e06ad46c622.sha1       "f98de57eaff3ae71013398c8ff64b03ff795408b"
+1f97e06ad46c622.category   "basic"
+1f97e06ad46c622.original   "en"
+1f97e06ad46c622.multiline  false
+1f97e06ad46c622.orphan     false
+1f97e06ad46c622.ts         1467375511084
+1f97e06ad46c622.locale.en  "Gateway Logs"
+1f97e06ad46c622.
+50b0ad0fd45c95cd.
+50b0ad0fd45c95cd.hash       "50b0ad0fd45c95cd"
+50b0ad0fd45c95cd.sha1       "afbd905468e319907cd07b6d88bdad9d6a05b9f9"
+50b0ad0fd45c95cd.category   "basic"
+50b0ad0fd45c95cd.original   "en"
+50b0ad0fd45c95cd.multiline  false
+50b0ad0fd45c95cd.orphan     false
+50b0ad0fd45c95cd.ts         1467375511085
+50b0ad0fd45c95cd.locale.en  "Miner Logs"
+50b0ad0fd45c95cd.
+66cc25c8f95b61fc.
+66cc25c8f95b61fc.hash       "66cc25c8f95b61fc"
+66cc25c8f95b61fc.sha1       "6e3a046e063041c60daa51c8868becf156885462"
+66cc25c8f95b61fc.category   "basic"
+66cc25c8f95b61fc.original   "en"
+66cc25c8f95b61fc.multiline  false
+66cc25c8f95b61fc.orphan     false
+66cc25c8f95b61fc.ts         1467375511085
+66cc25c8f95b61fc.locale.en  "Renter Logs"
+66cc25c8f95b61fc.
+6b2b7595ef0090ea.
+6b2b7595ef0090ea.hash       "6b2b7595ef0090ea"
+6b2b7595ef0090ea.sha1       "e0b7a04afc062c6caa3308c558036ec162715d23"
+6b2b7595ef0090ea.category   "basic"
+6b2b7595ef0090ea.original   "en"
+6b2b7595ef0090ea.multiline  false
+6b2b7595ef0090ea.orphan     false
+6b2b7595ef0090ea.ts         1467375511086
+6b2b7595ef0090ea.locale.en  "Wallet Logs"
+6b2b7595ef0090ea.

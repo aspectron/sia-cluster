@@ -461,7 +461,7 @@
 					return
 				}
 				App.showLoading();
-				App.rpc.dispatch({op: "fetch-logfile", node: self.uuid, type: 'xxxx'}, function(err, logs){
+				App.rpc.dispatch({op: "fetch-logfile", node: self.uuid, type: 'gateway'}, function(err, logs){
 					App.hideLoading();
 					console.log("err", err)
 					if (err){
