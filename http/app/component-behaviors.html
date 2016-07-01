@@ -48,10 +48,10 @@
 			self.set("grsMax", max);
 			self.set("grsMin", 0);
 			self.set("grsDiffMin", hour);
-			self.set("grsDiffMax", day * 30);
+			self.set("grsDiffMax", max);
 			self.set("grsValueMax", max);
 			self.set("grsValueMin", max - day);
-			self.listen(self.$.graphRangeSlider, "change", "grsUpdateValues");
+			//self.listen(self.$.graphRangeSlider, "updateValues", "grsUpdateValues");
 			$(document.body).on("graph-range-changed", self._onGraphRangeChanged.bind(self));
 		},
 		onGraphRangeChanged: function(){
@@ -74,7 +74,7 @@
 		grsUpdateValues: function(){
 			if (this._suspendEvent)
 				return
-			this.debounce("grsUpdateValues", this._grsUpdateValues, 100);
+			this.debounce("grsUpdateValues", this._grsUpdateValues, 250);
 		},
 		_grsUpdateValues: function(){
 			App.setGraphRange([
@@ -95,6 +95,7 @@
 				return
 			var v = this.format(this.buildDate(value))
 			this.$.graphRangeSlider.$["slider"+slider].$.sliderKnobInner.setAttribute("v", v);
+			this.grsUpdateValues();
 		},
 		onValueMinChanged: function(){
 			this.setV("Min", this.grsValueMin)

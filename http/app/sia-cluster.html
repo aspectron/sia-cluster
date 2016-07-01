@@ -26,17 +26,11 @@
 				.panels sia-node.panel,
 				.panels .panel{min-width:300px;box-sizing:border-box;}
 			}
-			.graph-range paper-range-slider{padding:0px 80px;height:50px;overflow:hidden;margin-bottom:15px;}
+			.graph-range paper-range-slider{padding:0px 80px;height:55px;overflow:hidden;margin-bottom:18px;}
 			.graph-range .range-options{margin-right:40px;font-size:10px;white-space:nowrap;}
 			.graph-range .range-options span{cursor:pointer;display:inline-block;padding:2px 3px;}
 			.graph-range .range-options span:last-child{border-right:0px;}
 			.graph-range .range-options span.iron-selected{background-color:var(--paper-toolbar-background, #000);color:var(--paper-toolbar-color, #FFF);}
-			/*.grs-toggle-btn iron-icon{cursor:pointer;}
-			.grs-toggle-btn iron-icon,
-			.graph-range-slider{transition:all 0.2s ease;}
-			.grs-toggle-btn[active] iron-icon{-webkit-transform:rotate(180deg);transform:rotate(180deg);}
-			.graph-range-slider[active]{height:40px;padding:20px 80px 0px;}
-			*/
 			paper-range-slider::shadow #sliderKnob > #sliderKnobInner::after{
 				transform: translate(0px, 20px) !important;
 				content: attr(v) !important;
@@ -45,6 +39,7 @@
 				width: auto !important;
 				margin-left:0px !important;
 				left:25px !important;
+				font-size:12px !important;
 			}
 			paper-range-slider::shadow #sliderMin #sliderKnobInner::after{
 				left:initial !important;
@@ -175,8 +170,6 @@
 						on-mouseup="fadeInSettingDialog"
 						max-markers="10"
 					></paper-slider>
-					<!--paper-range-slider snaps pin step='1' min='0' max='100' value-diff-min="10" value-diff-max="50" value-min='30' value-max='60' always-show-pin></paper-range-slider>
-					<div>1H | 2H | 4H | 8H | 12H | 24H | 48H | 3D | 7D | 2W | 4W</div-->
 				</neon-animatable>
 			</div>
 		</paper-dialog>
