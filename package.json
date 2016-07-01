@@ -1,6 +1,6 @@
 {
   "name": "sia-cluster",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Sia Cluster - Remote management & monitoring of Sia hosts",
   "author": {
     "name": "ASPECTRON Inc.",
@@ -28,7 +28,7 @@
     "mongodb": "^2.1.21",
     "morgan": "*",
     "multiparty": "*",
-    "node-uuid": "*",
+    "node-uuid": "^1.4.7",
     "nodemailer": "*",
     "request": "*",
     "sia-api": "*",
