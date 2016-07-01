@@ -26,7 +26,16 @@
 				.panels sia-node.panel,
 				.panels .panel{min-width:300px;box-sizing:border-box;}
 			}
-			.graph-range-slider{padding:10px 80px;}
+			.graph-range-slider{padding:0px 80px;height:50px;overflow:hidden;margin-top:15px;}
+			.graph-range::shadow .dropdown-content{max-width:none !important}
+			.graph-range::shadow #dropdown{display:block;width:90%;max-width:1500px;}
+			.graph-range{position:fixed;right:20px;top:65px;z-index:100}
+			/*.grs-toggle-btn iron-icon{cursor:pointer;}
+			.grs-toggle-btn iron-icon,
+			.graph-range-slider{transition:all 0.2s ease;}
+			.grs-toggle-btn[active] iron-icon{-webkit-transform:rotate(180deg);transform:rotate(180deg);}
+			.graph-range-slider[active]{height:40px;padding:20px 80px 0px;}
+			*/
 			paper-range-slider::shadow #sliderKnob > #sliderKnobInner::after{
 				transform: translate(0px, 20px) !important;
 				content: attr(v) !important;
@@ -43,21 +52,26 @@
 			paper-range-slider::shadow #sliderKnobInner::before{display:none}
 		</style>
 		<!--sia-colors class="panel"></sia-colors-->
-		<div class="graph-range-slider">
-			<paper-range-slider
-				id="graphRangeSlider"
-				max-markers="10"
-				snaps pin
-				step="1"
-				min="[[grsMin]]"
-				max="[[grsMax]]"
-				value-diff-min="[[grsDiffMin]]"
-				value-diff-max="[[grsDiffMax]]"
-				value-min="{{grsValueMin}}"
-				value-max="{{grsValueMax}}"
-				always-show-pin
-			></paper-range-slider>
-		</div>
+		<paper-menu-button vertical-align="top" horizontal-align="right" vertical-offset="70" horizontal-offset="10" class="graph-range">
+            <paper-fab class="dropdown-trigger" primary icon="timeline" alt="graph-range"></paper-fab>
+            <div class="graph-range-slider dropdown-content" active>
+				<paper-range-slider
+					id="graphRangeSlider"
+					max-markers="10"
+					snaps pin
+					step="1"
+					min="[[grsMin]]"
+					max="[[grsMax]]"
+					value-diff-min="[[grsDiffMin]]"
+					value-diff-max="[[grsDiffMax]]"
+					value-min="{{grsValueMin}}"
+					value-max="{{grsValueMax}}"
+					always-show-pin
+				></paper-range-slider>
+			</div>
+          </paper-menu-button>
+		<!--div class="grs-toggle-btn" on-tap="toggleGraphSlider" active$="[[graphSliderActive]]"><iron-icon icon="expand-more"></iron-icon></div-->
+		
 		<div class="panels" on-node-global-settings="showNodeSettingDialog">
 			<sia-network-peers-panel class="panel"></sia-network-peers-panel>
 			<sia-network-panel class="panel"></sia-network-panel>
@@ -188,6 +202,10 @@
 			settingDialogTab:{
 				type: String,
 				value: "nodes"
+			},
+			graphSliderActive: {
+				type: Boolean,
+				value: false
 			}
 		},
 		behaviors:[SettingDialogBehavior, GraphRangSliderBehavior],
@@ -303,6 +321,9 @@
 				}
 			});
 			this.set("localSettings", settings);
+		},
+		toggleGraphSlider: function(){
+			this.graphSliderActive = !this.graphSliderActive;
 		}
 	})
 	</script>

@@ -43,13 +43,11 @@
 			}
 		},
 		grsUpdateValues: function(){
-			console.log("this._suspendEvent", this._suspendEvent)
 			if (this._suspendEvent)
 				return
 			this.debounce("grsUpdateValues", this._grsUpdateValues, 100);
 		},
 		_grsUpdateValues: function(){
-			console.log("grsUpdateValues", this.grsValueMin, this.grsValueMax)
 			App.setGraphRange([
 				this.buildTime(this.grsValueMin),
 				this.buildTime(this.grsValueMax)
