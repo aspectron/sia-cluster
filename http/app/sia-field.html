@@ -81,6 +81,25 @@
 		    writable:false,
 		    enumerable:false
 		});
+		Object.defineProperty(String.prototype, 'parseFileSize', {
+		    value: function() {
+				var scale = 'BKMGTPEZY';
+				var s = this;
+			    var b = s.search(/[a-zA-Z]/ig);
+			    var c = b < 0 ? ['B'] : s.toUpperCase().substring(b).split('');
+			    var d = c.shift();
+			    var e = c.shift();
+			    var n = e == 'I' ? 1024 : 1000;
+			    var i = scale.indexOf(d);
+			    if(i < 0)
+			    	return undefined;
+			    var v = eval('Math.round('+(b < 0 ? s : s.substring(0,b))+')' );
+			    v *= (i?Math.pow(n,i):1);
+			    return v;
+			},
+		    writable:false,
+		    enumerable:false
+		});
 		Object.defineProperty(Number.prototype, 'toHashMetric', {
 		    value: function(precision, unit, commas) {
 
@@ -255,7 +274,7 @@
 				}
 			},
 			onValueChanged: function(){
-				if (this._isSiaCoinField() || this._isTimeField())
+				if (this._isSiaCoinField() || this._isTimeField() || this._isFileSize())
 					this.set("_value", this._V(this.value));
 				else
 					this.set("_value", this.value);
@@ -278,6 +297,10 @@
 			},
 			_isEditField : function(format, type) {
 				return !this._isBoolField(format, type) && !this._isRadioField(format);
+			},
+			_isFileSize: function(){
+				var f = (this.format || "").toLowerCase();
+				return f == "file-size" || f == "file-size-si";
 			},
 			_isSiaCoinField: function(){
 				var f = (this.format || "").toLowerCase();
@@ -334,12 +357,10 @@
 				}
 				else
 				if(!_.isNumber(v) && v == '') {
-					//console.log("N/A due to ''")
 					return 'N/A';
 				}
 
 				if(_.isUndefined(v) || v == 'N/A') {
-					//console.log("N/A due to undefined or N/A")
 					return 'N/A';
 				}
 				var precision = 0;
@@ -457,11 +478,18 @@
 				var value = self._value;
 				if (self._isBoolField())
 					value = value == "1";
+				else if (self._isFileSize() ){
+					value = value.parseFileSize();
+
+					if (_.isUndefined(value) || _.isNaN(value)){
+						self.showError('<%=_T("Invalid Value")%>')
+						return;
+					}
+				}
 				else if (self._isSiaCoinField() ){
 					value = value.parseSia();
-					if (value === undefined){
+					if (_.isUndefined(value) || _.isNaN(value)){
 						self.showError('<%=_T("Invalid Value")%>')
-						//IRIS.Alert({title: '<%=_T("Error")%>', text: '<%=_T("Invalid Siacoins")%>' })
 						return;
 					}
 
@@ -502,10 +530,6 @@
 						self.showError(err);
 						return;
 					}
-
-					// @surinder - remove this?
-					//if (err)
-					//	return App.error(err);
 
 					self.set("value", r.value);
 					self.fire(self.is+"-value-changed", {value: r.value, editable:self.editable, field: self});
