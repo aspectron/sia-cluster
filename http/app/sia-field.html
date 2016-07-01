@@ -93,9 +93,9 @@
 			    var i = scale.indexOf(d);
 			    if(i < 0)
 			    	return undefined;
-			    var v = eval('Math.round('+(b < 0 ? s : s.substring(0,b))+')' );
+			    var v = eval('parseFloat('+(b < 0 ? s : s.substring(0,b))+')' );
 			    v *= (i?Math.pow(n,i):1);
-			    return v;
+			    return Math.round(v);
 			},
 		    writable:false,
 		    enumerable:false
