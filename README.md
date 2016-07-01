@@ -70,7 +70,9 @@ For windows, download and install:
 * MongoDb - https://www.mongodb.com/download-center
 * Git for Windows - https://git-for-windows.github.io/
 
-Run the following from command line:
+After MongoDb installation you must **create `C:\data\db` folder**. (Alternatively you can run `mongod --dbpath xxx` to specify an alternate location). Once installed, you must run MongoDb executable that is typically located at `"C:\Program Files\MongoDB\Server\3.0\bin\mongod.exe"`.  
+
+Following this, you can proceed with installation of Sia Cluster. Run the following from command line:
 ```
 npm install bower -g
 mkdir sia
@@ -211,6 +213,8 @@ If you do not include a suffix, the system interprets value as SC.
 
 Please not that some values are presented in metric (SI units) such as GB, TB, while others are presented in binary units such as GiB, TiB.
 
+When editing storage size values, you can specify corresponding units as well as expressions.  `1/3GiB` will result in `357913941 Bytes`
+
 ### USD Pegging & Tracking Average Network Price
 
 Sia Cluster provides ability to automatically control storage pricing. Pricing can be controlled via **USD Pegging**, by tracking USD/SC value of Sia Coin on major markets or by monitoring **Average Host Price** and then offsetting it if desired.
@@ -227,7 +231,7 @@ Following parameters for price tracking are available in the Sia Cluster panel:
 
 ### Dashboard
 
-Sia Cluster UI was originally designed to be a dashboard view.  Main Settings menu has a UI tab.  In this dialog, you can adjust sizes of the font and panels.  Sizes of these elements are stored in the URL (hash).  As such, once UI is configured to your liking, you can bookmark the URL and later invoke it to restore your configuration.  This is especially useful if you have extra monitors and have some form of monitoring [OCD](https://en.wikipedia.org/wiki/Obsessive%E2%80%93compulsive_disorder).
+Sia Cluster UI was originally designed to be a dashboard view.  Main Settings menu has a UI tab.  In this dialog, you can adjust sizes of the font and panels.  Sizes of these elements are stored in the URL (hash).  As such, once UI is configured to your liking, you can bookmark the URL and later invoke it to restore your configuration.  This is especially useful if you have extra monitors or have some form of monitoring [OCD](https://en.wikipedia.org/wiki/Obsessive%E2%80%93compulsive_disorder).
 
 ## Data Updates
 
@@ -235,6 +239,9 @@ Sia Node polls siad as well as gathers system stats once a minute and sends the 
 
 Network panel contains general information about the Sia network.  This information is being polled from `explore.sia.tech` block explorer.
 
+## Logs
+
+If needed, you can examine SIAD log files by going to node **Settings** dialog **Advanced** tab.  Logs larger than 2 MiB will get truncated at the beginning.
 
 ## Security
 
