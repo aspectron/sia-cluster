@@ -16,6 +16,9 @@
 			@-webkit-keyframes rotate {100% {-webkit-transform: rotate(360deg);}}
 			@keyframes rotate {100% {transform: rotate(360deg);}}
 			#logsDialog { min-width:80%; min-height:80%; }
+			@media (min-width:1056px) {
+			#logsDialog { min-width:1024px; min-height:80%; }
+			}
 			.logs{padding:4px;line-height:1;overflow-x:hidden;overflow-y:auto;}
 			.logs #logs{ /*white-space: normal;*/ overflow-x:auto; width:100%; height: 100%; display:block;
 				font-family: "Consolas","Monaco","Lucida Console","Courier New", monospace !important;	}
@@ -111,12 +114,12 @@
 					</paper-button>
 				</neon-animatable>
 				<neon-animatable class="fit" page="advanced">
-					<paper-button raised class="block-btn open-logs-btn" disabled$="[[!online]]" on-click="openLogs" log-type="host"><%= _T("Host Logs") %></paper-button>
-					<paper-button raised class="block-btn open-logs-btn" disabled$="[[!online]]" on-click="openLogs" log-type="consensus"><%= _T("Consensus Logs") %></paper-button>
-					<paper-button raised class="block-btn open-logs-btn" disabled$="[[!online]]" on-click="openLogs" log-type="gateway"><%= _T("Gateway Logs") %></paper-button>
-					<paper-button raised class="block-btn open-logs-btn" disabled$="[[!online]]" on-click="openLogs" log-type="miner"><%= _T("Miner Logs") %></paper-button>
-					<paper-button raised class="block-btn open-logs-btn" disabled$="[[!online]]" on-click="openLogs" log-type="renter"><%= _T("Renter Logs") %></paper-button>
-					<paper-button raised class="block-btn open-logs-btn" disabled$="[[!online]]" on-click="openLogs" log-type="wallet"><%= _T("Wallet Logs") %></paper-button>
+					<paper-button raised class="block-btn open-logs-btn" disabled$="[[!online]]" on-click="openLogs" data-args="host"><%= _T("Host Logs") %></paper-button>
+					<paper-button raised class="block-btn open-logs-btn" disabled$="[[!online]]" on-click="openLogs" data-args="consensus"><%= _T("Consensus Logs") %></paper-button>
+					<paper-button raised class="block-btn open-logs-btn" disabled$="[[!online]]" on-click="openLogs" data-args="gateway"><%= _T("Gateway Logs") %></paper-button>
+					<paper-button raised class="block-btn open-logs-btn" disabled$="[[!online]]" on-click="openLogs" data-args="miner"><%= _T("Miner Logs") %></paper-button>
+					<paper-button raised class="block-btn open-logs-btn" disabled$="[[!online]]" on-click="openLogs" data-args="renter"><%= _T("Renter Logs") %></paper-button>
+					<paper-button raised class="block-btn open-logs-btn" disabled$="[[!online]]" on-click="openLogs" data-args="wallet"><%= _T("Wallet Logs") %></paper-button>
 					<hr/>
 					<paper-button raised class="block-btn delete-node-btn" on-click="deleteNode"><%= _T("Delete node") %></paper-button>
 				</neon-animatable>
@@ -162,7 +165,7 @@
 		</paper-dialog>
 		<paper-dialog id="logsDialog" class="dialog logs-dialog layout vertical" opened="{{logsDialogOpened}}">
 			<paper-toolbar>
-				<div class="title"><%=_T("Logs")%></div>
+				<div class="title"><%=_T("Logs")%> [[ident]] / [[log_type_]] <%= _T("logs") %></div>
 				<paper-icon-button icon="close" dialog-dismiss></paper-icon-button>
 			</paper-toolbar>
 			<div class="flex logs"><div id="logs" style=""></div></div>
@@ -226,7 +229,8 @@
 				passwordFieldType:{type: String, value:"text"},
 				fields: Array,
 				graphFields: Array,
-				logsDialogOpened: Boolean
+				logsDialogOpened: Boolean,
+				log_type_ : String
 			},
 			observers: [
 				'onDataChanged(data.*)',
@@ -451,7 +455,11 @@
 			openSettings: function(){
 				this.$.settingDialog.open();
 			},
-			openLogs: function(){
+			openLogs: function(e){
+				var self = this;
+				var type = e.target.getAttribute('data-args');
+				self.log_type_ = type;
+				this.set("log_type_", type);
 				//this.$.settingDialog.close();
 				this.$.logsDialog.open();
 			},
@@ -462,7 +470,7 @@
 					return
 				}
 				App.showLoading();
-				App.rpc.dispatch({op: "fetch-logfile", node: self.uuid, type: 'gateway'}, function(err, logs){
+				App.rpc.dispatch({op: "fetch-logfile", node: self.uuid, type: self.log_type_}, function(err, logs){
 					App.hideLoading();
 					console.log("err", err)
 					if (err){
@@ -472,7 +480,7 @@
 
 					self.$.logs.innerHTML =
 						self.htmlEntities(logs).replace(/^(\S+ \S+)/img,"<b>$1</b>").replace(/$/gm,'<br/>');
-
+						self.$.logs.scrollTop = self.$.logs.scrollHeight;
 				});
 			},
 			htmlEntities: function (str) {
