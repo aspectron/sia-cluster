@@ -388,13 +388,14 @@
 					Y: '<%=_T("Septillion")%>'
 				}
 				switch(format) {
+					case 'cs': return self._C(v);
 					case 'fiat': return self._C(v, 2);
 					case 'btc': return self._C(v, 8);
 					case 'sc': return self._SC(v*1e24, self.precision);
 					case 'h': return self._SC(v, self.precision);
 					case 'hbb': return self._HBB(v, self.precision);
 					case 'htb': return self._HTB(v, self.precision);
-					case 'int': return parseInt(v);
+					case 'int': return self._C(parseInt(v));
 					case 'days': return Math.round(v / 6 / 24);
 					case 'hrs': return Math.round(v / 6);
 					case "large-number":
