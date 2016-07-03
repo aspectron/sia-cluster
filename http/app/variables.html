@@ -86,7 +86,7 @@
             "financialmetrics\..*(compensation|collateral|revenue|expenses)$": "h",
             "(price|confirmedsiacoinbalance|collateralbudget|maxcollateral)$": "h",
             "wallet\..*siacoin" : "h",
-			"(remainingstorage|totalstorage)$": "file-size-si",
+			"(remainingstorage|totalstorage|usedstorage)$": "file-size-si",
             "^storage.*bytes": "file-size-si",
             "^host\.storage.*capacity.*": "file-size-si",
             "^network.*bytes.*" : "file-size-si",
@@ -166,17 +166,21 @@
                 "title": "Network Address",
                 "help": "The IP address or hostname (including port) that the host should be contacted at."
             },
+            "host.externalsettings.totalstorage": {
+                "title": "Total storage",
+                "help": "The total amount of storage capacity on the host. It should be noted that the host can lie."
+            },
             "host.externalsettings.remainingstorage": {
                 "title": "Remaining storage",
                 "help": "The amount of unused storage capacity on the host in bytes. It should be noted that the host can lie."
             },
+            "host.externalsettings.usedstorage": {
+                "title": "Used storage",
+                "help": "The amount of used storage on the host in bytes. It should be noted that the host can lie."
+            },
             "host.externalsettings.sectorsize": {
                 "title": "Sector size",
                 "help": "The smallest amount of data in bytes that can be uploaded or downloaded when performing calls to the host."
-            },
-            "host.externalsettings.totalstorage": {
-                "title": "Total storage",
-                "help": "The total amount of storage capacity on the host. It should be noted that the host can lie."
             },
             "host.externalsettings.unlockhash": {
                 "title": "Unlockhash",
