@@ -495,9 +495,11 @@
             }
         }
 
+        var order = 0;
         _.each(_info_, function(o) {
             if(o.title) o.title = _T(o.title);
             if(o.help) o.help = _T(o.help);
+            o.order = order++;
         })
         
 %>
