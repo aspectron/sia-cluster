@@ -53,9 +53,9 @@ cd ~
 wget https://nodejs.org/dist/v6.2.2/node-v6.2.2-linux-x64.tar.xz
 tar xf node-v6.2.2-linux-x64.tar.xz
 ln -s node-v6.2.2-linux-x64 node
-echo -e "\n\nPATH=\"\$HOME/node/bin:\$PATH\"\n\n"
+echo -e "\n\nPATH=\"\$HOME/node/bin:\$PATH\"\n\n" >> ~/.profile
 source ~/.profile
-sudo apt-get install git mongodb
+sudo apt-get install git mongodb -y
 npm install bower -g
 git clone https://github.com/aspectron/sia-cluster
 cd sia-cluster
