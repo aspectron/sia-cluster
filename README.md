@@ -170,7 +170,7 @@ To do this, add the following configuration option to your `config/sia-cluster.l
     },
 ```
 
-Example of Sia Node RPC client configuration located in `config/sia-node.local.conf:
+Example of Sia Node RPC client configuration located in `config/sia-node.local.conf`:
 
 ```javascript
     rpc : {
