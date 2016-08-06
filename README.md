@@ -1,4 +1,4 @@
-# Sia Cluster 0.9.1
+# Sia Cluster 0.9.2
 
 http://aspectron.com/#SiaCluster
 
@@ -18,6 +18,14 @@ Sia Cluster features include:
 * Remote configuration of siad operating parameters.
 * Monitoring of storage utilization and various siad metrics.
 * Monitoring computer metrics such as memory and network bandwidth utilization.
+
+**Browser Compatibility:**
+* Chrome: Ok
+* FireFox:Ok 
+* Android Chrome: Ok
+* Mobile Safari: Layout Problems
+* Safari: Layout Problems
+* Microsoft Edge: Very Slow
 
 Sia Cluster is comprised of 2 projects
 * Sia Cluster - Server (this repository)
@@ -247,6 +255,7 @@ If needed, you can examine SIAD log files by going to node **Settings** dialog *
 
 If you intend on using Sia Cluster over the open Internet, you need to take security percautions:
 
+* For various reasons, your process may endup running as root (if you need HTTP to listen on port below 2000 or use default systemd or upstart configuration).  To avoid running Sia Cluster with root priveleges (but still be able to listen to port 80), you can create `secureUnderUser : 'username'` directive in the `sia-cluster.local.conf` file. If Sia Cluster process starts as root, it will open all necessary ports and then switch it's priviledge to that of the user specified in this directive.
 * Enable SSL (HTTPS) by setting `ssl : true` and `redirectToSSL : true` in config files.
 * Enable `basicAuth` (example is given in `sia-cluster.local.conf-example` file) to obscure the application.
 * Generate your own SSL certificates and copy them as `certificates/sia-cluster.local.key` and `certificates/sia-cluster.local.crt`
@@ -256,3 +265,9 @@ If you intend on using Sia Cluster over the open Internet, you need to take secu
 * Always backup all the seeds from all computers!
 
 
+## Changelog
+
+### 0.9.2
+
+* Introduced custom `host.externalsettings.storageused` to easily see used storage (if total vs. remaining is in TB, then you can't see amount used in MB because of scale formatting in UI)
+* Changing the way peers are accounted for, using `hostdb.all` for "Peers Seen" and `hostdb.active` for "Peers Hosting".
