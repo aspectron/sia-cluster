@@ -34,7 +34,8 @@
     "sia-api": "*",
     "underscore": "*",
     "xml2json": "*",
-    "commander": "*"
+    "commander": "*",
+    "readline-sync" : "*"
   },
   "engines": {
     "node": "*",
