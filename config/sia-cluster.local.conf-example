@@ -21,18 +21,20 @@
     },
 
     http : {
+        
         // 'localhost' to listen on local interface only,
         // useful if you are proxying via NGINX
         //
         // host : "127.0.0.1",
-        //
-        basicAuth : {
-            user : "sia",
-            pass : "q1w2e3r4"
-        }
+        
+
+        // basicAuth : {
+        //     user : "sia",
+        //     pass : "q1w2e3r4"
+        // }
     },
 
     users : {
-        "test": {pass: "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"}
+        "test": {pass: "13a5c202e320d0bf9bb2c6e2c7cf380a6f7de5d392509fee260b809c893ff2f9"}
     }
 }
