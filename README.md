@@ -61,9 +61,9 @@ cd ~
 wget https://nodejs.org/dist/v6.2.2/node-v6.2.2-linux-x64.tar.xz
 tar xf node-v6.2.2-linux-x64.tar.xz
 ln -s node-v6.2.2-linux-x64 node
-echo -e "\n\nPATH=\"\$HOME/node/bin:\$PATH\"\n\n"
+echo -e "\n\nPATH=\"\$HOME/node/bin:\$PATH\"\n\n" >> ~/.profile
 source ~/.profile
-sudo apt-get install git mongodb
+sudo apt-get install git mongodb build-essential -y
 npm install bower -g
 git clone https://github.com/aspectron/sia-cluster
 cd sia-cluster
@@ -108,7 +108,7 @@ To prevent anyone from reaching user interface of Sia Cluster, you can enable "b
 
 To enable basic auth, add the following directive in your `sia-cluster.local.conf`:
 
-```
+```javascript
     basicAuth : {
         user : "<username>",
         pass : "<plain-text-password>"
@@ -131,9 +131,10 @@ To gain access to the user interface, you need to create a local user. To do thi
 ```
 
 To generate a password, you can use simple hex output of sha256. This can be easily done here: http://www.xorbin.com/tools/sha256-hash-calculator or in NodeJs: 
+
 ```javascript
 console.log(require("crypto").createHash("sha256").update("<password>").digest("hex"));
-```.
+```
 
 User login to Sia Cluster implements geometric back-off algorithm, which means that each time incorrect login is made from a specific IP, the amount of seconds user has to wait doubles.
 
@@ -154,6 +155,7 @@ Example of RPC server configuration located in `config/sia-cluster.local.conf`:
 ```
 
 Example of Sia Node RPC client configuration located in `config/sia-node.local.conf`:
+
 ```javascript
     rpc : {
         address : "<sia-cluster-ip>:<sia-cluster-rpc-port>",
@@ -174,18 +176,16 @@ To do this, add the following configuration option to your `config/sia-cluster.l
             auth : "<hex-string-matching-auth-configured-on-sia-node>"
         }
     },
-
 ```
 
 Example of Sia Node RPC client configuration located in `config/sia-node.local.conf`:
+
 ```javascript
     rpc : {
         port : <sia-node-rpc-port>,
         auth : "<hex-string-matching-auth-configured-on-sia-cluster>"
     }
 ```
-
-
 
 ## SSL Certificates
 
