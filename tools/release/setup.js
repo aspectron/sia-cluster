@@ -183,7 +183,7 @@ function init() {
         if(err) {
         	console.log("");
             console.log("Warning: Unable to connect to local Sia daemon".magenta.bold);
-            console.log("Error:",err.toString());
+            console.log(err.toString());
             console.log("Please start and sync Sia before running Sia Cluster".yellow.bold);
         }
         else
