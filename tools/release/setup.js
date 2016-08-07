@@ -11,11 +11,13 @@ var exec = require('child_process').exec;
 var execSync = require('child_process').execSync;
 
 var root = path.join(__dirname,'../../../');
-var temp = path.join(process.env.TEMP);
+var temp = '/tmp';
 
 var platform = process.platform;
-if(platform == 'win32')
+if(platform == 'win32') {
 	platform = 'windows';
+	var temp = path.join(process.env.TEMP);
+}
 
 function testFile(file) {
 	try {
