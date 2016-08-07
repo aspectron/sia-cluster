@@ -84,13 +84,13 @@ case "$PLATFORM" in
 		;;
 	linux64)
 		cp ~/node/bin/node node/
-		echo -e "# !/bin/bash\ncd ..\nbin/node/node tools/release/setup.js \"$@\"\ncd bin\n" > setup.sh
-		chmod a+x setup.sh
+		echo -e "# !/bin/bash\ncd ..\nbin/node/node tools/release/setup.js \"$@\"\ncd bin\n" > setup
+		chmod a+x setup
 		;;
 	darwin)
 		cp ~/node/bin/node node/
-		echo -e "# !/bin/bash\ncd ..\nbin/node/node tools/release/setup.js \"$@\"\ncd bin\n" > setup.sh
-		chmod a+x setup.sh
+		echo -e "# !/bin/bash\ncd ..\nbin/node/node tools/release/setup.js \"$@\"\ncd bin\n" > setup
+		chmod a+x setup
 		;;
 esac	
 

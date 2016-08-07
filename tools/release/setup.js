@@ -159,14 +159,14 @@ function init() {
 						+"cd bin\n";				
 
 		var p = path.join(root,'bin/sia-cluster').toString();
-		fs.writeFileSync(p+'.sh', application);
-		execSync("chmod a+x "+p+'.sh')
-		fs.writeFileSync(p+'-service.sh', service);
-		execSync("chmod a+x "+p+'-service.sh')
+		fs.writeFileSync(p, application);
+		execSync("chmod a+x "+p)
+		fs.writeFileSync(p+'-service', service);
+		execSync("chmod a+x "+p+'-service')
 	}
 
 	// ---
-	var suffix = platform == "windows" ? "bat" : "sh";
+	var suffix = platform == "windows" ? "bat" : "";
 	console.log("To run, start one of the following:\n");
 	console.log(("bin/sia-cluster."+suffix).bold+" - application");
 	console.log(("bin/sia-cluster-service."+suffix).bold+" - service");
