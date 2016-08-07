@@ -80,16 +80,16 @@ cd bin
 case "$PLATFORM" in
 	win64)
 		cp "/c/Program Files/nodejs/node.exe" node/
-		echo -e "@echo off\ncd ..\nbin\\\\node\\\\node tools/release/setup.js %1\ncd bin\npause\n" > setup.bat
+		echo -e "@echo off\ncd ..\nbin\\\\node\\\\node tools/release/setup.js %*\ncd bin\npause\n" > setup.bat
 		;;
 	linux64)
 		cp ~/node/bin/node node/
-		echo -e "# !/bin/bash\ncd ..\nbin/node/node tools/release/setup.js %1\ncd bin\n" > setup.sh
+		echo -e "# !/bin/bash\ncd ..\nbin/node/node tools/release/setup.js \"$@\"\ncd bin\n" > setup.sh
 		chmod a+x setup.sh
 		;;
 	darwin)
 		cp ~/node/bin/node node/
-		echo -e "# !/bin/bash\ncd ..\nbin/node/node tools/release/setup.js %1\ncd bin\n" > setup.sh
+		echo -e "# !/bin/bash\ncd ..\nbin/node/node tools/release/setup.js \"$@\"\ncd bin\n" > setup.sh
 		chmod a+x setup.sh
 		;;
 esac	

@@ -2348,7 +2348,7 @@ e8464c94a2ff5f48.
 88bccc8b791452f4.category   "basic"
 88bccc8b791452f4.original   "en"
 88bccc8b791452f4.multiline  false
-88bccc8b791452f4.orphan     false
+88bccc8b791452f4.orphan     true
 88bccc8b791452f4.ts         1467396493071
 88bccc8b791452f4.locale.en  "Peers Connected"
 88bccc8b791452f4.
@@ -2732,3 +2732,33 @@ b871e64655477ca.
 7c6ba6a4b97599d5.ts         1467396493334
 7c6ba6a4b97599d5.locale.en  "Save"
 7c6ba6a4b97599d5.
+ebd2175b3a75ab18.
+ebd2175b3a75ab18.hash       "ebd2175b3a75ab18"
+ebd2175b3a75ab18.sha1       "1f3c534589be3c2b26c17ca858402c83a678d93a"
+ebd2175b3a75ab18.category   "basic"
+ebd2175b3a75ab18.original   "en"
+ebd2175b3a75ab18.multiline  false
+ebd2175b3a75ab18.orphan     false
+ebd2175b3a75ab18.ts         1470576251221
+ebd2175b3a75ab18.locale.en  "Used storage"
+ebd2175b3a75ab18.
+cd96a37ad611f680.
+cd96a37ad611f680.hash       "cd96a37ad611f680"
+cd96a37ad611f680.sha1       "cb25b1ad95b7cf0eecccbd701e5ec4250afcab00"
+cd96a37ad611f680.category   "basic"
+cd96a37ad611f680.original   "en"
+cd96a37ad611f680.multiline  false
+cd96a37ad611f680.orphan     false
+cd96a37ad611f680.ts         1470576251269
+cd96a37ad611f680.locale.en  "The amount of used storage on the host in bytes. It should be noted that the host can lie."
+cd96a37ad611f680.
+8667b84929caf23b.
+8667b84929caf23b.hash       "8667b84929caf23b"
+8667b84929caf23b.sha1       "515dd15ff9295a1b9343a6982c27c5ede91f4fab"
+8667b84929caf23b.category   "basic"
+8667b84929caf23b.original   "en"
+8667b84929caf23b.multiline  false
+8667b84929caf23b.orphan     false
+8667b84929caf23b.ts         1470576251276
+8667b84929caf23b.locale.en  "Peers Seen"
+8667b84929caf23b.

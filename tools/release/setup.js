@@ -10,7 +10,7 @@ var irisUtils = require('iris-utils');
 var exec = require('child_process').exec;
 var execSync = require('child_process').execSync;
 
-var root = path.join(__dirname,'../../../');
+var root = path.join(__dirname,'../../');
 var temp = '/tmp';
 
 var platform = process.platform;
@@ -96,7 +96,7 @@ function fetch(options, callback) {
 // -------------------------
 
 var mongoPath = null;
-var mongoRootPath = path.join(process.env.ProgramFiles,"MongoDB/Server");
+var mongoRootPath = path.join(process.env.ProgramFiles || '',"MongoDB/Server");
 
 function init() {
 
@@ -119,7 +119,7 @@ function init() {
 
 	var local_conf = fs.readFileSync(path.join(root,'config/sia-cluster.local.conf-example'), { encoding : 'utf-8' });
 	var auth = crypto.createHash("sha256").update(UUID.v1()+UUID.v4+root.toString()+username+pass).digest('hex');
-	console.log("\nYour auth:\n\n"+auth.cyan.bold+"\n");
+	console.log("\nYour auth:\n\n"+auth.cyan.bold+"\n(You can find this later in "+"config/sia-cluster.local.conf".bold+")");
 	local_conf = local_conf
 					.replace('1299ece0263565a53df103a34910884d5016a10d86c06e5f309f17761a965d28',auth)
 					.replace('"test": {pass: "13a5c202e320d0bf9bb2c6e2c7cf380a6f7de5d392509fee260b809c893ff2f9"}',
@@ -134,13 +134,13 @@ function init() {
 		var application = "@echo off\n"
 						+"cd ..\n"
 						+(nomongo ? "" : "start /MIN "+mongoPath+"\\bin\\mongod.exe --dbpath "+path.join(root,'/data/db')+" \n")
-						+"bin\\node\\node sia-cluster\n"
+						+"bin\\node\\node sia-cluster %*\n"
 						+"cd bin\n";				
 
 		var service = "@echo off\n"
 						+"cd ..\n"
 						+(nomongo ? "" : "start /MIN "+mongoPath+"\\bin\\mongod.exe --dbpath "+path.join(root,'/data/db')+" \n")
-						+"bin\\node\\node run sia-cluster\n"
+						+"bin\\node\\node run sia-cluster %*\n"
 						+"cd bin\n";				
 
 		fs.writeFileSync(path.join(root,'bin/sia-cluster.bat'), application);
@@ -149,12 +149,12 @@ function init() {
 	else {
 		var application = "# !/bin/bash\n"
 						+"cd ..\n"
-						+"bin/node/node sia-cluster\n"
+						+"bin/node/node sia-cluster \"$@\"\n"
 						+"cd bin\n";				
 
 		var service = "# !/bin/bash\n"
 						+"cd ..\n"
-						+"bin/node/node run sia-cluster\n"
+						+"bin/node/node run sia-cluster \"$@\"\n"
 						+"cd bin\n";				
 
 		var p = path.join(root,'bin/sia-cluster').toString();
