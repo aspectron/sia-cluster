@@ -1,8 +1,11 @@
 # !/bin/bash
 
 pushd .
+BUILD_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
+cd $BUILD_DIR/../..
+
 PLATFORM="$1"
-VERSION=`cat ../../VERSION`
+VERSION=`cat VERSION`
 SIA_CLUSTER_VERSION="$VERSION-$PLATFORM"
 SIA_RELEASE_PATH="sia-cluster-$SIA_CLUSTER_VERSION"
 MINGW_PATH="/c/Program Files/Git/mingw64"
@@ -20,13 +23,7 @@ else
 	exit
 fi
 
-BUILD_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
-cd $BUILD_DIR
-echo "now in build dir"
-pwd
-cd ../../..
-echo "now in root dir"
-pwd
+cd ..
 mkdir -p releases
 cd releases
 

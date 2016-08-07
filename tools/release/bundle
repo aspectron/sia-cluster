@@ -1,12 +1,12 @@
 # !/bin/bash
 
 pushd .
+BUILD_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
+cd $BUILD_DIR/../..
 
 PLATFORM="$1"
-VERSION=`cat ../../VERSION`
+VERSION=`cat VERSION`
 SIA_CLUSTER_VERSION="$VERSION-$PLATFORM"
-echo $SIA_CLUSTER_VERSION
-exit
 
 SIA_CLUSTER_RELEASE_PATH="sia-cluster-$SIA_CLUSTER_VERSION"
 SIA_NODE_RELEASE_PATH="sia-node-$SIA_CLUSTER_VERSION"
@@ -24,9 +24,7 @@ else
 	exit
 fi
 
-BUILD_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
-cd $BUILD_DIR
-cd ../../..
+cd ..
 mkdir -p releases
 cd releases
 echo "cwd is:"
