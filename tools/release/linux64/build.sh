@@ -2,13 +2,12 @@
 
 pushd .
 
-SIA_CLUSTER_VERSION="v0-9-2-win64"
+SIA_CLUSTER_VERSION="v0-9-2-linux64"
 SIA_RELEASE_PATH="sia-cluster-$SIA_CLUSTER_VERSION"
-MINGW_PATH="/c/Program Files/Git/mingw64"
-NODE_PATH="/c/Program Files/nodejs"
+NODE_PATH="~/node"
 
 if [[ "$1" =~ ^(--local|--dev|--master)$ ]]; then
-	echo "Starting Win64 build"
+	echo "Starting linux64 build"
 else
 	echo "Please use one of the following: --local --dev --master"
 	exit
@@ -60,19 +59,12 @@ echo "Binaries..."
 mkdir -p bin
 cd bin
 
-#mkdir mingw64
-#cp -r  "$MINGW_PATH/bin/curl.exe" mingw64/
-#cp -r  "$MINGW_PATH/bin/libcurl-4.dll" mingw64/
-
 mkdir node
-cp -r  "$NODE_PATH/node.exe" node/
+cp -r  "$NODE_PATH/bin/node" node/
 
-cd ..
-mkdir -p data/db
-touch data/db/.db
-cd bin
+cd ../bin
 
-echo -e "@echo off\ncd ..\nbin\\\\node\\\\node tools/release/win64/setup.js %1\ncd bin\npause\n" > setup.bat
+echo -e "# !/bin/bash\ncd ..\nbin\\\\node\\\\node tools/release/win64/setup.js %1\ncd bin\npause\n" > setup.sh
 
 cd ../..
 

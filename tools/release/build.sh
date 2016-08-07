@@ -2,13 +2,19 @@
 
 pushd .
 
-SIA_CLUSTER_VERSION="v0-9-2-win64"
+PLATFORM="$1"
+SIA_CLUSTER_VERSION="v0-9-2-$PLATFORM"
 SIA_RELEASE_PATH="sia-cluster-$SIA_CLUSTER_VERSION"
 MINGW_PATH="/c/Program Files/Git/mingw64"
-NODE_PATH="/c/Program Files/nodejs"
 
-if [[ "$1" =~ ^(--local|--dev|--master)$ ]]; then
-	echo "Starting Win64 build"
+if [[ ! "$1" =~ ^(win64|linux64|darwin)$ ]]; then
+	echo "First argument must be a platform: linux64 win64 darwin"
+	exit
+fi
+
+
+if [[ "$2" =~ ^(--local|--dev|--master)$ ]]; then
+	echo "Building $SIA_RELEASE_PATH..."
 else
 	echo "Please use one of the following: --local --dev --master"
 	exit
@@ -65,14 +71,28 @@ cd bin
 #cp -r  "$MINGW_PATH/bin/libcurl-4.dll" mingw64/
 
 mkdir node
-cp -r  "$NODE_PATH/node.exe" node/
 
 cd ..
 mkdir -p data/db
 touch data/db/.db
 cd bin
 
-echo -e "@echo off\ncd ..\nbin\\\\node\\\\node tools/release/win64/setup.js %1\ncd bin\npause\n" > setup.bat
+case "$PLATFORM" in
+	win64)
+		cp "/c/Program Files/nodejs/node.exe" bin/node/
+		echo -e "@echo off\ncd ..\nbin\\\\node\\\\node tools/release/setup.js %1\ncd bin\npause\n" > setup.bat
+		;;
+	linux64)
+		cp "~/node/bin/node" bin/node/
+		echo -e "# !/bin/bash\ncd ..\nbin\\\\node\\\\node tools/release/setup.js %1\ncd bin\n" > setup.sh
+		chmod a+x setup.sh
+		;;
+	darwin)
+		cp "~/node/bin/node" bin/node/
+		echo -e "# !/bin/bash\ncd ..\nbin\\\\node\\\\node tools/release/setup.js %1\ncd bin\n" > setup.sh
+		chmod a+x setup.sh
+		;;
+esac	
 
 cd ../..
 
