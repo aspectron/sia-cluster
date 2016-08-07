@@ -69,11 +69,12 @@ Once complete, you can start Sia Cluster:
 You will need to specify:
 * **auth** - created by Sia Cluster setup
 * **address/ip** - of Sia Cluster server (default is 127.0.0.1; if not sure, hit ENTER)
-* **path** - to Sia data folder (containing `host`, `consensus` etc.);  If running Sia-UI, setup script will attempt to locate this folder automatically in your APPDATA.
+* **path** - to Sia data folder (containing `host`, `consensus` etc.);  If running Sia-UI, setup script will attempt to locate this folder automatically in your APPDATA. If running `siad`, this should be the folder where `siad` resides.
 
 Once complete, you can start Sia Node:
 * Windows: `bin/sia-node.bat` or `bin/sia-node-service.bat`
 * Linux: `bin/sia-node.sh` or `bin/sia-node-service.sh`
+
 
 ## Dependencies
 
