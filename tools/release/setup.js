@@ -151,18 +151,18 @@ function init() {
 		var DIR = 'DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";';
 
 		var application = "# !/bin/bash\n"
-						+"pushd\n"
+						+"pushd . > /dev/nul\n"
 						+DIR+'\n'
 						+"cd $DIR/..\n"
 						+"bin/node/node sia-cluster \"$@\"\n"
-						+"popd\n";
+						+"popd > /dev/nul\n";
 
 		var service = "# !/bin/bash\n"
-						+"pushd\n"
+						+"pushd . > /dev/nul\n"
 						+DIR+'\n'
 						+"cd $DIR/..\n"
 						+"bin/node/node run sia-cluster \"$@\"\n"
-						+"popd\n";				
+						+"popd > /dev/nul\n";				
 
 		var p = path.join(root,'bin/sia-cluster').toString();
 		fs.writeFileSync(p, application);
