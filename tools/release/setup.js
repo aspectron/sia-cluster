@@ -8,9 +8,14 @@ var request = require('request');
 var progress = require('request-progress');
 var irisUtils = require('iris-utils');
 var exec = require('child_process').exec;
+var execSync = require('child_process').execSync;
 
 var root = path.join(__dirname,'../../../');
 var temp = path.join(process.env.TEMP);
+
+var platform = process.platform;
+if(platform == 'win32')
+	platform = 'windows';
 
 function testFile(file) {
 	try {
@@ -26,7 +31,7 @@ var force = process.argv.join(' ').match(/--force/ig) ? true : false;
 var nomongo = process.argv.join(' ').match(/--nomongo/ig) ? true : false;
 
 if(!force && testFile(path.join(root,'config/sia-cluster.local.conf'))) {
-	console.log("\nHas init.bat been ran already?".red.bold)
+	console.log("\nDid setup run already?".red.bold)
 	console.log("config/sia-cluster.local.conf".bold+" already exists!".bold)
 	console.log("\nUse "+"--force".bold+" to re-initialize (you will loose your settings!)\n\n")
 	process.exit(0);
@@ -123,26 +128,45 @@ function init() {
 
 	// ---
 
-	var application = "@echo off\n"
-					+"cd ..\n"
-					+(nomongo ? "" : "start /MIN "+mongoPath+"\\bin\\mongod.exe --dbpath "+path.join(root,'/data/db')+" \n")
-					+"bin\\node\\node sia-cluster\n"
-					+"cd bin\n";				
+	if(platform == "windows") {
+		var application = "@echo off\n"
+						+"cd ..\n"
+						+(nomongo ? "" : "start /MIN "+mongoPath+"\\bin\\mongod.exe --dbpath "+path.join(root,'/data/db')+" \n")
+						+"bin\\node\\node sia-cluster\n"
+						+"cd bin\n";				
 
-	var service = "@echo off\n"
-					+"cd ..\n"
-					+(nomongo ? "" : "start /MIN "+mongoPath+"\\bin\\mongod.exe --dbpath "+path.join(root,'/data/db')+" \n")
-					+"bin\\node\\node run sia-cluster\n"
-					+"cd bin\n";				
+		var service = "@echo off\n"
+						+"cd ..\n"
+						+(nomongo ? "" : "start /MIN "+mongoPath+"\\bin\\mongod.exe --dbpath "+path.join(root,'/data/db')+" \n")
+						+"bin\\node\\node run sia-cluster\n"
+						+"cd bin\n";				
 
-	fs.writeFileSync(path.join(root,'bin/sia-cluster.bat'), application);
-	fs.writeFileSync(path.join(root,'bin/sia-cluster-service.bat'), service);
+		fs.writeFileSync(path.join(root,'bin/sia-cluster.bat'), application);
+		fs.writeFileSync(path.join(root,'bin/sia-cluster-service.bat'), service);
+	}
+	else {
+		var application = "# !/bin/bash\n"
+						+"cd ..\n"
+						+"bin/node/node sia-cluster\n"
+						+"cd bin\n";				
+
+		var service = "# !/bin/bash\n"
+						+"cd ..\n"
+						+"bin/node/node run sia-cluster\n"
+						+"cd bin\n";				
+
+		var p = path.join(root,'bin/sia-cluster').toString();
+		fs.writeFileSync(p+'.sh', application);
+		execSync("chmod a+x "+p+'.sh')
+		fs.writeFileSync(p+'-service.sh', service);
+		execSync("chmod a+x "+p+'-service.sh')
+	}
 
 	// ---
-
+	var suffix = platform == "windows" ? "bat" : "sh";
 	console.log("To run, start one of the following:\n");
-	console.log("bin/sia-cluster.bat".bold+" - application");
-	console.log("bin/sia-cluster-service.bat".bold+" - service");
+	console.log(("bin/sia-cluster."+suffix).bold+" - application");
+	console.log(("bin/sia-cluster-service."+suffix).bold+" - service");
 	console.log("\nYou can access Web UI at "+"http://localhost:5566\n".yellow.bold);
 }
 
@@ -191,16 +215,19 @@ function installMongoDb(callback) {
 
 function main() {
 	console.log('');
-	var mongoPath = getMongoPath();
-	console.log("MongoDB Found at:",mongoPath);
-	if(!nomongo && !mongoPath) {
-		console.log("MongoDB not found!".yellow.bold);
-		if (rs.keyInYN('Do you want to install MongoDb?')) {
-		  console.log('');
-		  installMongoDb(function() {
-		  	init();	// -->
-		  });
-		  return;
+
+	if(platform == 'windows') {
+		var mongoPath = getMongoPath();
+		console.log("MongoDB Found at:",mongoPath);
+		if(!nomongo && !mongoPath) {
+			console.log("MongoDB not found!".yellow.bold);
+			if (rs.keyInYN('Do you want to install MongoDb?')) {
+			  console.log('');
+			  installMongoDb(function() {
+			  	init();	// -->
+			  });
+			  return;
+			}
 		}
 	}
 	init(); // -->
