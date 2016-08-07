@@ -148,19 +148,21 @@ function init() {
 		fs.writeFileSync(path.join(root,'bin/sia-cluster-service.bat'), service);
 	}
 	else {
-		var DIR = "DIR=\"$( cd \"$( dirname \"${BASH_SOURCE[0]}\" )\" && pwd )\";";
+		var DIR = 'DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";';
 
 		var application = "# !/bin/bash\n"
+						+"pushd . > /dev/null\n"
 						+DIR+'\n'
 						+"cd $DIR/..\n"
 						+"bin/node/node sia-cluster \"$@\"\n"
-						+"cd bin\n";				
+						+"popd > /dev/null\n";
 
 		var service = "# !/bin/bash\n"
+						+"pushd . > /dev/null\n"
 						+DIR+'\n'
 						+"cd $DIR/..\n"
 						+"bin/node/node run sia-cluster \"$@\"\n"
-						+"cd bin\n";				
+						+"popd > /dev/null\n";				
 
 		var p = path.join(root,'bin/sia-cluster').toString();
 		fs.writeFileSync(p, application);

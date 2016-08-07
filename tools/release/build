@@ -1,7 +1,6 @@
 # !/bin/bash
 
 pushd .
-
 PLATFORM="$1"
 VERSION=`cat ../../VERSION`
 SIA_CLUSTER_VERSION="$VERSION-$PLATFORM"
@@ -14,14 +13,20 @@ if [[ ! "$1" =~ ^(win64|linux64|darwin)$ ]]; then
 fi
 
 
-if [[ "$2" =~ ^(--local|--dev|--master)$ ]]; then
+if [[ "$2" =~ ^(--local|--dev|--master|--nobuild)$ ]]; then
 	echo "Building $SIA_RELEASE_PATH..."
 else
 	echo "Please use one of the following: --local --dev --master"
 	exit
 fi
 
+BUILD_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
+cd $BUILD_DIR
+echo "now in build dir"
+pwd
 cd ../../..
+echo "now in root dir"
+pwd
 mkdir -p releases
 cd releases
 
@@ -84,15 +89,15 @@ case "$PLATFORM" in
 		echo -e "@echo off\ncd ..\nbin\\\\node\\\\node tools/release/setup.js %*\ncd bin\npause\n" > setup.bat
 		;;
 	linux64)
-		DIR = "DIR=\"$( cd \"$( dirname \"${BASH_SOURCE[0]}\" )\" && pwd )\";";
+		DIR='DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";'
 		cp ~/node/bin/node node/
-		echo -e "# !/bin/bash\n$DIR\ncd \044DIR/..\nbin\node/node tools/release/setup.js \"$\0100\"\ncd bin\n" > setup
+		echo -e "# !/bin/bash\npushd . > /dev/null\n$DIR\ncd \044DIR/..\nbin/node/node tools/release/setup.js \"$\0100\"\npopd > /dev/null\n" > setup
 		chmod a+x setup
 		;;
 	darwin)
-		DIR = "DIR=\"$( cd \"$( dirname \"${BASH_SOURCE[0]}\" )\" && pwd )\";";
+		DIR='DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";'
 		cp ~/node/bin/node node/
-		echo -e "# !/bin/bash\n$DIR\ncd \044DIR/..\nbin/node/node tools/release/setup.js \"$\0100\"\ncd bin\n" > setup
+		echo -e "# !/bin/bash\npushd . > /dev/null\n$DIR\ncd \044DIR/..\nbin/node/node tools/release/setup.js \"$\0100\"\npopd > /dev/null\n" > setup
 		chmod a+x setup
 		;;
 esac	
