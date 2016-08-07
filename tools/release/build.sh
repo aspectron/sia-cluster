@@ -20,7 +20,7 @@ else
 	exit
 fi
 
-cd ../../../..
+cd ../../..
 mkdir -p releases
 cd releases
 

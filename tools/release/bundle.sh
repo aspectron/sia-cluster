@@ -21,7 +21,7 @@ else
 fi
 
 
-cd ../../../..
+cd ../../..
 mkdir -p releases
 cd releases
 
