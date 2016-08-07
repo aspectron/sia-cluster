@@ -37,10 +37,45 @@ Sia Cluster is developed on top of [IRIS](https://github.com/aspectron/iris-app)
 
 Please refer to [IRIS Project Configuration](https://github.com/aspectron/iris-app#project-configuration) for general information on management of configuration files.
 
-
-## Dependencies
+## Setup
 
 **NOTE:** Sia Cluster requires a **local instance of siad** running, so you must deploy the latest siad on the same system you will be running Sia Cluster. (local instance is needed for network statistics).
+
+Download binaries from GitHub located here:
+https://github.com/aspectron/sia-cluster/releases
+
+**sia-cluster-bundle** contains both Sia Cluster
+and Sia Node in a single archive.
+
+#### Setup Sia Cluster (Must be done first)
+
+* Download & Extract sia-cluster-bundle-vX-X-X-win64.zip
+* Windows: run `sia-cluster-vX-X-X-win64/bin/setup.bat`
+* Linux: run `sia-cluster-vX-X-X-win64/bin/setup.sh`
+
+Setup will print **auth** which you will need to write down as it will be needed for the Sia Node setup. 
+
+Once complete, you can start Sia Cluster:
+* Windows: `bin/sia-cluster.bat` or `bin/sia-cluster-service.bat`
+* Linux: `bin/sia-cluster.sh` or `bin/sia-cluster-service.sh`
+
+`sia-cluster-service` script runs Sia Cluster as a service (persistent+logging)
+
+#### Setup Sia Node 
+
+* Windows: run `sia-node-vX-X-X-win64/bin/setup.bat"
+* Linux: run `sia-node-vX-X-X-win64/bin/setup.sh"
+
+You will need to specify:
+* **auth** - created by Sia Cluster setup
+* **address/ip** - of Sia Cluster server (default is 127.0.0.1; if not sure, hit ENTER)
+* **path** - to Sia data folder (containing `host`, `consensus` etc.);  If running Sia-UI, setup script will attempt to locate this folder automatically in your APPDATA.
+
+Once complete, you can start Sia Node:
+* Windows: `bin/sia-node.bat` or `bin/sia-node-service.bat`
+* Linux: `bin/sia-node.sh` or `bin/sia-node-service.sh`
+
+## Dependencies
 
 Sia Cluster runs on top of **NodeJs** and requires a local instance of **MongoDb**.
 
@@ -95,7 +130,7 @@ node sia-cluster
 
 Sia Cluster is a server application meant to run together with [Sia Node](https://github.com/aspectron/sia-node).
 
-Once running, you can access user interface at `http://localhost:6454`
+Once running, you can access user interface at `http://localhost:5566`
 
 To deploy Sia Cluster as a daemon on ubuntu using Upstart service, you can use following instructions: https://github.com/aspectron/iris-app#deploying-as-ubuntu-upstart-service
 
