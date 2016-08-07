@@ -1,7 +1,6 @@
 # !/bin/bash
 
 pushd .
-
 PLATFORM="$1"
 SIA_CLUSTER_VERSION="v0-9-2-$PLATFORM"
 SIA_RELEASE_PATH="sia-cluster-$SIA_CLUSTER_VERSION"
@@ -20,6 +19,8 @@ else
 	exit
 fi
 
+BUILD_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
+cd $BUILD_DIR
 cd ../../..
 mkdir -p releases
 cd releases
