@@ -21,7 +21,11 @@ fi
 
 BUILD_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 cd $BUILD_DIR
+echo "now in build dir"
+pwd
 cd ../../..
+echo "now in root dir"
+pwd
 mkdir -p releases
 cd releases
 
@@ -86,13 +90,13 @@ case "$PLATFORM" in
 	linux64)
 		DIR='DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";'
 		cp ~/node/bin/node node/
-		echo -e "# !/bin/bash\npushd\n$DIR\ncd \044DIR/..\nbin/node/node tools/release/setup.js \"$\0100\"\npopd\n" > setup
+		echo -e "# !/bin/bash\npushd . > /dev/null\n$DIR\ncd \044DIR/..\nbin/node/node tools/release/setup.js \"$\0100\"\npopd > /dev/null\n" > setup
 		chmod a+x setup
 		;;
 	darwin)
 		DIR='DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";'
 		cp ~/node/bin/node node/
-		echo -e "# !/bin/bash\npushd\n$DIR\ncd \044DIR/..\nbin/node/node tools/release/setup.js \"$\0100\"\npopd\n" > setup
+		echo -e "# !/bin/bash\npushd . > /dev/null\n$DIR\ncd \044DIR/..\nbin/node/node tools/release/setup.js \"$\0100\"\npopd > /dev/null\n" > setup
 		chmod a+x setup
 		;;
 esac	
