@@ -85,13 +85,13 @@ case "$PLATFORM" in
 	linux64)
 		DIR = "DIR=\"$( cd \"$( dirname \"${BASH_SOURCE[0]}\" )\" && pwd )\";";
 		cp ~/node/bin/node node/
-		echo -e "# !/bin/bash\n$DIR\ncd \044DIR\nnode/node ../tools/release/setup.js \"$\0100\"\ncd bin\n" > setup
+		echo -e "# !/bin/bash\n$DIR\ncd \044DIR/..\nbin\node/node tools/release/setup.js \"$\0100\"\ncd bin\n" > setup
 		chmod a+x setup
 		;;
 	darwin)
 		DIR = "DIR=\"$( cd \"$( dirname \"${BASH_SOURCE[0]}\" )\" && pwd )\";";
 		cp ~/node/bin/node node/
-		echo -e "# !/bin/bash\n$DIR\ncd \044DIR\nnode/node ../tools/release/setup.js \"$\0100\"\ncd bin\n" > setup
+		echo -e "# !/bin/bash\n$DIR\ncd \044DIR/..\nbin/node/node tools/release/setup.js \"$\0100\"\ncd bin\n" > setup
 		chmod a+x setup
 		;;
 esac	
