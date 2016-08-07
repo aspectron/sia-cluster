@@ -41,30 +41,37 @@ Please refer to [IRIS Project Configuration](https://github.com/aspectron/iris-a
 
 **NOTE:** Sia Cluster requires a **local instance of siad** running, so you must deploy the latest siad on the same system you will be running Sia Cluster. (local instance is needed for network statistics).
 
+#### Download
+
 Download binaries from GitHub located here:
 https://github.com/aspectron/sia-cluster/releases
 
 **sia-cluster-bundle** contains both Sia Cluster
 and Sia Node in a single archive.
 
-#### Setup Sia Cluster (Must be done first)
+#### Setup Sia Cluster (Must be done before Sia Node)
+
+Sia Cluster requires MongoDB.
+* **Windows:** Setup will prompt to install MongoDB
+* **Linux:** `sudo apt-get install mongodb`
+* Site: https://www.mongodb.com/download-center?jmp=nav#community
 
 * Download & Extract sia-cluster-bundle-vX-X-X-win64.zip
-* Windows: run `sia-cluster-vX-X-X-win64/bin/setup.bat`
-* Linux: run `sia-cluster-vX-X-X-win64/bin/setup.sh`
+* **Windows:** run `sia-cluster-vX-X-X-win64/bin/setup.bat`
+* **Linux:** run `sia-cluster-vX-X-X-win64/bin/setup`
 
 Setup will print **auth** which you will need to write down as it will be needed for the Sia Node setup. 
 
 Once complete, you can start Sia Cluster:
-* Windows: `bin/sia-cluster.bat` or `bin/sia-cluster-service.bat`
-* Linux: `bin/sia-cluster.sh` or `bin/sia-cluster-service.sh`
+* **Windows:** `bin/sia-cluster.bat` or `bin/sia-cluster-service.bat`
+* **Linux:** `bin/sia-cluster` or `bin/sia-cluster-service`
 
 `sia-cluster-service` script runs Sia Cluster as a service (persistent+logging)
 
 #### Setup Sia Node 
 
-* Windows: run `sia-node-vX-X-X-win64/bin/setup.bat"
-* Linux: run `sia-node-vX-X-X-win64/bin/setup.sh"
+* **Windows:** run `sia-node-vX-X-X-win64/bin/setup.bat"
+* **Linux:** run `sia-node-vX-X-X-win64/bin/setup"
 
 You will need to specify:
 * **auth** - created by Sia Cluster setup
@@ -72,8 +79,8 @@ You will need to specify:
 * **path** - to Sia data folder (containing `host`, `consensus` etc.);  If running Sia-UI, setup script will attempt to locate this folder automatically in your APPDATA. If running `siad`, this should be the folder where `siad` resides.
 
 Once complete, you can start Sia Node:
-* Windows: `bin/sia-node.bat` or `bin/sia-node-service.bat`
-* Linux: `bin/sia-node.sh` or `bin/sia-node-service.sh`
+* **Windows:** `bin/sia-node.bat` or `bin/sia-node-service.bat`
+* **Linux:** `bin/sia-node` or `bin/sia-node-service`
 
 
 ## Dependencies
