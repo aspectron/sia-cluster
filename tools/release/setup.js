@@ -9,6 +9,7 @@ var progress = require('request-progress');
 var irisUtils = require('iris-utils');
 var exec = require('child_process').exec;
 var execSync = require('child_process').execSync;
+var Sia = require('sia-api');
 
 var root = path.join(__dirname,'../../');
 var temp = '/tmp';
@@ -40,7 +41,7 @@ if(!force && testFile(path.join(root,'config/sia-cluster.local.conf'))) {
 }
 
 // ---
-
+/*
 Object.defineProperty(Number.prototype, 'toFileSize', {
     value: function(a, asNumber){
         var b,c,d;
@@ -58,7 +59,7 @@ Object.defineProperty(Number.prototype, 'toFileSize', {
     },
     writable:false,
     enumerable:false
-});
+});*/
 
 function fetch(options, callback) {
 
@@ -170,6 +171,26 @@ function init() {
 	console.log(("bin/sia-cluster."+suffix).bold+" - application");
 	console.log(("bin/sia-cluster-service."+suffix).bold+" - service");
 	console.log("\nYou can access Web UI at "+"http://localhost:5566\n".yellow.bold);
+
+	var Sia = require('sia-api');
+    var sia = new Sia({
+        host : "http://127.0.0.1:9980",
+        timeout : 3 * 1000,
+        verbose : false
+    });
+    console.log("Checking for local Sia daemon...")
+    sia.daemon.version(function(err, resp) {
+        if(err) {
+        	console.log("");
+            console.log("Warning: Unable to connect to local Sia daemon".magenta.bold);
+            console.log("Error:",err.toString());
+            console.log("Please start and sync Sia before running Sia Cluster".yellow.bold);
+        }
+        else
+            console.log("Found local Sia daemon version:".cyan.bold, resp.version.bold);
+    })
+
+
 }
 
 function getMongoPath() {
