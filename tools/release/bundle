@@ -1,9 +1,13 @@
 # !/bin/bash
 
 pushd .
+BUILD_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
+cd $BUILD_DIR/../..
 
 PLATFORM="$1"
-SIA_CLUSTER_VERSION="v0-9-2-$PLATFORM"
+VERSION=`cat VERSION`
+SIA_CLUSTER_VERSION="$VERSION-$PLATFORM"
+
 SIA_CLUSTER_RELEASE_PATH="sia-cluster-$SIA_CLUSTER_VERSION"
 SIA_NODE_RELEASE_PATH="sia-node-$SIA_CLUSTER_VERSION"
 
@@ -20,17 +24,17 @@ else
 	exit
 fi
 
-
-cd ../../..
+cd ..
 mkdir -p releases
 cd releases
-
+echo "cwd is:"
+pwd
 if [[ ! $* == *--nobuild* ]]; then
 	cd ../sia-cluster/tools/release
-	bash build.sh $1 $2
+	bash build $1 $2
 	if (($? != 0)); then echo "Sia Cluster Build Error" && exit 1; fi
 	cd ../../../sia-node/tools/release
-	bash build.sh $1 $2
+	bash build $1 $2
 	if (($? != 0)); then echo "Sia Node Build Error" && exit 1; fi
 	cd ../../../releases
 fi

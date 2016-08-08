@@ -8,9 +8,17 @@ var request = require('request');
 var progress = require('request-progress');
 var irisUtils = require('iris-utils');
 var exec = require('child_process').exec;
+var execSync = require('child_process').execSync;
+var Sia = require('sia-api');
 
-var root = path.join(__dirname,'../../../');
-var temp = path.join(process.env.TEMP);
+var root = path.join(__dirname,'../../');
+var temp = '/tmp';
+
+var platform = process.platform;
+if(platform == 'win32') {
+	platform = 'windows';
+	var temp = path.join(process.env.TEMP);
+}
 
 function testFile(file) {
 	try {
@@ -26,14 +34,14 @@ var force = process.argv.join(' ').match(/--force/ig) ? true : false;
 var nomongo = process.argv.join(' ').match(/--nomongo/ig) ? true : false;
 
 if(!force && testFile(path.join(root,'config/sia-cluster.local.conf'))) {
-	console.log("\nHas init.bat been ran already?".red.bold)
+	console.log("\nDid setup run already?".red.bold)
 	console.log("config/sia-cluster.local.conf".bold+" already exists!".bold)
 	console.log("\nUse "+"--force".bold+" to re-initialize (you will loose your settings!)\n\n")
 	process.exit(0);
 }
 
 // ---
-
+/*
 Object.defineProperty(Number.prototype, 'toFileSize', {
     value: function(a, asNumber){
         var b,c,d;
@@ -51,7 +59,7 @@ Object.defineProperty(Number.prototype, 'toFileSize', {
     },
     writable:false,
     enumerable:false
-});
+});*/
 
 function fetch(options, callback) {
 
@@ -89,7 +97,7 @@ function fetch(options, callback) {
 // -------------------------
 
 var mongoPath = null;
-var mongoRootPath = path.join(process.env.ProgramFiles,"MongoDB/Server");
+var mongoRootPath = path.join(process.env.ProgramFiles || '',"MongoDB/Server");
 
 function init() {
 
@@ -112,7 +120,7 @@ function init() {
 
 	var local_conf = fs.readFileSync(path.join(root,'config/sia-cluster.local.conf-example'), { encoding : 'utf-8' });
 	var auth = crypto.createHash("sha256").update(UUID.v1()+UUID.v4+root.toString()+username+pass).digest('hex');
-	console.log("\nYour auth:\n\n"+auth.cyan.bold+"\n");
+	console.log("\nYour auth:\n\n"+auth.cyan.bold+"\n(You can find this later in "+"config/sia-cluster.local.conf".bold+")");
 	local_conf = local_conf
 					.replace('1299ece0263565a53df103a34910884d5016a10d86c06e5f309f17761a965d28',auth)
 					.replace('"test": {pass: "13a5c202e320d0bf9bb2c6e2c7cf380a6f7de5d392509fee260b809c893ff2f9"}',
@@ -123,27 +131,72 @@ function init() {
 
 	// ---
 
-	var application = "@echo off\n"
-					+"cd ..\n"
-					+(nomongo ? "" : "start /MIN "+mongoPath+"\\bin\\mongod.exe --dbpath "+path.join(root,'/data/db')+" \n")
-					+"bin\\node\\node sia-cluster\n"
-					+"cd bin\n";				
+	if(platform == "windows") {
+		var application = "@echo off\n"
+						+"cd ..\n"
+						+(nomongo ? "" : "start /MIN "+mongoPath+"\\bin\\mongod.exe --dbpath "+path.join(root,'/data/db')+" \n")
+						+"bin\\node\\node sia-cluster %*\n"
+						+"cd bin\n";				
 
-	var service = "@echo off\n"
-					+"cd ..\n"
-					+(nomongo ? "" : "start /MIN "+mongoPath+"\\bin\\mongod.exe --dbpath "+path.join(root,'/data/db')+" \n")
-					+"bin\\node\\node run sia-cluster\n"
-					+"cd bin\n";				
+		var service = "@echo off\n"
+						+"cd ..\n"
+						+(nomongo ? "" : "start /MIN "+mongoPath+"\\bin\\mongod.exe --dbpath "+path.join(root,'/data/db')+" \n")
+						+"bin\\node\\node run sia-cluster %*\n"
+						+"cd bin\n";				
 
-	fs.writeFileSync(path.join(root,'bin/sia-cluster.bat'), application);
-	fs.writeFileSync(path.join(root,'bin/sia-cluster-service.bat'), service);
+		fs.writeFileSync(path.join(root,'bin/sia-cluster.bat'), application);
+		fs.writeFileSync(path.join(root,'bin/sia-cluster-service.bat'), service);
+	}
+	else {
+		var DIR = 'DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";';
+
+		var application = "# !/bin/bash\n"
+						+"pushd . > /dev/null\n"
+						+DIR+'\n'
+						+"cd $DIR/..\n"
+						+"bin/node/node sia-cluster \"$@\"\n"
+						+"popd > /dev/null\n";
+
+		var service = "# !/bin/bash\n"
+						+"pushd . > /dev/null\n"
+						+DIR+'\n'
+						+"cd $DIR/..\n"
+						+"bin/node/node run sia-cluster \"$@\"\n"
+						+"popd > /dev/null\n";				
+
+		var p = path.join(root,'bin/sia-cluster').toString();
+		fs.writeFileSync(p, application);
+		execSync("chmod a+x "+p)
+		fs.writeFileSync(p+'-service', service);
+		execSync("chmod a+x "+p+'-service')
+	}
 
 	// ---
-
+	var suffix = platform == "windows" ? "bat" : "";
 	console.log("To run, start one of the following:\n");
-	console.log("bin/sia-cluster.bat".bold+" - application");
-	console.log("bin/sia-cluster-service.bat".bold+" - service");
+	console.log(("bin/sia-cluster."+suffix).bold+" - application");
+	console.log(("bin/sia-cluster-service."+suffix).bold+" - service");
 	console.log("\nYou can access Web UI at "+"http://localhost:5566\n".yellow.bold);
+
+	var Sia = require('sia-api');
+    var sia = new Sia({
+        host : "http://127.0.0.1:9980",
+        timeout : 3 * 1000,
+        verbose : false
+    });
+    console.log("Checking for local Sia daemon...")
+    sia.daemon.version(function(err, resp) {
+        if(err) {
+        	console.log("");
+            console.log("Warning: Unable to connect to local Sia daemon".magenta.bold);
+            console.log(err.toString());
+            console.log("Please start and sync Sia before running Sia Cluster".yellow.bold);
+        }
+        else
+            console.log("Found local Sia daemon version:".cyan.bold, resp.version.bold);
+    })
+
+
 }
 
 function getMongoPath() {
@@ -191,16 +244,19 @@ function installMongoDb(callback) {
 
 function main() {
 	console.log('');
-	var mongoPath = getMongoPath();
-	console.log("MongoDB Found at:",mongoPath);
-	if(!nomongo && !mongoPath) {
-		console.log("MongoDB not found!".yellow.bold);
-		if (rs.keyInYN('Do you want to install MongoDb?')) {
-		  console.log('');
-		  installMongoDb(function() {
-		  	init();	// -->
-		  });
-		  return;
+
+	if(platform == 'windows') {
+		var mongoPath = getMongoPath();
+		console.log("MongoDB Found at:",mongoPath);
+		if(!nomongo && !mongoPath) {
+			console.log("MongoDB not found!".yellow.bold);
+			if (rs.keyInYN('Do you want to install MongoDb?')) {
+			  console.log('');
+			  installMongoDb(function() {
+			  	init();	// -->
+			  });
+			  return;
+			}
 		}
 	}
 	init(); // -->
