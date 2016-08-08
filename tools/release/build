@@ -49,7 +49,6 @@ elif [[ $* == *--dev* ]]; then
 	sleep 3
 	git pull
 	if (($? != 0)); then echo "GIT PULL Error" && exit 1; fi
-	rm -rf .git
 	npm install
 	if (($? != 0)); then echo "NPM Error" && exit 1; fi
 	flatten-packages
@@ -58,7 +57,6 @@ elif [[ $* == *--master* ]]; then
 	git clone https://github.com/aspectron/sia-cluster $SIA_RELEASE_PATH
 	if (($? != 0)); then echo "GIT CLONE Error" && exit 1; fi
 	cd $SIA_RELEASE_PATH
-	rm -rf .git
 	npm install
 	if (($? != 0)); then echo "NPM Error" && exit 1; fi
 	flatten-packages
