@@ -150,7 +150,7 @@
 			<paper-dialog-scrollable class="flex">
 				<paper-input autofocus id="passphraseField" value="{{passphraseData.passphrase}}" name="[[_passwordFieldName()]]" type="[[passwordFieldType]]" required label="<%=_T("Custom Passphrase")%>" on-keyup="onPDialogKeyUp"></paper-input>
 				<paper-input id="passphraseField2" value="{{passphraseData.passphrase2}}" name="[[_passwordFieldName()]]" type="[[passwordFieldType]]" required label="<%=_T("Confirm Passphrase")%>" error-message="<%=_T("Dose not match with Custom Passphrase")%>" on-keyup="onPDialogKeyUp"></paper-input>
-				<paper-input id="walletkeyField" value="{{passphraseData.walletkey}}" name="[[_passwordFieldName()]]" type="[[passwordFieldType]]" required label="<%=_T("Wallet Key")%>" on-keyup="onPDialogKeyUp"></paper-input>
+				<paper-input id="walletkeyField" value="{{passphraseData.walletkey}}" name="[[_passwordFieldName()]]" type="[[passwordFieldType]]" required label="<%=_T("Wallet Key (native unlock password)")%>" on-keyup="onPDialogKeyUp"></paper-input>
 			</paper-dialog-scrollable>
 			<div class="buttons">
 				<div class="flex"></div>
