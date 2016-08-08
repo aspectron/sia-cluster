@@ -66,6 +66,8 @@ Once complete, you can start Sia Cluster:
 
 `sia-cluster-service` script runs Sia Cluster as a service (persistent+logging)
 
+Once running, please review [User Interface](#user-interface) features.
+
 ### Setup Sia Node 
 
 * **Windows:** run `sia-node-vX-platform/bin/setup.bat` / **Linux:** run `sia-node-vX-platform/bin/setup`
@@ -86,9 +88,11 @@ However, if you need to migrate your settings the files you need to copy are:
 * `config/settings.local.json`
 * `config/sia-node.local.conf`
 
-Also, please take a note that 
+Also, please make a note that applications are identified via UUID which is located in `uuid` file in the root of the application folder.  If you want to migrate Sia Node from one computer to another and perserve its id (so that Sia Cluster doesn't treat it as a new node, then you must copy `uuid` file as well)
 
 ## Dependencies
+
+**Follogin instructions are applicable only if you are installing Sia Cluster manually. If you installed using a setup file, you do not need to install dependencies other than MongoDB.**
 
 Sia Cluster runs on top of **NodeJs** and requires a local instance of **MongoDb**.
 
@@ -317,5 +321,9 @@ If you intend on using Sia Cluster over the open Internet, you need to take secu
 
 ### 0.9.2
 
+* Now releasing standalone setup zip files which include all dependencies (except MongoDB) as well as provide auto configuration of Sia Cluster and Sia Node
+* Allowing for smaller panel sizes
+* 
 * Introduced custom `host.externalsettings.storageused` to easily see used storage (if total vs. remaining is in TB, then you can't see amount used in MB because of scale formatting in UI)
 * Changing the way peers are accounted for, using `hostdb.all` for "Peers Seen" and `hostdb.active` for "Peers Hosting".
+
