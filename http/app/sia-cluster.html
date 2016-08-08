@@ -1,8 +1,8 @@
 <dom-module id="sia-cluster">
 	<template>
 		<style include="iron-flex app-style node-setting-style">
-			.panels{@apply(--layout-horizontal); @apply(--layout-wrap)}
-			.panels .panel{min-width: 320px; @apply(--layout-flex); position: relative;overflow:hidden;}
+			.panels{@apply(--layout-horizontal); @apply(--layout-wrap);}
+			.panels .panel{min-width: 320px; width:320px; @apply(--layout-flex); flex:1 1 auto; position: relative;overflow:hidden;}
 			.panels .panel::shadow h2.title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 			.panels .panel::shadow>.content{max-width:100%;max-height:100%;}
 			.panels sia-node.panel{min-width: 300px;}

@@ -170,7 +170,7 @@
             	</div>
 	        </paper-toolbar>
             <neon-animated-pages id="pages" class="flex iris-dom-app-content main-item" style="position:relative;" selected="{{selectedPage}}" entry-animation="[[entryanimation]]" exit-animation="[[exitanimation]]" >
-				<neon-animatable class="layout vertical">
+				<neon-animatable class="layout vertical" style="-webkit-overflow-scrolling:touch">
 					<sia-cluster id="siaCluster"></sia-cluster>
 				</neon-animatable>
 			</neon-animated-pages>
