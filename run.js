@@ -44,4 +44,4 @@ function Application() {
     })
 }
 
-GLOBAL.app = new Application();
+global.app = new Application();
