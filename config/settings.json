@@ -59,6 +59,10 @@
             "host.externalsettings.remainingstorage": {
                 "showVar": true,
                 "showGraph": false
+            },
+            "host.externalsettings.usedstorage": {
+                "showVar": true,
+                "showGraph": false
             }
         }
     }
