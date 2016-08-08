@@ -152,7 +152,7 @@
 					></paper-slider>
 					<label class="slider-label"><%=_T("Panel minimum width:")%> <span>[[localSettings.W]]</span>px</label>
 					<paper-slider snaps pin
-						step='1' min="300" max="2000"
+						step='1' min="92" max="2000"
 						immediate-value="{{localSettings.W}}"
 						value="[[localSettings.W]]"
 						class="slider"
@@ -162,7 +162,7 @@
 					></paper-slider>
 					<label class="slider-label"><%=_T("Panel minimum height:")%> <span>[[localSettings.H]]</span>px</label>
 					<paper-slider snaps pin
-						step='1' min="500" max="2000"
+						step='1' min="92" max="2000"
 						immediate-value="{{localSettings.H}}"
 						value="[[localSettings.H]]"
 						class="slider"
@@ -186,8 +186,8 @@
 				type: Object,
 				value: {
 					F: 100,
-					W: 300,
-					H: 500
+					W: 92,
+					H: 92
 				}
 			},
 			storage:{
@@ -286,8 +286,8 @@
 			var panelHeight = s.H;
 			var panelMaxWidth 	= $(window).width()-20;
 			panelWidth 			= Math.min(panelWidth, panelMaxWidth);
-			panelHeight 		= Math.max(panelHeight, 500);
-			this.$styleEl.text("body{font-size:"+fontSize+"%} #siaCluster .panels .panel{min-width:"+panelWidth+"px;min-height:"+panelHeight+"px}");
+			panelHeight 		= Math.max(panelHeight, 92);
+			this.$styleEl.text("body{font-size:"+fontSize+"%} #siaCluster .panels .panel{min-width:"+panelWidth+"px;width:"+panelWidth+"px;min-height:"+panelHeight+"px}");
 			this.setSettingHash(s);
 		},
 		setSettingHash: function(keyValueMap){
