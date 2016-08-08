@@ -208,13 +208,14 @@
 				self.isUser = !!self.user;
 				self.msg  = App.msg;
 
-				var rpcDispatch = App.rpc.dispatch;
+				/*var rpcDispatch = App.rpc.dispatch;
 				App.rpc.dispatch = function(){
 					var args = arguments;
 					setTimeout(function(){
 						rpcDispatch.apply(App.rpc, args);
 					}, 5000);
 				}
+				*/
 				
 				self.footerText = '<%= _T("Copyright (c) 2015-2016 Aspectron Inc. All Rights Reserved.") %>';
 				if (self.user) {
