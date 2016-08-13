@@ -164,7 +164,7 @@
 						</paper-tab>
 						<div class="lang-holder"><iris-language-selector></iris-language-selector></div>
 						<paper-tab class="tab" data-tab-id="login" on-click="loginLogout">
-							<iron-icon icon="icons:power-settings-new"></iron-icon><span>[[loginBtnText]]</span>
+							<iron-icon icon="[[_loginIcon(user)]]"></iron-icon><span>[[loginBtnText]]</span>
 						</paper-tab>
 					</paper-tabs>
             	</div>
@@ -191,6 +191,7 @@
 					type: Number,
 					observer:'onSelectedPageChanged'
 				},
+				user:Object,
 				titles:{
 					type: Object,
 					value: {
@@ -200,6 +201,9 @@
 				}
 			},
 			observers:["onRootPathChanged(rootData.*)"],
+			_loginIcon: function(user){
+				return (user && user.email == "demo" )? "icons:block" : "icons:power-settings-new";
+			},
 			ready: function(){
 				var self = this;
 				self._$ = self.$;
@@ -220,7 +224,7 @@
 				self.footerText = '<%= _T("Copyright (c) 2015-2016 Aspectron Inc. All Rights Reserved.") %>';
 				if (self.user) {
 					//console.log("user:" +JSON.stringify(self.user));
-					self.set('loginBtnText', '<%= _T("SIGN-OUT") %>');
+					self.set('loginBtnText', self.user.email == 'demo' ? '<%= _T("DEMO MODE") %>' : '<%= _T("SIGN-OUT") %>');
 					self.set('username', self.user.name);
 					self.set('userImg', self.user.img);
 					self.set('hideUserImg', false);
@@ -318,6 +322,8 @@
 			},
 			loginLogout: function(){
 				if (this.isUser) {
+					if(this.user.email == 'demo')
+						return;
 					this.logout();
 				}else{
 					this.login();
