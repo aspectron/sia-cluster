@@ -32,9 +32,13 @@ function SIACluster() {
     .usage("[options]")
     .option('-v, --verbose','Set info verbose mode')
     .option('-d, --debug','Set debug verbose mode')
+    .option('--demo','Enable demo mode')
     .parse(process.argv);
     self.verbose = program.debug ? 2 : (program.verbose ? 1 : 0);
     self.verbose && console.log("Setting verbose mode to".yellow.bold,self.verbose);
+    self.demo = program.demo;
+    if(self.demo)
+        console.log("DEMO mode...".green.bold);
     
 
     self.nexus = new Nexus(self);
@@ -89,7 +93,7 @@ function SIACluster() {
             next();         
         })
 
-        if(self.config.http.basicAuth) {
+        if(!self.demo && self.config.http.basicAuth) {
             self.app.use(function(req, res, next) {
                 var auth = basicAuth(req);
                 if(!auth || auth.name != self.config.http.basicAuth.user || auth.pass != self.config.http.basicAuth.pass) {
