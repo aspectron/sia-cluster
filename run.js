@@ -31,17 +31,16 @@ function Application() {
     var args = process.argv.slice(2);
 
     self.process = { }
-    _.each(args, function (name) {
-        console.log(('loading: ' + name).bold);
+    var name = 'sia-cluster';
+    console.log(('loading: ' + name).bold);
 
-        self.process[name] = new irisUtils.Process({
-            process: process.execPath,
-            args: [ name ],
-            descr: name,
-            logger: new irisUtils.Logger({ filename: __dirname + '/logs/' + name + '.log' })
-        });
-        self.process[name].run();
-    })
+    self.process[name] = new irisUtils.Process({
+        process: process.execPath,
+	args : args,
+        descr: name,
+        logger: new irisUtils.Logger({ filename: __dirname + '/logs/' + name + '.log' })
+    });
+    self.process[name].run();
 }
 
 global.app = new Application();
