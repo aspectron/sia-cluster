@@ -728,7 +728,7 @@ b5191b6531a76b65.
 1f45e6ca9005d4f4.category   "basic"
 1f45e6ca9005d4f4.original   "en"
 1f45e6ca9005d4f4.multiline  false
-1f45e6ca9005d4f4.orphan     false
+1f45e6ca9005d4f4.orphan     true
 1f45e6ca9005d4f4.ts         1467396493006
 1f45e6ca9005d4f4.locale.en  "Potentiale revenue"
 1f45e6ca9005d4f4.
@@ -2058,7 +2058,7 @@ e0e19823a3821662.
 7525a4b52f583064.category   "basic"
 7525a4b52f583064.original   "en"
 7525a4b52f583064.multiline  false
-7525a4b52f583064.orphan     true
+7525a4b52f583064.orphan     false
 7525a4b52f583064.ts         1467396493061
 7525a4b52f583064.locale.en  "Wallet Key"
 7525a4b52f583064.
@@ -2068,7 +2068,7 @@ b2550e2df8b342e.sha1       "cdd7bb2816b7a8f88bce0e47be39943bc369516b"
 b2550e2df8b342e.category   "basic"
 b2550e2df8b342e.original   "en"
 b2550e2df8b342e.multiline  false
-b2550e2df8b342e.orphan     true
+b2550e2df8b342e.orphan     false
 b2550e2df8b342e.ts         1467396493061
 b2550e2df8b342e.locale.en  "Setup"
 b2550e2df8b342e.
@@ -2078,7 +2078,7 @@ b2550e2df8b342e.
 49eca1125aa187b2.category   "basic"
 49eca1125aa187b2.original   "en"
 49eca1125aa187b2.multiline  false
-49eca1125aa187b2.orphan     true
+49eca1125aa187b2.orphan     false
 49eca1125aa187b2.ts         1467396493061
 49eca1125aa187b2.locale.en  "Unlock Wallet"
 49eca1125aa187b2.
@@ -2088,7 +2088,7 @@ b2550e2df8b342e.
 84360719cae41487.category   "basic"
 84360719cae41487.original   "en"
 84360719cae41487.multiline  false
-84360719cae41487.orphan     true
+84360719cae41487.orphan     false
 84360719cae41487.ts         1467396493062
 84360719cae41487.locale.en  "Use Custom Passphrase"
 84360719cae41487.
@@ -2098,7 +2098,7 @@ b2550e2df8b342e.
 6e6900351a8102dd.category   "basic"
 6e6900351a8102dd.original   "en"
 6e6900351a8102dd.multiline  false
-6e6900351a8102dd.orphan     true
+6e6900351a8102dd.orphan     false
 6e6900351a8102dd.ts         1467396493062
 6e6900351a8102dd.locale.en  "Unlock"
 6e6900351a8102dd.
@@ -2108,7 +2108,7 @@ b2550e2df8b342e.
 7c797f52bed1289b.category   "basic"
 7c797f52bed1289b.original   "en"
 7c797f52bed1289b.multiline  false
-7c797f52bed1289b.orphan     true
+7c797f52bed1289b.orphan     false
 7c797f52bed1289b.ts         1467396493062
 7c797f52bed1289b.locale.en  "logs"
 7c797f52bed1289b.
@@ -2118,7 +2118,7 @@ b2550e2df8b342e.
 7e26e8c641a4a811.category   "basic"
 7e26e8c641a4a811.original   "en"
 7e26e8c641a4a811.multiline  false
-7e26e8c641a4a811.orphan     true
+7e26e8c641a4a811.orphan     false
 7e26e8c641a4a811.ts         1467396493063
 7e26e8c641a4a811.locale.en  "Success"
 7e26e8c641a4a811.
@@ -2128,7 +2128,7 @@ a121a4b83d69b038.sha1       "0f0962b93dcf0dd86053c58f42b9c7a719c021f7"
 a121a4b83d69b038.category   "basic"
 a121a4b83d69b038.original   "en"
 a121a4b83d69b038.multiline  false
-a121a4b83d69b038.orphan     true
+a121a4b83d69b038.orphan     false
 a121a4b83d69b038.ts         1467396493063
 a121a4b83d69b038.locale.en  "Custom passphrase saved successfully."
 a121a4b83d69b038.
@@ -2138,7 +2138,7 @@ a121a4b83d69b038.
 50a3d6bb34f59d1f.category   "basic"
 50a3d6bb34f59d1f.original   "en"
 50a3d6bb34f59d1f.multiline  false
-50a3d6bb34f59d1f.orphan     true
+50a3d6bb34f59d1f.orphan     false
 50a3d6bb34f59d1f.ts         1467396493063
 50a3d6bb34f59d1f.locale.en  "Unlocking..."
 50a3d6bb34f59d1f.
@@ -2148,7 +2148,7 @@ a121a4b83d69b038.
 220e19f2a642d8c4.category   "basic"
 220e19f2a642d8c4.original   "en"
 220e19f2a642d8c4.multiline  false
-220e19f2a642d8c4.orphan     true
+220e19f2a642d8c4.orphan     false
 220e19f2a642d8c4.ts         1467396493064
 220e19f2a642d8c4.locale.en  "Node must be online"
 220e19f2a642d8c4.
@@ -2158,7 +2158,7 @@ f0b085354984f874.sha1       "e86e3a2b280b582fddae8cbacaf6bdcff58af6d2"
 f0b085354984f874.category   "basic"
 f0b085354984f874.original   "en"
 f0b085354984f874.multiline  false
-f0b085354984f874.orphan     true
+f0b085354984f874.orphan     false
 f0b085354984f874.ts         1467396493064
 f0b085354984f874.locale.en  "Incorrect Custom Passphrase (Unable to decrypt wallet key)"
 f0b085354984f874.
@@ -2168,7 +2168,7 @@ f0b085354984f874.
 10401be5d052a4b.category   "basic"
 10401be5d052a4b.original   "en"
 10401be5d052a4b.multiline  false
-10401be5d052a4b.orphan     true
+10401be5d052a4b.orphan     false
 10401be5d052a4b.ts         1467396493064
 10401be5d052a4b.locale.en  "Unable to Unlock : "
 10401be5d052a4b.
@@ -2178,7 +2178,7 @@ f0b085354984f874.
 596fc1203da66.category   "basic"
 596fc1203da66.original   "en"
 596fc1203da66.multiline  false
-596fc1203da66.orphan     true
+596fc1203da66.orphan     false
 596fc1203da66.ts         1467396493065
 596fc1203da66.locale.en  "Ok"
 596fc1203da66.
@@ -2198,7 +2198,7 @@ f0b085354984f874.
 3ae7f36a144cf015.category   "basic"
 3ae7f36a144cf015.original   "en"
 3ae7f36a144cf015.multiline  false
-3ae7f36a144cf015.orphan     true
+3ae7f36a144cf015.orphan     false
 3ae7f36a144cf015.ts         1467396493065
 3ae7f36a144cf015.locale.en  "Network Peers"
 3ae7f36a144cf015.
@@ -2208,7 +2208,7 @@ b9ed594f4859aa9.sha1       "4a94579b037f9ea6ab28613a2b43f4a6dacabb65"
 b9ed594f4859aa9.category   "basic"
 b9ed594f4859aa9.original   "en"
 b9ed594f4859aa9.multiline  false
-b9ed594f4859aa9.orphan     true
+b9ed594f4859aa9.orphan     false
 b9ed594f4859aa9.ts         1467396493066
 b9ed594f4859aa9.locale.en  "Peers"
 b9ed594f4859aa9.
@@ -2218,7 +2218,7 @@ b9ed594f4859aa9.
 9d96a88d15f8b79.category   "basic"
 9d96a88d15f8b79.original   "en"
 9d96a88d15f8b79.multiline  false
-9d96a88d15f8b79.orphan     true
+9d96a88d15f8b79.orphan     false
 9d96a88d15f8b79.ts         1467396493066
 9d96a88d15f8b79.locale.en  "Price"
 9d96a88d15f8b79.
@@ -2228,7 +2228,7 @@ b9ed594f4859aa9.
 50c3a27bf266b93e.category   "basic"
 50c3a27bf266b93e.original   "en"
 50c3a27bf266b93e.multiline  false
-50c3a27bf266b93e.orphan     true
+50c3a27bf266b93e.orphan     false
 50c3a27bf266b93e.ts         1467396493066
 50c3a27bf266b93e.locale.en  "Network"
 50c3a27bf266b93e.
@@ -2238,7 +2238,7 @@ b9ed594f4859aa9.
 3ca397561afd5fa2.category   "basic"
 3ca397561afd5fa2.original   "en"
 3ca397561afd5fa2.multiline  false
-3ca397561afd5fa2.orphan     true
+3ca397561afd5fa2.orphan     false
 3ca397561afd5fa2.ts         1467396493067
 3ca397561afd5fa2.locale.en  "Difficulty"
 3ca397561afd5fa2.
@@ -2248,7 +2248,7 @@ b9ed594f4859aa9.
 60f1b9b5db33dd1f.category   "basic"
 60f1b9b5db33dd1f.original   "en"
 60f1b9b5db33dd1f.multiline  false
-60f1b9b5db33dd1f.orphan     true
+60f1b9b5db33dd1f.orphan     false
 60f1b9b5db33dd1f.ts         1467396493067
 60f1b9b5db33dd1f.locale.en  "Hash Rate"
 60f1b9b5db33dd1f.
@@ -2258,7 +2258,7 @@ b9ed594f4859aa9.
 685f53bafe9b76df.category   "basic"
 685f53bafe9b76df.original   "en"
 685f53bafe9b76df.multiline  false
-685f53bafe9b76df.orphan     true
+685f53bafe9b76df.orphan     false
 685f53bafe9b76df.ts         1467396493068
 685f53bafe9b76df.locale.en  "Height"
 685f53bafe9b76df.
@@ -2268,7 +2268,7 @@ b9ed594f4859aa9.
 4712ceff415e5bb5.category   "basic"
 4712ceff415e5bb5.original   "en"
 4712ceff415e5bb5.multiline  false
-4712ceff415e5bb5.orphan     true
+4712ceff415e5bb5.orphan     false
 4712ceff415e5bb5.ts         1467396493068
 4712ceff415e5bb5.locale.en  "Total Coins"
 4712ceff415e5bb5.
@@ -2278,7 +2278,7 @@ b4284808bcb4c35d.sha1       "2e41422193cdb4e459d8a6117f675668259732ae"
 b4284808bcb4c35d.category   "basic"
 b4284808bcb4c35d.original   "en"
 b4284808bcb4c35d.multiline  false
-b4284808bcb4c35d.orphan     true
+b4284808bcb4c35d.orphan     false
 b4284808bcb4c35d.ts         1467396493069
 b4284808bcb4c35d.locale.en  "Active Contracts"
 b4284808bcb4c35d.
@@ -2288,7 +2288,7 @@ c090740c16fe728e.sha1       "fb501f4fb839da3c4a1ee62e10e693967e170f98"
 c090740c16fe728e.category   "basic"
 c090740c16fe728e.original   "en"
 c090740c16fe728e.multiline  false
-c090740c16fe728e.orphan     true
+c090740c16fe728e.orphan     false
 c090740c16fe728e.ts         1467396493069
 c090740c16fe728e.locale.en  "Active Size"
 c090740c16fe728e.
@@ -2298,7 +2298,7 @@ c090740c16fe728e.
 4a98f822417aef35.category   "basic"
 4a98f822417aef35.original   "en"
 4a98f822417aef35.multiline  false
-4a98f822417aef35.orphan     true
+4a98f822417aef35.orphan     false
 4a98f822417aef35.ts         1467396493070
 4a98f822417aef35.locale.en  "Active Cost"
 4a98f822417aef35.
@@ -2308,7 +2308,7 @@ deb70a8643a4c310.sha1       "1318e156196942da4d68d7eafa640a01d5ffaa56"
 deb70a8643a4c310.category   "basic"
 deb70a8643a4c310.original   "en"
 deb70a8643a4c310.multiline  false
-deb70a8643a4c310.orphan     true
+deb70a8643a4c310.orphan     false
 deb70a8643a4c310.ts         1467396493070
 deb70a8643a4c310.locale.en  "Total Contracts"
 deb70a8643a4c310.
@@ -2318,7 +2318,7 @@ deb70a8643a4c310.
 5ed26facc4187c52.category   "basic"
 5ed26facc4187c52.original   "en"
 5ed26facc4187c52.multiline  false
-5ed26facc4187c52.orphan     true
+5ed26facc4187c52.orphan     false
 5ed26facc4187c52.ts         1467396493070
 5ed26facc4187c52.locale.en  "Total Cost"
 5ed26facc4187c52.
@@ -2328,7 +2328,7 @@ a10c0702cbfba91d.sha1       "f86478ead8b51495e61184b12e91f691e2ed5e32"
 a10c0702cbfba91d.category   "basic"
 a10c0702cbfba91d.original   "en"
 a10c0702cbfba91d.multiline  false
-a10c0702cbfba91d.orphan     true
+a10c0702cbfba91d.orphan     false
 a10c0702cbfba91d.ts         1467396493071
 a10c0702cbfba91d.locale.en  "Total Size"
 a10c0702cbfba91d.
@@ -2338,7 +2338,7 @@ e8464c94a2ff5f48.sha1       "84008029fcf545ccc40d2f6e0eaf9cf6c975a0b1"
 e8464c94a2ff5f48.category   "basic"
 e8464c94a2ff5f48.original   "en"
 e8464c94a2ff5f48.multiline  false
-e8464c94a2ff5f48.orphan     true
+e8464c94a2ff5f48.orphan     false
 e8464c94a2ff5f48.ts         1467396493071
 e8464c94a2ff5f48.locale.en  "Peers Hosting"
 e8464c94a2ff5f48.
@@ -2358,7 +2358,7 @@ e8464c94a2ff5f48.
 91acbf215520dbf4.category   "basic"
 91acbf215520dbf4.original   "en"
 91acbf215520dbf4.multiline  false
-91acbf215520dbf4.orphan     true
+91acbf215520dbf4.orphan     false
 91acbf215520dbf4.ts         1467396493072
 91acbf215520dbf4.locale.en  "DASHBOARD"
 91acbf215520dbf4.
@@ -2368,7 +2368,7 @@ ca03247a9fb4c602.sha1       "606c11c76bf61635d05e3e0b22caab2127ba6203"
 ca03247a9fb4c602.category   "basic"
 ca03247a9fb4c602.original   "en"
 ca03247a9fb4c602.multiline  false
-ca03247a9fb4c602.orphan     true
+ca03247a9fb4c602.orphan     false
 ca03247a9fb4c602.ts         1467396493072
 ca03247a9fb4c602.locale.en  "GRAPHS"
 ca03247a9fb4c602.
@@ -2378,7 +2378,7 @@ b422d8001781e55b.sha1       "c4b92432720688af3ec146b44cc2729798bde4fb"
 b422d8001781e55b.category   "basic"
 b422d8001781e55b.original   "en"
 b422d8001781e55b.multiline  false
-b422d8001781e55b.orphan     true
+b422d8001781e55b.orphan     false
 b422d8001781e55b.ts         1467396493072
 b422d8001781e55b.locale.en  "SETTINGS"
 b422d8001781e55b.
@@ -2388,7 +2388,7 @@ b422d8001781e55b.
 9956c0fd30a8cbad.category   "basic"
 9956c0fd30a8cbad.original   "en"
 9956c0fd30a8cbad.multiline  false
-9956c0fd30a8cbad.orphan     true
+9956c0fd30a8cbad.orphan     false
 9956c0fd30a8cbad.ts         1467396493073
 9956c0fd30a8cbad.locale.en  "Copyright (c) 2015-2016 Aspectron Inc. All Rights Reserved."
 9956c0fd30a8cbad.
@@ -2398,7 +2398,7 @@ b422d8001781e55b.
 6da835b58bb0075b.category   "basic"
 6da835b58bb0075b.original   "en"
 6da835b58bb0075b.multiline  false
-6da835b58bb0075b.orphan     true
+6da835b58bb0075b.orphan     false
 6da835b58bb0075b.ts         1467396493073
 6da835b58bb0075b.locale.en  "SIGN-OUT"
 6da835b58bb0075b.
@@ -2408,7 +2408,7 @@ b422d8001781e55b.
 68e85c1cd41e8c4a.category   "basic"
 68e85c1cd41e8c4a.original   "en"
 68e85c1cd41e8c4a.multiline  false
-68e85c1cd41e8c4a.orphan     true
+68e85c1cd41e8c4a.orphan     false
 68e85c1cd41e8c4a.ts         1467396493073
 68e85c1cd41e8c4a.locale.en  "SIGN-IN"
 68e85c1cd41e8c4a.
@@ -2758,7 +2758,7 @@ cd96a37ad611f680.
 8667b84929caf23b.category   "basic"
 8667b84929caf23b.original   "en"
 8667b84929caf23b.multiline  false
-8667b84929caf23b.orphan     true
+8667b84929caf23b.orphan     false
 8667b84929caf23b.ts         1470576251276
 8667b84929caf23b.locale.en  "Peers Seen"
 8667b84929caf23b.
@@ -2772,3 +2772,23 @@ c4551b7a7862ef2d.orphan     false
 c4551b7a7862ef2d.ts         1470684192103
 c4551b7a7862ef2d.locale.en  "Wallet Key (native unlock password)"
 c4551b7a7862ef2d.
+807badef1bd4240c.
+807badef1bd4240c.hash       "807badef1bd4240c"
+807badef1bd4240c.sha1       "5909c7ef3c1e4c135c990e4fe75b81a4661a5eff"
+807badef1bd4240c.category   "basic"
+807badef1bd4240c.original   "en"
+807badef1bd4240c.multiline  false
+807badef1bd4240c.orphan     false
+807badef1bd4240c.ts         1471111284682
+807badef1bd4240c.locale.en  "Potential revenue"
+807badef1bd4240c.
+263857655682e38d.
+263857655682e38d.hash       "263857655682e38d"
+263857655682e38d.sha1       "f815921688440531bd060008c52169e238af11fe"
+263857655682e38d.category   "basic"
+263857655682e38d.original   "en"
+263857655682e38d.multiline  false
+263857655682e38d.orphan     false
+263857655682e38d.ts         1471111284705
+263857655682e38d.locale.en  "DEMO MODE"
+263857655682e38d.
