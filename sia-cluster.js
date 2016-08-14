@@ -114,6 +114,7 @@ function SIACluster() {
         self.app.locals._ = _;
         self.app.locals.activePage = "home";
         self.app.locals.baseUrl = self.config.baseUrl;
+        self.app.locals.isDemo = self.demo;
 
         self.app.locals.tweets = null;
 
