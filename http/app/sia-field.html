@@ -428,14 +428,11 @@
 			},
 			getRadioText: function(v){
 				if(this._isRadioField()) {
-					console.log("GETTING",this._radio);
 					var o = _.find(this._radio, function(item) {
-						console.log("ITERATE",item,v)
 						if(item.value == v)
 							return true;
 						return false;
 					})
-					console.log("O",o)
 					return o ? o.name : "ERROR";
 				}
 			},
