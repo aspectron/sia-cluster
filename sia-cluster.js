@@ -4,6 +4,7 @@ var IRISMDL     = require('iris-mdl');
 var _           = require('iris-underscore');
 
 var i18n        = require('iris-i18n');
+var fs          = require('fs');
 var util        = require('util');
 var path        = require("path");
 var morgan      = require("morgan");
@@ -39,6 +40,7 @@ function SIACluster() {
     self.demo = program.demo ? true : false;
     if(self.demo)
         console.log("DEMO mode...".green.bold);
+    self.VERSION = fs.readFileSync(path.join(self.appFolder,"VERSION"), { encoding : 'utf-8' });
     
 
     self.nexus = new Nexus(self);
@@ -115,6 +117,7 @@ function SIACluster() {
         self.app.locals.activePage = "home";
         self.app.locals.baseUrl = self.config.baseUrl;
         self.app.locals.isDemo = self.demo;
+        self.app.locals.VERSION = self.VERSION;
 
         self.app.locals.tweets = null;
 
