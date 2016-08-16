@@ -16,12 +16,21 @@ App = _.extend(window.App || {}, {
 		}
 		if (err){
 			if (err.error) {
-				IRIS.Alert({title: title || "Error", text:err.error}, callback)
-			}else if (err.warning) {
-				IRIS.Alert({title: title || "Warning", text:err.warning}, callback)
-			}else if (err.info) {
-				IRIS.Alert({title: title || "Info", text:err.info}, callback)
+				if(App.isDemo)
+					IRIS.info({ title : "DEMO", text : err.error, autoHide : App.isDemo });
+				else
+					IRIS.error({ title : "Error", text : err.error, autoHide : App.isDemo });
 			}
+			else 
+			if (err.warning) {
+				IRIS.info({ title : "Warning", text : err.warning, autoHide : App.isDemo })
+			}
+			else
+			if (err.info) {
+				IRIS.info({ title : "Info", text : err.info, autoHide : App.isDemo })
+			}
+
+			callback && callback();
 		};
 		return err;
 	},

@@ -526,9 +526,15 @@
 					self.$.editor.toggleClass("saving", false);
 
 					if(err) {
-						if(err.match(/no such stream/))
+						if(_.isString(err) && err.match(/no such stream/))
 							err = '<%= _T("Error: Not Connected to Node") %>';
-						self.showError(err);
+						//self.showError(err.error ? err.error.toString() : err.toString());
+						var text = err.error ? err.error.toString() : err.toString();
+						if(App.isDemo)
+							IRIS.info({ title : "DEMO", text : text, autoHide : App.isDemo });
+						else
+							IRIS.error({ title : "Error", text : text, autoHide : App.isDemo });
+
 						return;
 					}
 

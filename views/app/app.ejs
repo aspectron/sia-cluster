@@ -21,13 +21,14 @@
 			user: <%- JSON.stringify(user); %>,
 			msg: <%- JSON.stringify(req.flash()); %>
 		}
+		App.isDemo = JSON.parse("<%- isDemo %>");
 	</script>
 
 	<link rel="stylesheet" type="text/css" href="/app/css/style.css" />
 	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css' />
 	<link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
 	<script src="/combine:js:webcomponentsjs/webcomponents-lite;jquery-2.1.3.min;jquery.easing.1.3;d3.min;underscore-min;scripts:BigInteger.min;scripts:scrypt_impl;scripts:scrypt;app?cache=0"></script>
-	<link rel="import" href="/<%-_T.locale%>/combine:html:iris-dom-app;deps;iron-icons:device-icons;iron-iconset-svg:iron-iconset-svg;google-map:google-map?cache=0" />
+	<link rel="import" href="/<%-_T.locale%>/combine:html:iris-dom-app;iris-notify;deps;iron-icons:device-icons;iron-iconset-svg:iron-iconset-svg;google-map:google-map?cache=0" />
 	<link rel="import" href="/<%-_T.locale%>/combine:html:themes:sia-cluster;sia?cache=0" />
 
 	<!-- link rel="import" href="/icons:/ios/business/org-unit;/ios/editing/drafting-compass;/ios/healthcare/groups;ios/very-basic/about;/ios/media-controls/news;/ios/messaging/link;/win/programming/external-link;/win/very-basic/link;"/ -->

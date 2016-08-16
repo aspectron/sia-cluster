@@ -36,7 +36,7 @@ function SIACluster() {
     .parse(process.argv);
     self.verbose = program.debug ? 2 : (program.verbose ? 1 : 0);
     self.verbose && console.log("Setting verbose mode to".yellow.bold,self.verbose);
-    self.demo = program.demo;
+    self.demo = program.demo ? true : false;
     if(self.demo)
         console.log("DEMO mode...".green.bold);
     
