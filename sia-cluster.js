@@ -118,6 +118,7 @@ function SIACluster() {
         self.app.locals.baseUrl = self.config.baseUrl;
         self.app.locals.isDemo = self.demo;
         self.app.locals.VERSION = self.VERSION;
+        self.app.locals.GA = self.config.GA;
 
         self.app.locals.tweets = null;
 
