@@ -192,15 +192,6 @@ function SIACluster() {
                 if (err || !session)
                     return;
 
-                /*
-                if (self.demo && !session.user) {
-                    session.user = {
-                        name: "Demo user",
-                        uuid: Date.now() +":" + Math.random()
-                    }
-                };
-                */
-
                 var uuid = session.user ? (session.user.uuid || session.user._id): false;
                 if (!uuid)
                     return;
