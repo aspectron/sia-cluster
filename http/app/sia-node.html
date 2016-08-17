@@ -74,7 +74,7 @@
 				<paper-icon-button icon="close" dialog-dismiss></paper-icon-button>
 			</paper-toolbar>
 			<neon-animated-pages class="flex" selected="{{tab}}" attr-for-selected="page" entry-animation="fade-in-animation" exit-animation="fade-out-animation" on-tap="hideVariableGraph">
-				<neon-animatable class="fit" page="config" on-sia-field-value-changed="onSiaFieldValueChanged" on-tap="onSettingItemsClick">
+				<neon-animatable class="fit" page="config" on-sia-field-value-changed="onSiaFieldValueChanged" on-tap="onSettingDialogItemsClick">
 					<div class="node-field heading">
 						<div><%-_T("Show<br />Variable")%></div>
 						<div><%-_T("Show<br />Graph")%></div>
@@ -588,6 +588,12 @@
 				var d = e.detail;
 				//console.log("onSiaFieldValueChanged", d);
 				this._updateFieldValue(d.editable.replace(this.uuid+"/", ""), d.value);
+			},
+			onSettingDialogItemsClick: function(e){
+				this.onSettingItemsClick(e);
+				if (App.isDemo) {
+					this.onFieldSettingChanged();
+				};
 			}
 		})
 	</script>
